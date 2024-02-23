@@ -1,2 +1,3 @@
-# OpenExempt
-OpenExempt: a Diagnostic Benchmark for Legal Reasoning
+# OpenExempt: a Diagnostic Benchmark for Legal Reasoning
+
+This work is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
