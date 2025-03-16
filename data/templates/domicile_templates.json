@@ -1,0 +1,23 @@
+{
+    "one_location": [
+        "On {date}, {party} began residing in {location}.",
+        "{party} moved to {location} on {date}.",
+        "{party} established their primary residence in {location} on {date}.",
+        "On {date}, {party} relocated to {location}.",
+        "The relocation of {party} to {location} occurred on {date}.",
+        "{date} is the date {party} moved their primary dwelling to {location}.",
+        "The primary residence of {party} was located in {location} beginning on {date}.",
+        "{party} chose to relocate their household to {location} on {date}.",
+        "{party} moved their permanent residence on {date} to {location}.",
+        "Starting on {date}, the principal place of residence of {party} was located in {location}.",
+        "{party} transferred their domicile to {location} as of {date}.",
+        "As of {date}, {party} established their domiciled in {location}."
+    ],
+    "two_locations": [
+        "{party} began living in {location} on {date}, but relocated to {location} on {date}.",
+        "Starting on {date}, {party} lived in {location} but later moved their primary residence on {date} to {location}.",
+        "On {date}, {party} established their home in {location}, though later shifted their residence to {location} on {date}.",
+        "After moving their household to {location} on {date}, {party} eventually relocated to {location} on {date}.",
+        "{location} was the location of their principal place of residence starting on {date}, until {party} transferred to {location} on {date}."
+    ]
+}

@@ -1,0 +1,67 @@
+{
+    "jurisdiction": "FEDERAL",
+    "authority": "United States Code Title 11 - Bankruptcy",
+    "has_opted_out": null,
+    "statutes": [
+        {
+            "citation": "11 U.S.C. § 522(b)",
+            "description": "(1) An individual debtor may exempt from property of the estate the property listed in either paragraph (2) or, in the alternative, paragraph (3) of this subsection. In joint cases, one debtor may not elect to exempt property listed in paragraph (2) and the other debtor elect to exempt property listed in paragraph (3) of this subsection.\n(2) Property listed in this paragraph is property that is specified under subsection (d), unless the State law that is applicable to the debtor under paragraph (3)(A) specifically does not so authorize.\n(3) Property listed in this paragraph is- (A) any property that is exempt under State or local law that is applicable on the date of the filing of the petition to the place in which the debtor's domicile has been located for the 730 days immediately preceding the date of the filing of the petition or if the debtor's domicile has not been located in a single State for such 730-day period, the place in which the debtor's domicile was located for 180 days immediately preceding the 730-day period or for a longer portion of such 180-day period than in any other place;"
+        },
+        {
+            "citation": "11 U.S.C. § 522(d)",
+            "description": "The following property may be exempted under subsection (b)(2) of this section:"
+        },
+        {
+            "citation": "11 U.S.C. § 522(d)(1)",
+            "description": "The debtor's aggregate interest, not to exceed $27,900 in value, in real property or personal property that the debtor or a dependent of the debtor uses as a residence, in a cooperative that owns property that the debtor or a dependent of the debtor uses as a residence, or in a burial plot for the debtor or a dependent of the debtor.",
+            "single_limit": 27900,
+            "married_limit": 55800
+        },
+        {
+            "citation": "11 U.S.C. § 522(d)(2)",
+            "description": "The debtor's interest, not to exceed $4,450 in value, in one motor vehicle.",
+            "single_limit": 4450,
+            "married_limit": 8900,
+            "single_max_claim_count": 1,
+            "married_max_claim_count": 2
+        },
+        {
+            "citation": "11 U.S.C. § 522(d)(3)",
+            "description": "The debtor's interest, not to exceed $700 in value in any particular item or $14,875 in aggregate value, in household furnishings, household goods, wearing apparel, appliances, books, animals, crops, or musical instruments, that are held primarily for the personal, family, or household use of the debtor or a dependent of the debtor.",
+            "single_limit": 14875,
+            "married_limit": 29750,
+            "per_item_limit": 700
+        },
+        {
+            "citation": "11 U.S.C. § 522(d)(4)",
+            "description": "The debtor's aggregate interest, not to exceed $1,875 in value, in jewelry held primarily for the personal, family, or household use of the debtor or a dependent of the debtor.",
+            "single_limit": 1875,
+            "married_limit": 3750
+        },
+        {
+            "citation": "11 U.S.C. § 522(d)(5)",
+            "description": "The debtor's aggregate interest in any property, not to exceed in value $1,475 plus up to $13,950 of any unused amount of the exemption provided under paragraph (1) of this subsection.",
+            "single_limit": 1475,
+            "married_limit": 2950,
+            "unused_relationship": "11 U.S.C. § 522(d)(1)",
+            "unused_single_limit": 13950,
+            "unused_married_limit": 27900
+        },
+        {
+            "citation": "11 U.S.C. § 522(d)(6)",
+            "description": "The debtor's aggregate interest, not to exceed $2,800 in value, in any implements, professional books, or tools, of the trade of the debtor or the trade of a dependent of the debtor.",
+            "single_limit": 2800,
+            "married_limit": 5600
+        },
+        {
+            "citation": "11 U.S.C. § 522(d)(9)",
+            "description": "Professionally prescribed health aids for the debtor or a dependent of the debtor.",
+            "single_limit": null,
+            "married_limit": null
+        },
+        {
+            "citation": "11 U.S.C. § 522(m)",
+            "description": "Subject to the limitation in subsection (b), this section shall apply separately with respect to each debtor in a joint case."
+        }
+    ]
+}

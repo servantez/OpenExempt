@@ -1,0 +1,62 @@
+{
+    "jurisdiction": "WISCONSIN",
+    "authority": "Wisconsin Statutes",
+    "has_opted_out": false,
+    "statutes": [
+        {
+            "citation": "Wis. Stat. § 815.18(3)",
+            "description": "Exempt property. The debtor's interest in or right to receive the following property is exempt:"
+        },
+        {
+            "citation": "Wis. Stat. § 815.18(3)(a)",
+            "description": "Provisions for burial. Cemetery lots, aboveground burial facilities, burial monuments, tombstones, coffins, cremation urns, urn vaults, outer burial containers, or other articles for the burial of the dead owned by the debtor and intended for the burial of the debtor or the debtor's family.",
+            "single_limit": null,
+            "married_limit": null
+        },
+        {
+            "citation": "Wis. Stat. § 815.18(3)(b)",
+            "description": "Business and farm property."
+        },
+        {
+            "citation": "Wis. Stat. § 815.18(3)(b)(1)",
+            "description": "Equipment, inventory, farm products, and professional books used in the business of the debtor or the business of a dependent of the debtor, not to exceed $15,000 in aggregate value.",
+            "single_limit": 15000,
+            "married_limit": 30000
+        },
+        {
+            "citation": "Wis. Stat. § 815.18(3)(d)",
+            "description": "Consumer goods. Household goods and furnishings, wearing apparel, keepsakes, jewelry and other articles of personal adornment, appliances, books, musical instruments, firearms, sporting goods, animals, or other tangible personal property held primarily for the personal, family or household use of the debtor or a dependent of the debtor, not to exceed $12,000 in aggregate value.",
+            "single_limit": 12000,
+            "married_limit": 24000
+        },
+        {
+            "citation": "Wis. Stat. § 815.18(3)(g)",
+            "description": "Motor vehicles. Motor vehicles not to exceed $4,000 in aggregate value. Any unused amount of the aggregate value from par. (d) may be added to this exemption to increase the aggregate exempt value of motor vehicles under this paragraph.",
+            "single_limit": 4000,
+            "married_limit": 8000,
+            "unused_relationship": "Wis. Stat. § 815.18(3)(d)",
+            "unused_single_limit": 12000,
+            "unused_married_limit": 24000
+        },
+        {
+            "citation": "Wis. Stat. § 815.18(3)(k)",
+            "description": "Depository accounts. Depository accounts in the aggregate value of $5,000, but only to the extent that the account is for the debtor's personal use and is not used as a business account.",
+            "single_limit": 5000,
+            "married_limit": 10000
+        },
+        {
+            "citation": "Wis. Stat. § 815.18(8)",
+            "description": "Marital property rights. Each spouse is entitled to and may claim the exemptions under this section. If the property exempt under this section is limited to a specified maximum dollar amount, each spouse is entitled to one exemption. That exemption is limited to the specified maximum dollar amount, which may be combined with the other spouse's exemption in the same property or applied to different property included under the same exemption."
+        },
+        {
+            "citation": "Wis. Stat. § 815.20",
+            "description": "Homestead exemption definition."
+        },
+        {
+            "citation": "Wis. Stat. § 815.20(1)",
+            "description": "An exempt homestead selected by a resident owner and occupied by him or her shall be exempt from execution, from the lien of every judgment, and from liability for the debts of the owner to the amount of $75,000, except mortgages, laborers', mechanics', and purchase money liens and taxes and except as otherwise provided. The exemption shall not be impaired by temporary removal with the intention to reoccupy the premises as a homestead nor by the sale of the homestead, but shall extend to the proceeds derived from the sale to an amount not exceeding $75,000, while held, with the intention to procure another homestead with the proceeds, for 2 years. The exemption extends to land owned by husband and wife jointly or in common or as marital property, and each spouse may claim a homestead exemption of not more than $75,000. The exemption extends to the interest therein of tenants in common, having a homestead thereon with the consent of the cotenants, and to any estate less than a fee.",
+            "single_limit": 75000,
+            "married_limit": 150000
+        }
+    ]
+}

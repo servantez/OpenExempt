@@ -1,0 +1,59 @@
+{
+    "one_asset": [
+        "The {asset} currently owned by {party} carries a value of {value}.",
+        "{party} can provide evidence confirming their ownership of a {asset} valued at {value}.",
+        "The {asset} belonging to {party} has an appraisal value of {value}.",
+        "Evidence supports {party}'s ownership of a {asset} worth {value}.",
+        "A {asset} valued at {value} is under the ownership of {party}.",
+        "A {asset} appraised at {value} is in the possession of {party}.",
+        "Ownership of the {asset}, priced at {value}, is claimed by {party}.",
+        "A valuation of {value} has been assigned to the {asset} owned by {party}.",
+        "The {asset}, owned by {party}, holds a monetary value of {value}.",
+        "The current fair market value of {party}'s {asset} stands at {value}.",
+        "The value of the {asset} owned by {party} has been calculated to be {value}."
+    ],
+    "one_asset_single": [
+        "{party} owns a {asset} worth {value}.",
+        "{party} asserts ownership of a {asset} with a market value of {value}.",
+        "Legal documents confirm that {party} owns a {asset} estimated at {value}.",
+        "Records show that {party} possesses a {asset} with a value of {value}.",
+        "{party} is the rightful owner of a {asset} valued at {value}"
+    ],
+    "one_asset_couple": [
+        "{party} own a {asset} worth {value}.",
+        "{party} assert ownership of a {asset} with a market value of {value}.",
+        "Legal documents confirm that {party} own a {asset} estimated at {value}.",
+        "Records show that {party} possess a {asset} with a value of {value}.",
+        "{party} are the rightful owners of a {asset} valued at {value}"
+    ],
+    "two_assets": [
+        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
+        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
+        "Two assets: {party}, {asset}/{value}, {asset}/{value}"
+    ],
+    "two_assets_single": [
+        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
+        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
+        "Two assets: {party}, {asset}/{value}, {asset}/{value}"
+    ],
+    "two_assets_couple": [
+        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
+        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
+        "Two assets: {party}, {asset}/{value}, {asset}/{value}"
+    ],
+    "three_assets": [
+        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
+        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
+        "Two assets: {party}, {asset}/{value}, {asset}/{value}"
+    ],
+    "three_assets_single": [
+        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
+        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
+        "Two assets: {party}, {asset}/{value}, {asset}/{value}"
+    ],
+    "three_assets_couple": [
+        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
+        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
+        "Two assets: {party}, {asset}/{value}, {asset}/{value}"
+    ]
+}

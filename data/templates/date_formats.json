@@ -1,0 +1,18 @@
+[
+    "{month}/{day}/{year}",
+    "{month:02d}/{day:02d}/{year}",
+    "{month_name} {day} {year}",
+    "{month_name} {day}, {year}",
+    "{month_name} {day_ordinal} {year}",
+    "{month_name} {day_ordinal}, {year}",
+    "{day_ordinal} of {month_name} {year}",
+    "{day_ordinal} of {month_name}, {year}",
+    "{month}-{day}-{year}",
+    "{month:02d}-{day:02d}-{year}",
+    "{weekday}, {month_name} {day_ordinal}, {year}",
+    "{weekday}, {month_name} {day}, {year}",
+    "{day} {month_name} {year}",
+    "{day_ordinal} day of {month_name}, {year}",
+    "{month}.{day}.{year}",
+    "{month:02d}.{day:02d}.{year}"
+]

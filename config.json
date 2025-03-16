@@ -1,0 +1,17 @@
+{
+    "data_directory": "data",
+    "asset_directory": "data/assets",
+    "statute_directory": "data/statutes",
+    "template_directory": "data/templates",
+    "task_directory": "data/tasks",
+    "start_task_id": 1,
+    "terminal_task_id": 3,
+    "dataset_size": 10,
+    "asset_count_min": 3,
+    "asset_count_max": 3,
+    "asset_selection": "random",
+    "married_percentage": 0.0,
+    "domicile_count_min": 1,
+    "domicile_count_max": 3,
+    "state_jurisdictions": ["WISCONSIN", "ILLINOIS"]
+}

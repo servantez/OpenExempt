@@ -1,0 +1,17 @@
+# Environment variables
+.env
+
+# IDE and editor files
+.vscode/
+
+# Python-specific
+__pycache__/
+.Python
+venv/
+
+# Operating System
+.DS_Store
+
+# Datasets
+data/tasks/*
+!data/tasks/.gitkeep
