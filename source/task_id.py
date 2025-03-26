@@ -9,9 +9,14 @@ class TaskID(Enum):
     NON_EXEMPT_ASSETS = 4
     OPTIMAL_EXEMPTIONS = 5
 
-    @classmethod
-    def supported_tasks(cls):
+    @staticmethod
+    def supported_tasks():
         return [member.display_name() for member in TaskID]
     
+    @staticmethod
+    def display_name_to_task_id(display_name: str):
+        return TaskID[display_name.replace(' ', '_').upper()]
+    
     def display_name(self):
-        return self.name.capitalize()
+        words = self.name.split('_')
+        return ' '.join([word.capitalize() for word in words])

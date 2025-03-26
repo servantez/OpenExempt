@@ -28,4 +28,12 @@ class Case:
     def party_coreference(self):
         return 'Debtors' if self.has_married_couple() else 'Debtor'
     
-    
+    def to_dict(self):
+        return {
+            'debtor': self.debtor.to_dict(),
+            'joint_debtor': self.joint_debtor.to_dict() if self.joint_debtor else None,
+            'assets': [asset.to_dict() for asset in self.assets],
+            'state_jurisdiction': self.state_jurisdiction.value,
+            'petition_date': self.petition_date.isoformat(),
+            'domicile_dates': {date.isoformat(): state for date, state in self.domicile_dates.items()}
+        }

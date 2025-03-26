@@ -35,15 +35,15 @@ class CaseGenerator:
         return infinite_sampler(jurisdiction_list)
     
     def create_is_married_sampler(self):
-        married_count = round(self.config.dataset_size * self.config.married_percentage)
-        is_married_list = [True] * married_count + [False] * (self.config.dataset_size - married_count)
+        married_count = max(1, round(self.config.dataset_size * self.config.married_percentage))
+        is_married_list = [True] * married_count + [False] * max(1, (self.config.dataset_size - married_count))
         return infinite_sampler(is_married_list)
     
     def create_domicile_count_sampler(self):
         lower = self.config.domicile_count_min
         upper = self.config.domicile_count_max + 1 # Plus one to make upper bound inclusive
         domicile_count_list = [count for count in range(lower, upper)]
-        domicile_count_list = domicile_count_list * (self.config.dataset_size // len(domicile_count_list))
+        domicile_count_list = domicile_count_list * max(1, (self.config.dataset_size // len(domicile_count_list)))
         return infinite_sampler(domicile_count_list)
     
     def sample_party(self):

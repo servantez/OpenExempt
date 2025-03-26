@@ -116,7 +116,7 @@ class Solver:
         solution = self.init_solution(case, jurisdiction)
         assets = deepcopy(case.assets)
         for asset in assets:
-            asset.applicable_exemptions = [citation for citation in asset.applicable_exemptions if citation in self.citations_for_jurisdiction(jurisdiction)]
+            asset.applicable_exemptions = [citation for citation in asset.applicable_exemptions if citation in self.citations_for_jurisdictions([jurisdiction])]
         # Sort assets such that those with fewer applicable exemptions are exempted first.
         assets = sorted(assets, key=lambda asset: len(asset.applicable_exemptions))
         return self.recursive_optimal_exemption_search(assets, solution)
@@ -188,7 +188,3 @@ class Solver:
         solutions = [self.solve_case_for_jurisdiction(case, jurisdiction) for jurisdiction in allowable_jurisdictions]
         solution = min(solutions)
         return solution.claimed_exemptions
-
-
-
-

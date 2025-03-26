@@ -17,3 +17,6 @@ class Party:
             return self.last_name + 'es'
         else:
             return self.last_name + 's'
+        
+    def to_dict(self):
+        return vars(self)

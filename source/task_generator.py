@@ -189,7 +189,7 @@ class TaskGenerator:
     def generate_task(self, case: Case):
         instruction = self.instructions[str(self.config.terminal_task_id)]
         meta_instruction = self.instructions['meta']
-        response_format = 'Response Format:' + self.instructions[str(self.config.terminal_task_id) + '_response_format']
+        response_format = 'Response Format: ' + self.instructions[str(self.config.terminal_task_id) + '_response_format']
         name_variant_sampler = self.create_name_variant_sampler(case.debtor, case.joint_debtor)
         state_statute_set = self.statute_set_map[case.state_jurisdiction]
         allowable_jurisdictions = state_statute_set.allowable_exemption_jurisdictions()
@@ -200,7 +200,7 @@ class TaskGenerator:
             context += ' ' + ' '.join(domicile_facts)
         else:
             jurisdiction_names = ' and '.join(map(lambda jurisdiction: jurisdiction.display_name(), allowable_jurisdictions))
-            context += f' The {case.party_coreference} may claim property exemptions under {jurisdiction_names} statutes.'
+            context += f' The {case.party_coreference()} may claim property exemptions under {jurisdiction_names} statutes.'
 
         if self.config.terminal_task_id > 1:
             asset_facts = self.create_asset_facts(case, name_variant_sampler)
