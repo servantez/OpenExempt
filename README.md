@@ -38,7 +38,16 @@ Run the benchmark:
 ```bash
 python open_exempt.py -d dataset_name
 ```
-Replace `dataset_name` with your preferred name. You can also specify two optional arguments: `-c` to specify the path to your config file (if you are not using the default), and the `-v` flag for verbose logging. This command will construct a dataset based on the settings in your config file, and output the dataset to the `/data/tasks/` directory.
+Replace `dataset_name` with your preferred name. You can also specify two optional arguments: `-c` to specify the path to your config file (if you are not using the default), and the `-v` flag for verbose logging. This command will construct a dataset based on the settings in your config file, and output the dataset to the `/data/tasks/` directory. See below for details on setting the config file.
 
 ## Benchmark Configuration
-config.json in the root directory 
+
+The default configuration file is located at config.json in the project root directory. The table below provides an overview of the configuration settings.
+
+
+| Argument | Description |
+|:--------|:-------------|
+| Start and terminal task | The process of exempting assets under the Bankruptcy Code involves a sequence of intermediate subtasks. In addition to evaluating the entire exemption process, benchmark users can select a single subtask or any sequential interval of subtasks. See the web interface for a description of subtasks. | 
+| State jurisdictions | The specific state jurisdictions which should be involved in the cases being generated. All datasets include the federal statutes. | 
+| Text 4 | Text 5   | 
+
