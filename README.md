@@ -47,9 +47,9 @@ Benchmark users are able to control the legal tasks specified in the dataset by 
 
 
 | Argument | Description |
-|:----------|:-------------|
+|:------------|:-------------|
 | Start and terminal task | The process of exempting assets under the Bankruptcy Code involves a sequence of intermediate subtasks. In addition to evaluating the entire exemption process, benchmark users can select a single subtask or any sequential interval of subtasks. See the web interface for a description of subtasks. | 
-| State jurisdictions | The specific state jurisdictions which should be involved in the cases being generated. All datasets include the federal statutes. | 
+| State jurisdictions | The specific state jurisdictions which should be involved in the cases being generated. All datasets include federal statutes. | 
 | Minimum and maximum asset count | The upper and lower bound for the number of assets that should be included in each case. | 
 | Obfuscation facts | Language models can be susceptible to making errors when the input context includes irrelevant information or opinions. This arguments injects obfuscation facts into the task to gain insights on resulting hallucinations and sycophancy. | 
 | Percentage of married cases | The dollar amount protected under a given exemption typically increases for married couples. This argument indicates the percentage of cases which should involve married individuals. | 
