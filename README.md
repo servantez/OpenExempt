@@ -38,10 +38,7 @@ Run the benchmark:
 ```bash
 python open_exempt.py -d dataset_name
 ```
-Replace `dataset_name` with your preferred name.
+Replace `dataset_name` with your preferred name. You can also specify two optional arguments: `-c` to specify the path to your config file (if you are not using the default), and the `-v` flag for verbose logging. This command will construct a dataset based on the settings in your config file, and output the dataset to the `/data/tasks/` directory.
 
 ## Benchmark Configuration
 config.json in the root directory 
-
-# Adding New Statutes and Assets
-OpenExempt is easily exstensible.
