@@ -17,19 +17,28 @@ OpenExempt is named for its central task, exempting assets under the United Stat
 ## Getting Started
 Clone the repo:
 
-`git clone https://github.com/servantez/OpenExempt.git`
+```bash
+git clone https://github.com/servantez/OpenExempt.git
+```
 
 Navigate to project directory:
 
-`cd OpenExempt`
+```bash
+cd OpenExempt
+```
 
 Install dependencies:
 
-`pip install -r requirements.txt`
+```bash
+pip install -r requirements.txt
+```
 
 Run the benchmark:
-`python open_exempt.py -d dataset_name`
 
+```bash
+python open_exempt.py -d dataset_name
+```
+Replace `dataset_name` with your preferred name.
 
 ## Benchmark Configuration
 config.json in the root directory 
