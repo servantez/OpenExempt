@@ -9,7 +9,7 @@ Language models are increasingly being deployed in the legal domain where their 
 
 An overview of OpenExempt's dynamic task construction pipeline can be seen below.
 
-<img src="OE_system.png" alt="OpenExempt System" style="background-color: white; padding: 10px;">
+<img src="OE_system.png" alt="OpenExempt System" style="background-color: white;">
 
 ## Asset Exemption under the Bankruptcy Code
 OpenExempt is named for its central task, exempting assets under the United States Bankruptcy Code. A person filing for bankruptcy, called the Debtor, is allowed to protect certain property from seizure by creditors. An exemption defines a category of property which can be protected - for example, up to $4,450 in a motor vehicle. Each state defines its own exemption statutes which differ considerably in regards to which assets are protected. The debtor may claim state or federal exemptions, unless their state specifically prohibits the use of federal exemptions, known as "opt-out". Which state exemption laws apply to a given case is determined by where the debtor lived prior to filing.
