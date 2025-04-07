@@ -21,7 +21,15 @@
             "citation": "Wis. Stat. § 815.18(3)(b)(1)",
             "description": "Equipment, inventory, farm products, and professional books used in the business of the debtor or the business of a dependent of the debtor, not to exceed $15,000 in aggregate value.",
             "single_limit": 15000,
-            "married_limit": 30000
+            "married_limit": 30000,
+            "mutual_exclusion": "Wis. Stat. § 815.18(3)(b)(2)"
+        },
+        {
+            "citation": "Wis. Stat. § 815.18(3)(b)(2)",
+            "description": "If the debtor does not claim an exemption under subd. 1., any interest of the debtor, not to exceed $15,000 in aggregate value, in a closely held business that employs the debtor or in whose business the debtor is actively involved.",
+            "single_limit": 15000,
+            "married_limit": 30000,
+            "mutual_exclusion": "Wis. Stat. § 815.18(3)(b)(1)"
         },
         {
             "citation": "Wis. Stat. § 815.18(3)(d)",

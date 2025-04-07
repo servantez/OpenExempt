@@ -93,12 +93,13 @@ class TaskGenerator:
         words_before = before.split()
         word_before = words_before[-1].lower() if words_before else None
         if word_before and (word_before == 'a' or word_before == 'an'):
-            correct_article = self.inflect_engine.an(asset.description)
-            words_before[-1] = correct_article
-            description = ' '.join(words_before) + after
+            first_description_word = asset.description.split()[0]
+            correct_article = self.inflect_engine.an(first_description_word).split()[0]
+            words_before[-1] = correct_article.capitalize() if len(words_before) == 1 else correct_article
+            formatted = ' '.join(words_before) + ' ' + asset.description + after
         else:
-            description = template.replace('{asset}', asset.description, 1)
-        return description if len(words_before) > 1 else description[0].upper() + description[1:]
+            formatted = template.replace('{asset}', asset.description, 1)
+        return formatted
     
     # For testing purposes
     def create_dummy_task(self):

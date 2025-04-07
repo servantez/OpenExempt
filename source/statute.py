@@ -22,11 +22,12 @@ class Exemption(Statute):
     single_limit: int
     married_limit: int
     per_item_limit: int = None
-    single_max_claim_count: int = None
-    married_max_claim_count: int = None
+    single_item_claim_count: int = None
+    married_item_claim_count: int = None
     unused_relationship: str = None # Citation to other exemption where unused portion can be used by this exemption (see 11 U.S.C. Section 522(d)(5) for example)
     unused_single_limit: int = None
     unused_married_limit: int = None
+    mutual_exclusion: str = None # Citation to other exemption which cannot be claimed if this exemption is claimed
 
     def __post_init__(self):
         if self.unused_relationship:

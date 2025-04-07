@@ -4,18 +4,21 @@ from typing import List, Dict, Tuple
 from .case import Case
 from .asset import Asset
 from .jurisdiction import Jurisdiction
+from .statute import Exemption
 from .statute_set import StatuteSet
 
 
 # The solution class represents the solution state for a given case, in a given jurisdiction.
 @dataclass
 class Solution:
+    exemptions: Dict[str, Exemption] # Citation to exemption map which is treated as an immutable copy of exemption values
     unclaimed_exemptions: Dict[str, float] # {citation: remaining balance}
     claimed_exemptions: Dict[str, List[Dict[str, float]]] # {asset description: [{citation, claim value}]}
     non_exempt_assets: Dict[str, float] # {asset description: value}
-    remaining_claim_counts: Dict[str, int] # {citation: remaining count}
+    remaining_item_claim_counts: Dict[str, int] # {citation: remaining count}
+    item_claim_amounts: Dict[str, float] # {citation: claim amount per item}
     remaining_unused_relationships: Dict[str, Tuple[str, float]] # {to citation: (from citation, remaining balance)}
-    per_item_limits: Dict[str, float] # {citation: per item limit}
+    excluded_exemptions: List[str] # List of exemption citations where a mutual exclusion relationship has been triggered
 
     def __lt__(self, other):
         return self.total_non_exempt_value() < other.total_non_exempt_value()
@@ -28,12 +31,17 @@ class Solution:
     
     # Attempt to allocate the claim amount for the specified exemption and return the actual amount allocated
     def allocate_claim_amount(self, citation: str, claim_amount: float):
-        remaining_claim_count = self.remaining_claim_counts[citation]
-        if remaining_claim_count is not None:
-            if remaining_claim_count < 1: # No more claims remaining
+        if citation in self.excluded_exemptions: # Mutual exclusion relationship has been triggered for this exemption
+            return 0
+        remaining_item_claim_count = self.remaining_item_claim_counts[citation]
+        item_claim_amount = None
+        if remaining_item_claim_count is not None:
+            if remaining_item_claim_count < 1: # No more claims remaining
                 return 0
-            self.remaining_claim_counts[citation] -= 1
-        per_item_limit = self.per_item_limits[citation]
+            self.remaining_item_claim_counts[citation] -= 1
+            item_claim_amount = self.item_claim_amounts[citation]
+        max_claim_amount = claim_amount if item_claim_amount is None else min(item_claim_amount, claim_amount)
+        per_item_limit = self.exemptions[citation].per_item_limit
         max_claim_amount = claim_amount if per_item_limit is None else min(per_item_limit, claim_amount)
         amount_claimed = self._process_claim(citation, max_claim_amount)
         if amount_claimed < max_claim_amount:
@@ -47,7 +55,7 @@ class Solution:
                     amount_claimed += unused_relationship_amount
         return amount_claimed
 
-    # Internal method: should only be called after a claim has been validated
+    # Internal method: should only be called by solution instance during claim allocation
     def _process_claim(self, citation: str, claim_amount: float):
         available_amount = self.unclaimed_exemptions[citation]
         if available_amount is None: # No exemption limit
@@ -61,39 +69,61 @@ class Solution:
 
     # This method should only be passed claim amounts allocated by allocate_claim_amount
     def claim_exemption(self, citation: str, asset_description: str, claim_amount: float):
+        # Trigger mutual exclusion relationship if one exist
+        exemption = self.exemptions[citation]
+        if exemption.mutual_exclusion:
+            self.excluded_exemptions.append(exemption.mutual_exclusion)
         if asset_description not in self.claimed_exemptions:
             self.claimed_exemptions[asset_description] = []
-        self.claimed_exemptions[asset_description].append({'citation': citation, 'claim_value': claim_amount})
+        citation_exists = False
+        for citation_dict in self.claimed_exemptions[asset_description]:
+            if citation_dict.get('citation') == citation:
+                citation_dict['claim_value'] += claim_amount
+                citation_exists = True
+                break
+        if not citation_exists:
+            self.claimed_exemptions[asset_description].append({'citation': citation, 'claim_value': claim_amount})
+
+    # Check if a given exemption has item claims still available
+    def item_claim_exists(self, citation: str):
+        remaining_item_claim_count = self.remaining_item_claim_counts[citation]
+        return remaining_item_claim_count is not None and remaining_item_claim_count > 1
 
 
 class Solver:
 
     def __init__(self, statute_set_map: Dict[Jurisdiction, StatuteSet]):
         self.statute_set_map = statute_set_map
+        self.exemption_map = {}
         # Construct a collection of maps to track solution state and reduce problem complexity based on case properties.
         self.single_exemption_map = {}
         self.married_exemption_map = {}
-        self.single_max_claim_count_map = {}
-        self.married_max_claim_count_map = {}
+        self.single_item_claim_count_map = {}
+        self.married_item_claim_count_map = {}
+        self.single_item_claim_amount_map = {}
+        self.married_item_claim_amount_map = {}
         self.single_unused_relationship_map = {}
         self.married_unused_relationship_map = {}
-        self.per_item_limit_map = {}
         for jurisdiction, statute_set in statute_set_map.items():
+            self.exemption_map[jurisdiction] = {}
             self.single_exemption_map[jurisdiction] = {}
             self.married_exemption_map[jurisdiction] = {}
-            self.single_max_claim_count_map[jurisdiction] = {}
-            self.married_max_claim_count_map[jurisdiction] = {}
+            self.single_item_claim_count_map[jurisdiction] = {}
+            self.married_item_claim_count_map[jurisdiction] = {}
+            self.single_item_claim_amount_map[jurisdiction] = {}
+            self.married_item_claim_amount_map[jurisdiction] = {}
             self.single_unused_relationship_map[jurisdiction] = {}
             self.married_unused_relationship_map[jurisdiction] = {}
-            self.per_item_limit_map[jurisdiction] = {}
             for exemption in statute_set.exemptions():
+                self.exemption_map[jurisdiction][exemption.citation] = exemption
                 self.single_exemption_map[jurisdiction][exemption.citation] = exemption.single_limit
                 self.married_exemption_map[jurisdiction][exemption.citation] = exemption.married_limit
-                self.single_max_claim_count_map[jurisdiction][exemption.citation] = exemption.single_max_claim_count
-                self.married_max_claim_count_map[jurisdiction][exemption.citation] = exemption.married_max_claim_count
+                self.single_item_claim_count_map[jurisdiction][exemption.citation] = exemption.single_item_claim_count
+                self.married_item_claim_count_map[jurisdiction][exemption.citation] = exemption.married_item_claim_count
+                self.single_item_claim_amount_map[jurisdiction][exemption.citation] = exemption.single_limit / exemption.single_item_claim_count if exemption.single_item_claim_count else None
+                self.married_item_claim_amount_map[jurisdiction][exemption.citation] = exemption.married_limit / exemption.married_item_claim_count if exemption.married_item_claim_count else None
                 self.single_unused_relationship_map[jurisdiction][exemption.citation] = (exemption.unused_relationship, exemption.unused_single_limit)
                 self.married_unused_relationship_map[jurisdiction][exemption.citation] = (exemption.unused_relationship, exemption.unused_married_limit)
-                self.per_item_limit_map[jurisdiction][exemption.citation] = exemption.per_item_limit
 
     def citations_for_jurisdictions(self, jurisdictions: List[Jurisdiction]):
         citations = []
@@ -103,20 +133,20 @@ class Solver:
         return citations
     
     def init_solution(self, case: Case, jurisdiction: Jurisdiction):
-        exemption_map = self.married_exemption_map if case.has_married_couple() else self.single_exemption_map
-        unclaimed_exemptions = exemption_map[jurisdiction]
-        claim_count_map = self.married_max_claim_count_map if case.has_married_couple() else self.single_max_claim_count_map
-        remaining_claim_counts = claim_count_map[jurisdiction]
+        exemptions = self.exemption_map[jurisdiction]
+        unclaimed_exemptions = self.married_exemption_map[jurisdiction] if case.has_married_couple() else self.single_exemption_map[jurisdiction]
+        remaining_item_claim_counts = self.married_item_claim_count_map[jurisdiction] if case.has_married_couple() else self.single_item_claim_count_map[jurisdiction]
+        item_claim_amounts = self.married_item_claim_amount_map[jurisdiction] if case.has_married_couple() else self.single_item_claim_amount_map[jurisdiction]
         unused_relationship_map = self.married_unused_relationship_map if case.has_married_couple() else self.single_unused_relationship_map
         remaining_unused_relationships = unused_relationship_map[jurisdiction]
-        per_item_limits = self.per_item_limit_map[jurisdiction]
-        return Solution(unclaimed_exemptions, {}, {}, remaining_claim_counts, remaining_unused_relationships, per_item_limits)
+        return Solution(exemptions, unclaimed_exemptions, {}, {}, remaining_item_claim_counts, item_claim_amounts, remaining_unused_relationships, [])
     
     def solve_case_for_jurisdiction(self, case: Case, jurisdiction: Jurisdiction):
         solution = self.init_solution(case, jurisdiction)
         assets = deepcopy(case.assets)
+        jurisdiction_citations = self.citations_for_jurisdictions([jurisdiction])
         for asset in assets:
-            asset.applicable_exemptions = [citation for citation in asset.applicable_exemptions if citation in self.citations_for_jurisdictions([jurisdiction])]
+            asset.applicable_exemptions = [citation for citation in asset.applicable_exemptions if citation in jurisdiction_citations]
         # Sort assets such that those with fewer applicable exemptions are exempted first.
         assets = sorted(assets, key=lambda asset: len(asset.applicable_exemptions))
         return self.recursive_optimal_exemption_search(assets, solution)
@@ -125,30 +155,47 @@ class Solver:
     def recursive_optimal_exemption_search(self, assets: List[Asset], solution: Solution, optimal: Solution = None):
         if not assets:
             return solution if optimal is None else min(solution, optimal)
-        new_solution = deepcopy(solution)
         asset = assets[0]
         if not asset.applicable_exemptions: # No applicable exemptions remain
+            new_solution = deepcopy(solution)
             new_solution.non_exempt_assets[asset.description] = asset.dollar_value
             # If current solution already has a greater total value of non-exempt assets, prune this branch
             if optimal and (new_solution >= optimal):
                 return optimal
             return self.recursive_optimal_exemption_search(assets[1:], new_solution, optimal)
         
+        # Need to check every permutation of exemption application, including claiming no exemptions for the current asset
         new_optimal = optimal
         for citation in asset.applicable_exemptions:
+            new_solution = deepcopy(solution)
             allocated_amount = new_solution.allocate_claim_amount(citation, asset.dollar_value)
             if allocated_amount > 0:
                 new_solution.claim_exemption(citation, asset.description, allocated_amount)
             if allocated_amount == asset.dollar_value: # Asset is completely exempt
                 new_solution = self.recursive_optimal_exemption_search(assets[1:], new_solution, new_optimal)
             else: # Asset is not completely protected under current exemption
-                assets_copy = deepcopy(assets)
+                assets_copy = assets[:]
+                assets_copy[0] = deepcopy(assets[0])
                 asset = assets_copy[0]
-                asset.applicable_exemptions.remove(citation)
-                new_solution = self.recursive_optimal_exemption_search(assets_copy, new_solution, new_optimal)
-            new_optimal = new_solution if new_optimal is None else min(new_solution, new_optimal)
-            return new_optimal
-        
+                asset.dollar_value -= allocated_amount
+                if new_solution.item_claim_exists(citation):
+                    # We've just used an item claim, but additional item claims still exist for this exemption.
+                    # Leave the citation in the applicable exemptions, so we may check the solution where additional item claims are used on this asset.
+                    new_solution = self.recursive_optimal_exemption_search(assets_copy, new_solution, new_optimal)
+                else:
+                    asset.applicable_exemptions.remove(citation)
+                    new_solution = self.recursive_optimal_exemption_search(assets_copy, new_solution, new_optimal)
+                    new_optimal = new_solution if new_optimal is None else min(new_solution, new_optimal)
+
+        # Check solution where we claim no exemptions for this asset
+        assets_copy = assets[:]
+        assets_copy[0] = deepcopy(assets[0])
+        assets_copy[0].applicable_exemptions = []
+        new_solution = deepcopy(solution)
+        new_solution = self.recursive_optimal_exemption_search(assets_copy, new_solution, new_optimal)
+        new_optimal = new_solution if new_optimal is None else min(new_solution, new_optimal)
+        return new_optimal
+    
     # Solve TaskID.ASSET_EXEMPTION_CLASSIFICATION
     def solve_asset_exemption_classification(self, case: Case, allowable_jurisdictions: List[Jurisdiction]):
         solution = {}
@@ -181,6 +228,10 @@ class Solver:
         for jurisdiction in allowable_jurisdictions:
             jurisdiction_solution = self.solve_case_for_jurisdiction(case, jurisdiction)
             solution[jurisdiction.display_name()] = jurisdiction_solution.total_non_exempt_value()
+            print(jurisdiction)
+            print(jurisdiction_solution.claimed_exemptions)
+            print(jurisdiction_solution.non_exempt_assets)
+            print(jurisdiction_solution.total_non_exempt_value())
         return solution
     
     # Solve TaskID.OPTIMAL_EXEMPTIONS

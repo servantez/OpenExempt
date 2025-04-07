@@ -22,8 +22,8 @@
             "description": "The debtor's interest, not to exceed $4,450 in value, in one motor vehicle.",
             "single_limit": 4450,
             "married_limit": 8900,
-            "single_max_claim_count": 1,
-            "married_max_claim_count": 2
+            "single_item_claim_count": 1,
+            "married_item_claim_count": 2
         },
         {
             "citation": "11 U.S.C. § 522(d)(3)",
