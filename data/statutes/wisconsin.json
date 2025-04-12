@@ -42,9 +42,9 @@
             "description": "Motor vehicles. Motor vehicles not to exceed $4,000 in aggregate value. Any unused amount of the aggregate value from par. (d) may be added to this exemption to increase the aggregate exempt value of motor vehicles under this paragraph.",
             "single_limit": 4000,
             "married_limit": 8000,
-            "unused_relationship": "Wis. Stat. § 815.18(3)(d)",
-            "unused_single_limit": 12000,
-            "unused_married_limit": 24000
+            "fallback_relationship": "Wis. Stat. § 815.18(3)(d)",
+            "single_fallback_limit": 12000,
+            "married_fallback_limit": 24000
         },
         {
             "citation": "Wis. Stat. § 815.18(3)(k)",

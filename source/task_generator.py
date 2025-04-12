@@ -26,6 +26,7 @@ class TaskGenerator:
         self.inflect_engine = inflect.engine()
         self.template_manager = TemplateManager(config)
         self.instructions = self.read_json_file_in_data_directory('instructions.json')
+        self.snippets = self.read_json_file_in_data_directory('snippets.json')
         self.city_sampler = self.create_city_sampler()
         self.statute_set_map = self.load_statute_set_map()
         self.solver = Solver(self.statute_set_map)
@@ -129,7 +130,7 @@ class TaskGenerator:
         return hydrated
     
     def create_preamble(self, debtor: Party, joint_debtor: Party, petition_date: datetime):
-        preamble_template = self.instructions['preamble']
+        preamble_template = self.snippets['preamble']
         full_party_names = debtor.full_name() if not joint_debtor else f'{debtor.first_name} and {joint_debtor.full_name()}'
         preamble = preamble_template.replace('{party}', full_party_names)
         coreference = 'the Debtors' if joint_debtor else 'the Debtor'
@@ -172,6 +173,37 @@ class TaskGenerator:
             asset_facts.append(hydrated)
         return asset_facts
     
+    def create_solved_reasoning_steps(self, solution: Solution, case: Case, allowable_jurisdictions: List[Jurisdiction]):
+        solved_steps = 'Solved Reasoning Steps:\n' + self.instructions['solved_steps'] + '\n\n'
+        match TaskID(self.config.start_task_id):
+            case TaskID.GOVERNING_JURISDICTIONS: # No solved reasoning steps
+                return None
+            case TaskID.ASSET_EXEMPTION_CLASSIFICATION:
+                jurisdiction_names = ' and '.join(map(lambda jurisdiction: jurisdiction.display_name(), allowable_jurisdictions))
+                solved_steps += f'The {case.party_coreference()} may claim property exemptions under {jurisdiction_names} statutes.'
+            case TaskID.ASSET_EXEMPTION_DOLLAR_VALUE:
+                solved_steps += self.snippets[str(self.config.start_task_id) + '_solved_steps']
+                for asset_description, citations in solution.items():
+                    if not citations:
+                        solved_steps += f'\nThere are no applicable exemptions for the {asset_description}.'
+                    else:
+                        solved_steps += f'\nThe {asset_description} may be exempted under {self.inflect_engine.join(citations)}'
+            case TaskID.NON_EXEMPT_ASSETS:
+                solved_steps += self.snippets[str(self.config.start_task_id) + '_solved_steps']
+                for asset_description, exemption_dicts in solution.items():
+                    if not exemption_dicts:
+                        solved_steps += f'\nThere are no applicable exemptions for the {asset_description}.'
+                    else:
+                        citations_with_values = list(map(lambda exemption_dict: f'{exemption_dict["citation"]} ({exemption_dict["claim_value"]})', exemption_dicts))
+                        solved_steps += f'\nThe {asset_description} may be exempted under {self.inflect_engine.join(citations_with_values)}'
+            case TaskID.OPTIMAL_EXEMPTIONS:
+                solved_steps += self.snippets[str(self.config.start_task_id) + '_solved_steps']
+                for jurisdiction, non_exempt_dollar_amount in solution.items():
+                    solved_steps += f'\nUnder {jurisdiction} exemptions, the minimal total dollar value of non-exempt assets is ${non_exempt_dollar_amount:,}.'
+            case _:
+                raise ValueError(f'Encountered unsupported task ID: {self.config.start_task_id}')
+        return solved_steps
+    
     def solve_case(self, case: Case, allowable_jurisdictions: List[Jurisdiction]):
         match TaskID(self.config.terminal_task_id):
             case TaskID.GOVERNING_JURISDICTIONS:
@@ -195,27 +227,25 @@ class TaskGenerator:
         state_statute_set = self.statute_set_map[case.state_jurisdiction]
         allowable_jurisdictions = state_statute_set.allowable_exemption_jurisdictions()
 
-        context = 'Facts:\n' + self.create_preamble(case.debtor, case.joint_debtor, case.petition_date)
+        facts = 'Facts:\n' + self.create_preamble(case.debtor, case.joint_debtor, case.petition_date)
         if self.config.start_task_id == 1:
             domicile_facts = self.create_domicile_facts(case, name_variant_sampler)
-            context += ' ' + ' '.join(domicile_facts)
-        else:
-            jurisdiction_names = ' and '.join(map(lambda jurisdiction: jurisdiction.display_name(), allowable_jurisdictions))
-            context += f' The {case.party_coreference()} may claim property exemptions under {jurisdiction_names} statutes.'
-
+            facts += ' ' + ' '.join(domicile_facts)
         if self.config.terminal_task_id > 1:
             asset_facts = self.create_asset_facts(case, name_variant_sampler)
-            context += ' ' + ' '.join(asset_facts)
+            facts += ' ' + ' '.join(asset_facts)
 
         statute_set_content = [statute_set.display_content() for statute_set in self.statute_set_map.values()]
-        context += '\n\nStatutes:\n' + '\n\n'.join(statute_set_content)
-
+        statutes = 'Statutes:\n' + '\n\n'.join(statute_set_content)
         solution = self.solve_case(case, allowable_jurisdictions)
+        solved_steps = self.create_solved_reasoning_steps(solution, case, allowable_jurisdictions)
         return TaskDataset.create_task(self.config.start_task_id,
                                        self.config.terminal_task_id,
                                        case.state_jurisdiction.value,
                                        instruction,
                                        meta_instruction,
                                        response_format,
-                                       context,
+                                       facts,
+                                       solved_steps,
+                                       statutes,
                                        solution)

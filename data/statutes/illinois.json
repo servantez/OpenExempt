@@ -14,9 +14,9 @@
             "description": "Sec. 12-906. Proceeds of sale. When a homestead is conveyed by the owner thereof, such conveyance shall not subject the premises to any lien or incumbrance to which it would not be subject in the possession of such owner; and the proceeds thereof, to the extent of the amount of $15,000, shall be exempt from judgment or other process, for one year after the receipt thereof, by the person entitled to the exemption, and if reinvested in a homestead the same shall be entitled to the same exemption as the original homestead.",
             "single_limit": 0,
             "married_limit": 0,
-            "unused_relationship": "735 ILCS 5/12-901",
-            "unused_single_limit": 15000,
-            "unused_married_limit": 30000
+            "fallback_relationship": "735 ILCS 5/12-901",
+            "single_fallback_limit": 15000,
+            "married_fallback_limit": 30000
         },
         {
             "citation": "735 ILCS 5/12-1001",

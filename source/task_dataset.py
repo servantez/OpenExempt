@@ -17,7 +17,9 @@ class Task:
     instruction: str
     meta_instruction: str
     response_format: str
-    context: str
+    facts: str
+    solved_steps: str
+    statutes: str
     solution: str | Dict
     
     def to_dict(self):
@@ -31,10 +33,15 @@ class Task:
         return json.dumps(serialized)
     
     def is_valid(self):
-        return all(value is not None for value in self.to_dict().values())
+        task_dict = self.to_dict()
+        del task_dict['solved_steps'] # Solved steps can be empty
+        return all(value is not None for value in task_dict.values())
+    
+    def prompt_inputs(self):
+        return [self.instruction, self.meta_instruction, self.response_format, self.facts, self.solved_steps, self.statutes]
     
     def prompt(self):
-        return '\n\n'.join([self.instruction, self.meta_instruction, self.response_format, self.context])
+        return '\n\n'.join(filter(None, self.prompt_inputs()))
 
 
 class TaskDataset:
@@ -46,7 +53,9 @@ class TaskDataset:
                     instruction: str,
                     meta_instruction: str, 
                     response_format: str,  
-                    context: str, 
+                    facts: str,
+                    solved_steps: str,
+                    statutes: str, 
                     solution: str):
         
         task = Task(TaskID(start_task_id),
@@ -55,7 +64,9 @@ class TaskDataset:
                     instruction,
                     meta_instruction,
                     response_format,
-                    context,
+                    facts,
+                    solved_steps,
+                    statutes,
                     solution)
         
         if not task.is_valid():

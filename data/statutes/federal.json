@@ -43,9 +43,9 @@
             "description": "The debtor's aggregate interest in any property, not to exceed in value $1,475 plus up to $13,950 of any unused amount of the exemption provided under paragraph (1) of this subsection.",
             "single_limit": 1475,
             "married_limit": 2950,
-            "unused_relationship": "11 U.S.C. § 522(d)(1)",
-            "unused_single_limit": 13950,
-            "unused_married_limit": 27900
+            "fallback_relationship": "11 U.S.C. § 522(d)(1)",
+            "single_fallback_limit": 13950,
+            "married_fallback_limit": 27900
         },
         {
             "citation": "11 U.S.C. § 522(d)(6)",

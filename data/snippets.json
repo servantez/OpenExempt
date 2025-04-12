@@ -1,0 +1,6 @@
+{
+    "preamble": "{party} (hereinafter {coreference}) filed for bankruptcy on {petition_date}.",
+    "3_solved_steps": "All applicable exemptions have been identified below for each asset in the estate.",
+    "4_solved_steps": "All applicable exemptions have been identified below for each asset in the estate, along with the dollar amount that may be claimed under each exemption. The provided dollar amounts do not account for aggregate limits across multiple assets.",
+    "5_solved_steps": "The minimal total dollar value of non-exempt assets, after applying all applicable exemptions, has been provided below for each jurisdiction where the Debtor(s) may claim property exemptions."
+}

@@ -17,7 +17,7 @@ class Solution:
     non_exempt_assets: Dict[str, float] # {asset description: value}
     remaining_item_claim_counts: Dict[str, int] # {citation: remaining count}
     item_claim_amounts: Dict[str, float] # {citation: claim amount per item}
-    remaining_unused_relationships: Dict[str, Tuple[str, float]] # {to citation: (from citation, remaining balance)}
+    remaining_fallback_relationships: Dict[str, Tuple[str, float]] # {to citation: (from citation, remaining balance)}
     excluded_exemptions: List[str] # List of exemption citations where a mutual exclusion relationship has been triggered
 
     def __lt__(self, other):
@@ -45,14 +45,14 @@ class Solution:
         max_claim_amount = claim_amount if per_item_limit is None else min(per_item_limit, claim_amount)
         amount_claimed = self._process_claim(citation, max_claim_amount)
         if amount_claimed < max_claim_amount:
-            # Exemption has been exhausted, check for any unused relationships
-            from_citation, balance = self.remaining_unused_relationships[citation]
+            # Exemption has been exhausted, check for any fallback relationships
+            from_citation, balance = self.remaining_fallback_relationships[citation]
             if from_citation is not None:
                 remaining_claim_amount = min(balance, max_claim_amount - amount_claimed)
-                unused_relationship_amount = self._process_claim(from_citation, remaining_claim_amount)
-                if unused_relationship_amount > 0:
-                    self.remaining_unused_relationships[citation] = (from_citation, balance - unused_relationship_amount)
-                    amount_claimed += unused_relationship_amount
+                fallback_relationship_amount = self._process_claim(from_citation, remaining_claim_amount)
+                if fallback_relationship_amount > 0:
+                    self.remaining_fallback_relationships[citation] = (from_citation, balance - fallback_relationship_amount)
+                    amount_claimed += fallback_relationship_amount
         return amount_claimed
 
     # Internal method: should only be called by solution instance during claim allocation
@@ -102,8 +102,8 @@ class Solver:
         self.married_item_claim_count_map = {}
         self.single_item_claim_amount_map = {}
         self.married_item_claim_amount_map = {}
-        self.single_unused_relationship_map = {}
-        self.married_unused_relationship_map = {}
+        self.single_fallback_relationship_map = {}
+        self.married_fallback_relationship_map = {}
         for jurisdiction, statute_set in statute_set_map.items():
             self.exemption_map[jurisdiction] = {}
             self.single_exemption_map[jurisdiction] = {}
@@ -112,8 +112,8 @@ class Solver:
             self.married_item_claim_count_map[jurisdiction] = {}
             self.single_item_claim_amount_map[jurisdiction] = {}
             self.married_item_claim_amount_map[jurisdiction] = {}
-            self.single_unused_relationship_map[jurisdiction] = {}
-            self.married_unused_relationship_map[jurisdiction] = {}
+            self.single_fallback_relationship_map[jurisdiction] = {}
+            self.married_fallback_relationship_map[jurisdiction] = {}
             for exemption in statute_set.exemptions():
                 self.exemption_map[jurisdiction][exemption.citation] = exemption
                 self.single_exemption_map[jurisdiction][exemption.citation] = exemption.single_limit
@@ -122,8 +122,8 @@ class Solver:
                 self.married_item_claim_count_map[jurisdiction][exemption.citation] = exemption.married_item_claim_count
                 self.single_item_claim_amount_map[jurisdiction][exemption.citation] = exemption.single_limit / exemption.single_item_claim_count if exemption.single_item_claim_count else None
                 self.married_item_claim_amount_map[jurisdiction][exemption.citation] = exemption.married_limit / exemption.married_item_claim_count if exemption.married_item_claim_count else None
-                self.single_unused_relationship_map[jurisdiction][exemption.citation] = (exemption.unused_relationship, exemption.unused_single_limit)
-                self.married_unused_relationship_map[jurisdiction][exemption.citation] = (exemption.unused_relationship, exemption.unused_married_limit)
+                self.single_fallback_relationship_map[jurisdiction][exemption.citation] = (exemption.fallback_relationship, exemption.single_fallback_limit)
+                self.married_fallback_relationship_map[jurisdiction][exemption.citation] = (exemption.fallback_relationship, exemption.married_fallback_limit)
 
     def citations_for_jurisdictions(self, jurisdictions: List[Jurisdiction]):
         citations = []
@@ -137,9 +137,8 @@ class Solver:
         unclaimed_exemptions = self.married_exemption_map[jurisdiction] if case.has_married_couple() else self.single_exemption_map[jurisdiction]
         remaining_item_claim_counts = self.married_item_claim_count_map[jurisdiction] if case.has_married_couple() else self.single_item_claim_count_map[jurisdiction]
         item_claim_amounts = self.married_item_claim_amount_map[jurisdiction] if case.has_married_couple() else self.single_item_claim_amount_map[jurisdiction]
-        unused_relationship_map = self.married_unused_relationship_map if case.has_married_couple() else self.single_unused_relationship_map
-        remaining_unused_relationships = unused_relationship_map[jurisdiction]
-        return Solution(exemptions, unclaimed_exemptions, {}, {}, remaining_item_claim_counts, item_claim_amounts, remaining_unused_relationships, [])
+        remaining_fallback_relationships = self.married_fallback_relationship_map[jurisdiction] if case.has_married_couple() else self.single_fallback_relationship_map[jurisdiction]
+        return Solution(exemptions, unclaimed_exemptions, {}, {}, remaining_item_claim_counts, item_claim_amounts, remaining_fallback_relationships, [])
     
     def solve_case_for_jurisdiction(self, case: Case, jurisdiction: Jurisdiction):
         solution = self.init_solution(case, jurisdiction)
