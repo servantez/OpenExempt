@@ -33,7 +33,7 @@ class Task:
         return json.dumps(serialized)
     
     def is_valid(self):
-        task_dict = self.to_dict()
+        task_dict = self.to_dict().copy()
         del task_dict['solved_steps'] # Solved steps can be empty
         return all(value is not None for value in task_dict.values())
     

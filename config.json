@@ -5,13 +5,13 @@
     "template_directory": "data/templates",
     "task_directory": "data/tasks",
     "start_task_id": 1,
-    "terminal_task_id": 4,
+    "terminal_task_id": 5,
     "dataset_size": 20,
     "asset_count_min": 3,
     "asset_count_max": 3,
     "asset_selection": "random",
     "married_percentage": 0.0,
     "domicile_count_min": 1,
-    "domicile_count_max": 3,
+    "domicile_count_max": 5,
     "state_jurisdictions": ["WISCONSIN", "ILLINOIS"]
 }
