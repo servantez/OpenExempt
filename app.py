@@ -90,7 +90,7 @@ with gr.Blocks(css=".gray-bg {background-color: #e5e5e5 !important;}") as demo:
             
     obfuscation_facts = gr.CheckboxGroup(choices=["Irrelevant Facts", "Opinions"], value=[], label="Obfuscation Facts", info="Not yet supported")
 
-    gr.Markdown("Build notes: this demo is still in alpha so please report any issues observed. \nKnown issues:\n Changes to the start task does not display all prior knowledge.")
+    gr.Markdown("Build notes: this demo is still in alpha so please report any issues observed. \nKnown issues:\n None.")
     
     submit_btn = gr.Button("Generate Task", variant="primary")
     
