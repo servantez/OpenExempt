@@ -3,57 +3,64 @@
         "The {asset} currently owned by {party} carries a value of {value}.",
         "{party} can provide evidence confirming their ownership of a {asset} valued at {value}.",
         "The {asset} belonging to {party} has an appraisal value of {value}.",
-        "Evidence supports {party}'s ownership of a {asset} worth {value}.",
         "A {asset} valued at {value} is under the ownership of {party}.",
-        "A {asset} appraised at {value} is in the possession of {party}.",
+        "A {asset} appraised at {value} is the property of {party}.",
         "Ownership of the {asset}, priced at {value}, is claimed by {party}.",
         "A valuation of {value} has been assigned to the {asset} owned by {party}.",
         "The {asset}, owned by {party}, holds a monetary value of {value}.",
-        "The current fair market value of {party}'s {asset} stands at {value}.",
-        "The value of the {asset} owned by {party} has been calculated to be {value}."
+        "The value of the {asset} owned by {party} has been calculated to be {value}.",
+        "A disclosure of assets by {party} reports a {asset} with a current value of {value}"
     ],
     "one_asset_single": [
         "{party} owns a {asset} worth {value}.",
         "{party} asserts ownership of a {asset} with a market value of {value}.",
-        "Legal documents confirm that {party} owns a {asset} estimated at {value}.",
+        "Legal documents confirm that {party} owns a {asset} appraised at {value}.",
         "Records show that {party} possesses a {asset} with a value of {value}.",
-        "{party} is the rightful owner of a {asset} valued at {value}"
+        "{party} is the rightful owner of a {asset} valued at {value}",
+        "Evidence supports {party}'s ownership of a {asset} worth {value}.",
+        "The current fair market value of {party}'s {asset} stands at {value}."
     ],
     "one_asset_couple": [
         "{party} own a {asset} worth {value}.",
         "{party} assert ownership of a {asset} with a market value of {value}.",
-        "Legal documents confirm that {party} own a {asset} estimated at {value}.",
+        "Legal documents confirm that {party} own a {asset} appraised at {value}.",
         "Records show that {party} possess a {asset} with a value of {value}.",
         "{party} are the rightful owners of a {asset} valued at {value}"
     ],
     "two_assets": [
-        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
-        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
-        "Two assets: {party}, {asset}/{value}, {asset}/{value}"
+        "A {asset} worth {value} and a {asset} appraised at {value} are both owned by {party}.",
+        "The estate of {party} includes a {asset} worth {value} and a {asset} valued at {value}.",
+        "Both a {asset} worth {value} and a {asset} with a value of {value} belong to {party}.",
+        "Among the property of {party} are a {asset} worth {value}, and a {asset} with a market value of {value}.",
+        "The known assets of {party} include a {asset} worth {value} and a {asset} appraised at {value}."
     ],
     "two_assets_single": [
-        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
-        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
-        "Two assets: {party}, {asset}/{value}, {asset}/{value}"
+        "{party} currently owns a {asset} valued at {value}, as well as a {asset} worth {value}.",
+        "Evidence confirms that {party} owns a {asset} valued at {value}, as well as a {asset} with a fair market value of {value}.",
+        "{party} is the owner of both a {asset} valued at {value} and a {asset} with a value of {value}.",
+        "Records show that {party} owns a {asset} worth {value} and a {asset} appraised at {value}.",
+        "{party} has a {asset} assessed at {value}, in addition to a {asset} valued at {value}."
     ],
     "two_assets_couple": [
-        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
-        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
-        "Two assets: {party}, {asset}/{value}, {asset}/{value}"
+        "{party} currently own a {asset} valued at {value}, as well as a {asset} worth {value}.",
+        "Evidence confirms that {party} own a {asset} valued at {value}, as well as a {asset} with a fair market value of {value}.",
+        "{party} are the owners of both a {asset} valued at {value} and a {asset} with a value of {value}.",
+        "Records show that {party} own a {asset} worth {value} and a {asset} appraised at {value}.",
+        "{party} have a {asset} assessed at {value}, in addition to a {asset} valued at {value}."
     ],
     "three_assets": [
-        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
-        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
-        "Two assets: {party}, {asset}/{value}, {asset}/{value}"
+        "The property of {party} includes a {asset} appraised at {value}, a {asset} valued at {value}, and a {asset} with a fair market value of {value}.",
+        "A {asset} worth {value}, a {asset} valued at {value}, and a {asset} with an appraisal value of {value} are all owned by {party}.",
+        "The estate of {party} includes the following property: {asset} ({value}), {asset} ({value}), and {asset} ({value})."
     ],
     "three_assets_single": [
-        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
-        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
-        "Two assets: {party}, {asset}/{value}, {asset}/{value}"
+        "{party} owns a {asset} worth {value}, a {asset} valued at {value}, and a {asset} appraised at {value}.",
+        "Records prove that {party} owns a {asset} ({value}), a {asset} ({value}), and a {asset} ({value}).",
+        "{party} has disclosed ownership of assets, including a {asset} ({value}), a {asset} ({value}), and a {asset} ({value})."
     ],
     "three_assets_couple": [
-        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
-        "Two assets: {party}, {asset}/{value}, {asset}/{value}",
-        "Two assets: {party}, {asset}/{value}, {asset}/{value}"
+        "{party} owns a {asset} worth {value}, a {asset} valued at {value}, and a {asset} appraised at {value}.",
+        "Records prove that {party} owns a {asset} ({value}), a {asset} ({value}), and a {asset} ({value}).",
+        "{party} has disclosed ownership of assets, including a {asset} ({value}), a {asset} ({value}), and a {asset} ({value})."
     ]
 }

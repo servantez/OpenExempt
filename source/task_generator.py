@@ -147,7 +147,7 @@ class TaskGenerator:
         domicile_facts = []
         remaining_domicile_count = case.domicile_count()
         while remaining_domicile_count > 0:
-            sample, remaining_domicile_count = self.sample_and_exhaust(remaining_domicile_count, 2, [0.67, 0.33]) # One location template 50 percent more likely
+            sample, remaining_domicile_count = self.sample_and_exhaust(remaining_domicile_count, 2, [0.67, 0.33]) # One location template twice as likely
             hydrated = self.template_manager.sample_domicile_template(domicile_template_sampler_map, sample)
             for index in range(sample):
                 name_variant = next(name_variant_sampler) if index == 0 else None
@@ -164,7 +164,7 @@ class TaskGenerator:
         asset_facts = []
         remaining_asset_count = case.asset_count()
         while remaining_asset_count > 0:
-            sample, remaining_asset_count = self.sample_and_exhaust(remaining_asset_count, 1) # One location template 50 percent more likely
+            sample, remaining_asset_count = self.sample_and_exhaust(remaining_asset_count, 3, [0.65, 0.25, 0.1]) # Probability of one, two or three asset template, respectively
             hydrated = self.template_manager.sample_asset_template(asset_template_sampler_map, case.has_married_couple(), sample)
             for index in range(sample):
                 name_variant = next(name_variant_sampler) if index == 0 else None
