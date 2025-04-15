@@ -9,14 +9,14 @@
         "A valuation of {value} has been assigned to the {asset} owned by {party}.",
         "The {asset}, owned by {party}, holds a monetary value of {value}.",
         "The value of the {asset} owned by {party} has been calculated to be {value}.",
-        "A disclosure of assets by {party} reports a {asset} with a current value of {value}"
+        "A disclosure of assets by {party} reports a {asset} with a current value of {value}."
     ],
     "one_asset_single": [
         "{party} owns a {asset} worth {value}.",
         "{party} asserts ownership of a {asset} with a market value of {value}.",
         "Legal documents confirm that {party} owns a {asset} appraised at {value}.",
         "Records show that {party} possesses a {asset} with a value of {value}.",
-        "{party} is the rightful owner of a {asset} valued at {value}",
+        "{party} is the rightful owner of a {asset} valued at {value}.",
         "Evidence supports {party}'s ownership of a {asset} worth {value}.",
         "The current fair market value of {party}'s {asset} stands at {value}."
     ],
@@ -25,7 +25,7 @@
         "{party} assert ownership of a {asset} with a market value of {value}.",
         "Legal documents confirm that {party} own a {asset} appraised at {value}.",
         "Records show that {party} possess a {asset} with a value of {value}.",
-        "{party} are the rightful owners of a {asset} valued at {value}"
+        "{party} are the rightful owners of a {asset} valued at {value}."
     ],
     "two_assets": [
         "A {asset} worth {value} and a {asset} appraised at {value} are both owned by {party}.",
