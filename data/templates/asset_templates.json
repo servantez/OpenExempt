@@ -1,10 +1,10 @@
 {
     "one_asset": [
+        "A {asset} appraised at {value} is the property of {party}.",
         "The {asset} currently owned by {party} carries a value of {value}.",
         "{party} can provide evidence confirming their ownership of a {asset} valued at {value}.",
         "The {asset} belonging to {party} has an appraisal value of {value}.",
         "A {asset} valued at {value} is under the ownership of {party}.",
-        "A {asset} appraised at {value} is the property of {party}.",
         "Ownership of the {asset}, priced at {value}, is claimed by {party}.",
         "A valuation of {value} has been assigned to the {asset} owned by {party}.",
         "The {asset}, owned by {party}, holds a monetary value of {value}.",

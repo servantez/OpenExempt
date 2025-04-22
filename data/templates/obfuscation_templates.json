@@ -1,0 +1,54 @@
+{
+    "irrelevant_facts": {
+        "asset": [
+            "A luxury white gold wristwatch worth approximately $4,500, owned by {party}'s brother, is often stored in the Debtor's nightstand.",
+            "{party} regularly drives their father's 2012 Burgundy Toyota Camry LE, valued at $6,000, to commute to work.",
+            "{party}'s employer provides a company owned laptop (MacBook Pro 16-inch) with a market value of $1,425, currently used by the Debtor for remote classes.",
+            "A leased 2019 Subaru Outback worth $16,700, titled in the name of {party}'s employer, is currently parked in the Debtor's driveway.",
+            "{party} frequently wears a family heirloom necklace, currently owned by their grandmother and insured for $7,400.",
+            "The Debtor's mother keeps a personal savings account with a balance of $2,360 at the same bank used by {party}.",
+            "An antique Steinway piano appraised at $2,215 is located in {party}'s home and belongs to a neighbor who stores it there during renovations.",
+            "{party} is storing several mahogany chairs, with a total value of $820, in their basement as a favor to the owner, a close friend traveling abroad.",
+            "A Trek FX bicycle belonging to a cousin, valued at $495, is regularly used by {party} in the summer.",
+            "On weekends, {party} frequently uses a professional Canon EOS camera worth $3,300, which is property of their employer."
+        ],
+        "domicile": [
+            "Two weeks after this date, {party} traveled to {jurisdiction} for a weekend vacation.",
+            "{party} attended a four day training seminar later that month held in {jurisdiction}.",
+            "The following summer, {party} took an extended road trip through {jurisdiction} and neighboring states.",
+            "{party} rented a cabin that winter in {jurisdiction} for a one-week holiday retreat.",
+            "During this time, {party} temporarily visited {jurisdiction} to assist a relative recovering from surgery.",
+            "In the months that followed, {party} traveled frequently to {jurisdiction} for business, staying in corporate lodging.",
+            "Around this time, {party} departed for a five-day international business trip, with a layover in {jurisdiction}.",
+            "{party} participated in a 48 hour wilderness retreat shortly thereafter held in rural {jurisdiction}.",
+            "The following weekend, {party} attended a workshop series hosted in {jurisdiction}.",
+            "{party} travelled to {jurisdiction} the next day to participate in a two and a half day spiritual retreat."
+        ]
+    },
+    "opinions": {
+        "asset": [
+            "{party} asserts that keeping this asset is essential to maintaining their current standard of living.",
+            "{party} feels this asset has deep sentimental value and should not be considered property of the estate.",
+            "{party} argues that losing this asset would cause unnecessary hardship.",
+            "{party} describes this asset as irreplaceable, and thus believes it should be fully protected.",
+            "{party} believes that seizing this property would be unfair given it supports their well-being.",
+            "{party} claims this asset should be fully exempt due to its personal significance.",
+            "{party} insists this asset should not be treated as part of the bankruptcy estate because it was a gift.",
+            "{party} claims that the loss of this asset would be a personal injustice.",
+            "{party} argues that seizing this asset would significantly reduce their ability to earn an income.",
+            "{party} believes this asset should remain untouched by the bankruptcy proceedings because it has spiritual importance."
+        ],
+        "domicile": [
+            "{party} argues that propery exemptions under {jurisdiction} law should be claimed because the Debtor was born in that state.",
+            "{party} asserts that {jurisdiction} exemptions should apply because they lived there for most of their adult life.",
+            "{party} wishes to use the exemption laws of {jurisdiction}, where their extended family currently resides.",
+            "{party} believes they should use {jurisdiction} exemption statutes because they intend to move back there soon.",
+            "{party} insists they are entitled to claim exemptions under {jurisdiction} law, as they have a driver's license from that state.",
+            "{party} has expressed a strong desire to apply {jurisdiction} exemption statutes, since their employer is headquatered there.",
+            "{party} feels exemptions should be based on {jurisdiction} law because this was the last state where the Debtor voted.",
+            "{party} contends that {jurisdiction} exemption laws are applicable, citing a moral objection to the laws of other states.",
+            "{party} has stated a preference for applying {jurisdiction} exemptions since this is where they spend most holidays.",
+            "{party} believes {jurisdiction} is the most fair jurisdiction regarding property exemptions and therefore prefers to use these laws."
+        ]
+    }
+}

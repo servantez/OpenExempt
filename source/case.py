@@ -25,6 +25,9 @@ class Case:
     def asset_count(self):
         return len(self.assets)
     
+    def parties(self):
+        return [self.debtor, self.joint_debtor] if self.has_married_couple() else [self.debtor]
+    
     def party_coreference(self):
         return 'Debtors' if self.has_married_couple() else 'Debtor'
     

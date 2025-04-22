@@ -14,7 +14,7 @@ The interface allows users to easily choose configuration settings, which are us
 # Load default config
 config = Config("demo")
 
-def process_demo_request(start_task, terminal_task, asset_count_min, asset_count_max, married_percentage, domicile_count_min, domicile_count_max, state_jurisdictions, dataset_size):
+def process_demo_request(start_task, terminal_task, asset_count_min, asset_count_max, married_percentage, domicile_count_min, domicile_count_max, state_jurisdictions, dataset_size, irrelevant_facts, opinions):
     config.start_task_id = TaskID.display_name_to_task_id(start_task).value
     config.terminal_task_id = TaskID.display_name_to_task_id(terminal_task).value
     config.asset_count_min = asset_count_min
@@ -23,6 +23,10 @@ def process_demo_request(start_task, terminal_task, asset_count_min, asset_count
     config.domicile_count_min = domicile_count_min
     config.domicile_count_max = domicile_count_max
     config.state_jurisdictions = state_jurisdictions
+    config.irrelevant_asset_facts = 'Irrelevant Asset Facts' in irrelevant_facts
+    config.irrelevant_domicile_facts = 'Irrelevant Domicile Facts' in irrelevant_facts
+    config.asset_opinions = 'Asset Opinions' in opinions
+    config.domicile_opinions = 'Domicile Opinions' in opinions
 
     case, task = generate_demo(config)
     prompt = task.prompt()
@@ -77,7 +81,6 @@ with gr.Blocks(css=".gray-bg {background-color: #e5e5e5 !important;}") as demo:
     state_jurisdictions = gr.CheckboxGroup(choices=config.state_jurisdictions, value=config.state_jurisdictions, label="Select State Jurisdictions", info="Must select at least one state jurisdiction")
             
     with gr.Row():
-
         with gr.Column():
             married_percentage = gr.Slider(value=config.married_percentage * 100, label="Percentage of married cases", minimum=0, maximum=100, step=10)
             domicile_count_min = gr.Number(value=config.domicile_count_min, label="Minimum Number of Prior Residences", info='(Min: 1, Max: 5)', minimum=1, maximum=5)
@@ -87,8 +90,13 @@ with gr.Blocks(css=".gray-bg {background-color: #e5e5e5 !important;}") as demo:
             asset_count_min = gr.Number(value=config.asset_count_min, label="Minimum Number of Assets", info='(Min: 1, Max: 10)', minimum=1, maximum=10)
             asset_count_max = gr.Number(value=config.asset_count_max, label="Maximum Number of Assets", info='(Must be greater than or equal to Minimum Asset Count, Max: 10)', minimum=1, maximum=10)
             dataset_size = gr.Number(value=1, label="Dataset Size", info='(abridged to one example for demo purposes)', minimum=1)
-            
-    obfuscation_facts = gr.CheckboxGroup(choices=["Irrelevant Facts", "Opinions"], value=[], label="Obfuscation Facts", info="Not yet supported")
+
+    gr.Markdown("**Obfuscation Statements**")
+    with gr.Row():
+        with gr.Column():
+            irrelevant_facts = gr.CheckboxGroup(choices=["Irrelevant Asset Facts", "Irrelevant Domicile Facts"], value=[], label="Obfuscation Facts", info="Add irrelevant facts to test robustness of reasoning")
+        with gr.Column():
+            opinions = gr.CheckboxGroup(choices=["Asset Opinions", "Domicile Opinions"], value=[], label="Opinions", info="Add opinions to test sycophancy")
 
     gr.Markdown("Build notes: this demo is still in alpha so please report any issues observed. \nKnown issues:\n None.")
     
@@ -100,7 +108,7 @@ with gr.Blocks(css=".gray-bg {background-color: #e5e5e5 !important;}") as demo:
     
     submit_btn.click(
         fn=process_demo_request,
-        inputs=[start_task, terminal_task, asset_count_min, asset_count_max, married_percentage, domicile_count_min, domicile_count_max, state_jurisdictions, dataset_size],
+        inputs=[start_task, terminal_task, asset_count_min, asset_count_max, married_percentage, domicile_count_min, domicile_count_max, state_jurisdictions, dataset_size, irrelevant_facts, opinions],
         outputs=[prompt_output, solution_output, case_output]
     )
 

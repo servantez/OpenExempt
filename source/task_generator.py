@@ -28,6 +28,7 @@ class TaskGenerator:
         self.instructions = self.read_json_file_in_data_directory('instructions.json')
         self.snippets = self.read_json_file_in_data_directory('snippets.json')
         self.city_sampler = self.create_city_sampler()
+        self.state_sampler = self.create_state_sampler()
         self.statute_set_map = self.load_statute_set_map()
         self.solver = Solver(self.statute_set_map)
 
@@ -44,12 +45,16 @@ class TaskGenerator:
         
     def create_city_sampler(self):
         city_sampler = {}
-        cities = self.read_json_file_in_data_directory('cities.json')
-        for state, city_list in cities.items():
+        city_dict = self.read_json_file_in_data_directory('cities.json')
+        for state, city_list in city_dict.items():
             if state.upper() in self.config.state_jurisdictions:
                 jurisdiction = Jurisdiction(state.upper())
                 city_sampler[jurisdiction] = infinite_sampler(city_list)
         return city_sampler
+    
+    def create_state_sampler(self):
+        city_dict = self.read_json_file_in_data_directory('cities.json')
+        return infinite_sampler(list(city_dict.keys()))
     
     def create_name_variant_sampler(self, debtor: Party, joint_debtor: Party = None):
         if joint_debtor:
@@ -64,8 +69,16 @@ class TaskGenerator:
                              'the Debtor']
         return infinite_sampler(name_variants)
     
+    def random_party_name_variant(self, case: Case):
+        random_party = random.choice(case.parties())
+        name_variant_sampler = self.create_name_variant_sampler(random_party)
+        return next(name_variant_sampler)
+    
     def sample_city_in_state(self, state: str):
         return next(self.city_sampler[state])
+    
+    def sample_state(self):
+        return next(self.state_sampler)
     
     # Sample a random integer (1 to upper bound) and reduce balance by sample value 
     def sample_and_exhaust(self, balance: int, upper_bound: int, weights: List[int] = None):
@@ -105,6 +118,12 @@ class TaskGenerator:
     # For testing purposes
     def create_dummy_task(self):
         return TaskDataset.create_task(1, 5, 'WISCONSIN', 'instruction', 'meta_instruction', 'response_format', 'context', 'solution')
+    
+    def hydrate_party_name(self, template: str, name_variant: str):
+        name = name_variant
+        if template.startswith('{party}') and name_variant.startswith('the'):
+            name = name[0].upper() + name[1:]
+        return template.replace('{party}', name)
 
     def hydrate_domicile_template(self, template: str, date: datetime, state: Jurisdiction, name_variant: str = None):
         city = self.sample_city_in_state(state)
@@ -113,20 +132,14 @@ class TaskGenerator:
         formatted_date = self.format_date(date, date_format)
         hydrated = hydrated.replace('{date}', formatted_date, 1)
         if name_variant:
-            name = name_variant
-            if hydrated.startswith('{party}') and name_variant.startswith('the'):
-                name = name[0].upper() + name[1:]
-            hydrated = hydrated.replace('{party}', name)
+            hydrated = self.hydrate_party_name(hydrated, name_variant)
         return hydrated
     
     def hydrate_asset_template(self, template: str, asset: Asset, name_variant: str = None):
         hydrated = self.format_asset_description(asset, template)
         hydrated = hydrated.replace('{value}', asset.formatted_dollar_value(), 1)
         if name_variant:
-            name = name_variant
-            if hydrated.startswith('{party}') and name_variant.startswith('the'):
-                name = name[0].upper() + name[1:]
-            hydrated = hydrated.replace('{party}', name)
+            hydrated = self.hydrate_party_name(hydrated, name_variant)
         return hydrated
     
     def create_preamble(self, debtor: Party, joint_debtor: Party, petition_date: datetime):
@@ -139,6 +152,45 @@ class TaskGenerator:
         formatted_date = self.format_date(petition_date, date_format)
         preamble = preamble.replace('{petition_date}', formatted_date)
         return preamble
+    
+    def add_asset_obfuscation(self, case: Case, asset_facts: List[str]):
+        # Check if irrelevant asset facts should be added
+        if self.config.irrelevant_asset_facts:
+            # Sample an irrelevant asset fact and insert it at a random index
+            template = self.template_manager.sample_irrelevant_asset_template()
+            irrelevant_fact = self.hydrate_party_name(template, self.random_party_name_variant(case))
+            random_index = random.randint(0, len(asset_facts))
+            asset_facts.insert(random_index, irrelevant_fact)
+        # Check if asset opinions should be added
+        if self.config.asset_opinions:
+            # Sample an asset opinion and insert it at a random index
+            template = self.template_manager.sample_asset_opinion_template()
+            opinion = self.hydrate_party_name(template, self.random_party_name_variant(case))
+            random_index = random.randint(1, len(asset_facts)) # Opinions should not be at the beginning
+            asset_facts.insert(random_index, opinion)
+        return asset_facts
+
+    def add_domicile_obfuscation(self, case: Case, domicile_facts: List[str]):
+        # Check if irrelevant domicile facts should be added
+        fact_insertion_index = None
+        if self.config.irrelevant_domicile_facts:
+            # Sample an irrelevant domicile fact and insert it at a random index
+            template = self.template_manager.sample_irrelevant_domicile_template()
+            irrelevant_fact = template.replace('{jurisdiction}', self.sample_state())
+            irrelevant_fact = self.hydrate_party_name(irrelevant_fact, self.random_party_name_variant(case))
+            fact_insertion_index = random.randint(1, len(domicile_facts)) # Irrelevant domicile facts should not be at the beginning
+            domicile_facts.insert(fact_insertion_index, irrelevant_fact)
+        # Check if domicile opinions should be added
+        if self.config.domicile_opinions:
+            # Sample a domicile opinion and insert it at a random index
+            template = self.template_manager.sample_domicile_opinion_template()
+            opinion = template.replace('{jurisdiction}', self.sample_state())
+            opinion = self.hydrate_party_name(opinion, self.random_party_name_variant(case))
+            # Ensure opinion is not inserted immediately before an irrelevant fact.
+            valid_insertions = [index for index in range(0, len(domicile_facts) + 1) if index != fact_insertion_index]
+            opinion_insertion_index = random.choice(valid_insertions)
+            domicile_facts.insert(opinion_insertion_index, opinion)
+        return domicile_facts
     
     def create_domicile_facts(self, case: Case, name_variant_sampler: Generator):
         # We shuffle templates for each case to ensure the same template does not appear twice
@@ -155,6 +207,7 @@ class TaskGenerator:
                 state = case.domicile_dates[date]
                 hydrated = self.hydrate_domicile_template(hydrated, date, state, name_variant)
             domicile_facts.append(hydrated)
+        domicile_facts = self.add_domicile_obfuscation(case, domicile_facts)
         return domicile_facts
     
     def create_asset_facts(self, case: Case, name_variant_sampler: Generator):
@@ -171,6 +224,7 @@ class TaskGenerator:
                 asset = next(assets)
                 hydrated = self.hydrate_asset_template(hydrated, asset, name_variant)
             asset_facts.append(hydrated)
+        asset_facts = self.add_asset_obfuscation(case, asset_facts)
         return asset_facts
     
     def create_solved_reasoning_steps(self, case_: Case, allowable_jurisdictions: List[Jurisdiction]):
