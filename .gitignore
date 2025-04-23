@@ -13,5 +13,5 @@ venv/
 .DS_Store
 
 # Datasets
-data/tasks/*
-!data/tasks/.gitkeep
+tasks/*
+!tasks/.gitkeep
