@@ -1,9 +1,9 @@
 {
+    "task_directory": "tasks",
     "data_directory": "data",
     "asset_directory": "data/assets",
     "statute_directory": "data/statutes",
     "template_directory": "data/templates",
-    "task_directory": "data/tasks",
     "start_task_id": 1,
     "terminal_task_id": 5,
     "dataset_size": 20,
