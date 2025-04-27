@@ -1,0 +1,91 @@
+{
+    "jurisdiction": "OREGON",
+    "authority": "Oregon Revised Statutes",
+    "has_opted_out": false,
+    "statutes": [
+        {
+            "citation": "Or. Rev. Stat. § 18.345(1)",
+            "description": "Exempt personal property generally. All property, including franchises, or rights or interest therein, of the judgment debtor, shall be liable to an execution, except as provided in this section. The following property, or rights or interest therein of the judgment debtor, shall be exempt from execution:"
+        },
+        {
+            "citation": "Or. Rev. Stat. § 18.345(1)(a)",
+            "description": "Books, pictures and musical instruments to the value of $600.",
+            "single_limit": 600,
+            "married_limit": 1200
+        },
+        {
+            "citation": "Or. Rev. Stat. § 18.345(1)(b)",
+            "description": "Wearing apparel, jewelry and other personal items to the value of $1,800.",
+            "single_limit": 1800,
+            "married_limit": 3600
+        },
+        {
+            "citation": "Or. Rev. Stat. § 18.345(1)(c)",
+            "description": "The tools, implements, apparatus, team, harness or library, necessary to enable the judgment debtor to carry on the trade, occupation or profession by which the judgment debtor habitually earns a living, to the value of $5,000.",
+            "single_limit": 5000,
+            "married_limit": 10000
+        },
+        {
+            "citation": "Or. Rev. Stat. § 18.345(1)(d)",
+            "description": "A vehicle to the value of $3,000. As used in this paragraph “vehicle” includes an automobile, truck, trailer, truck and trailer or other motor vehicle.",
+            "single_limit": 3000,
+            "married_limit": 6000,
+            "single_item_claim_count": 1,
+            "married_item_claim_count": 2
+        },
+        {
+            "citation": "Or. Rev. Stat. § 18.345(1)(e)",
+            "description": "Domestic animals and poultry kept for family use, to the total value of $1,000 and food sufficient to support such animals and poultry for 60 days.",
+            "single_limit": 1000,
+            "married_limit": 1000
+        },
+        {
+            "citation": "Or. Rev. Stat. § 18.345(1)(f)",
+            "description": "Household goods, furniture, radios, a television set and utensils all to the total value of $3,000, if the judgment debtor holds the property primarily for the personal, family or household use of the judgment debtor; provisions actually provided for family use and necessary for the support of a householder and family for 60 days and also 60 days' supply of fuel.",
+            "single_limit": 3000,
+            "married_limit": 3000
+        },
+        {
+            "citation": "Or. Rev. Stat. § 18.345(1)(h)",
+            "description": "All professionally prescribed health aids for the debtor or a dependent of the debtor.",
+            "single_limit": null,
+            "married_limit": null
+        },
+        {
+            "citation": "Or. Rev. Stat. § 18.345(1)(p)",
+            "description": "The debtor's interest, not to exceed $400 in value, in any personal property.",
+            "single_limit": 400,
+            "married_limit": 400
+        },
+        {
+            "citation": "Or. Rev. Stat. § 18.345(3)",
+            "description": "If two or more members of a household are joint judgment debtors, each judgment debtor shall be entitled to claim the exemptions in subsection (1)(a), (b), (c), (d) and (p) of this section in the same or different properties. The exemptions provided by subsection (1)(a), (b), (c), (d), (j), (k) and (p) of this section, when claimed for jointly owned property, may be combined at the option of the debtors."
+        },
+        {
+            "citation": "Or. Rev. Stat. § 18.362",
+            "description": "Exemption for firearms. Every person above the age of 16 years shall be entitled to have, hold and keep, for the own use and defense of the person and shall have exempt from execution one rifle, shotgun or pistol. The value of firearms claimed as exempt under this section may not exceed $1,000.",
+            "single_limit": 1000,
+            "married_limit": 2000,
+            "single_item_claim_count": 1,
+            "married_item_claim_count": 2
+        },
+        {
+            "citation": "Or. Rev. Stat. § 18.395(1)",
+            "description": "Homestead exemption. A homestead shall be exempt from sale on execution, from the lien of every judgment and from liability in any form for the debts of the owner to the amount in value of $40,000, except as otherwise provided by law. The exemption shall be effective without the necessity of a claim thereof by the judgment debtor. When two or more members of a household are debtors whose interests in the homestead are subject to sale on execution, the lien of a judgment or liability in any form, their combined exemptions under this section shall not exceed $50,000. The homestead must be the actual abode of and occupied by the owner, or the owner's spouse, parent or child, but the exemption shall not be impaired by: Temporary removal or temporary absence with the intention to reoccupy the same as a homestead; (b) Removal or absence from the property; or The sale of the property.",
+            "single_limit": 40000,
+            "married_limit": 50000,
+            "single_item_claim_count": 1,
+            "married_item_claim_count": 1,
+            "mutual_exclusion": "Or. Rev. Stat. § 18.395(2)"
+        },
+        {
+            "citation": "Or. Rev. Stat. § 18.395(2)",
+            "description": "The exemption shall extend to the proceeds derived from such sale to an amount not exceeding $40,000 or $50,000, whichever amount is applicable under subsection (1) of this section, if the proceeds are held for a period not exceeding one year and held with the intention to procure another homestead therewith.",
+            "single_limit": 40000,
+            "married_limit": 50000,
+            "single_item_claim_count": 1,
+            "married_item_claim_count": 1,
+            "mutual_exclusion": "Or. Rev. Stat. § 18.395(1)"
+        }
+    ]
+}

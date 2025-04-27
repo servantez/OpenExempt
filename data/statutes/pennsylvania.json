@@ -1,0 +1,41 @@
+{
+    "jurisdiction": "PENNSYLVANIA",
+    "authority": "Pennsylvania Consolidated Statutes",
+    "has_opted_out": false,
+    "statutes": [
+        {
+            "citation": "42 Pa. Cons. Stat. § 8123",
+            "description": "General monetary exemption. General rule.--In addition to any other property specifically exempted by this subchapter, property of the judgment debtor (including bank notes, money, securities, real property, judgments or other indebtedness due the judgment debtor) to the value of $300 shall be exempt from attachment or execution on a judgment. Within such time as may be prescribed by general rules the judgment debtor may claim the exemption in kind and may designate the specific items of property to which the exemption provided by this section shall be applicable unless the designated property is not capable of appropriate division, or the judgment debtor may claim the exemption in cash out of the proceeds of the sale. For married persons, each spouse is entitled to the exemptions provided in this section.",
+            "single_limit": 300,
+            "married_limit": 600
+        },
+        {
+            "citation": "42 Pa. Cons. Stat. § 8124(a)",
+            "description": "Exemption of particular property. Goods.--The following personal property of the judgment debtor shall be exempt from attachment or execution on a judgment:"
+        },
+        {
+            "citation": "42 Pa. Cons. Stat. § 8124(a)(1)",
+            "description": "Wearing apparel.",
+            "single_limit": null,
+            "married_limit": null
+        },
+        {
+            "citation": "42 Pa. Cons. Stat. § 8124(a)(2)",
+            "description": "Bibles and school books.",
+            "single_limit": null,
+            "married_limit": null
+        },
+        {
+            "citation": "42 Pa. Cons. Stat. § 8124(a)(3)",
+            "description": "Sewing machines belonging to seamstresses or used and owned by private families, but not including sewing machines kept for sale or hire.",
+            "single_limit": null,
+            "married_limit": null
+        },
+        {
+            "citation": "42 Pa. Cons. Stat. § 8124(a)(4)",
+            "description": "The uniform and accoutrements of every commissioned officer and enlisted person shall be free from all suits, distresses, executions or sales for debt or payment of taxes.",
+            "single_limit": null,
+            "married_limit": null
+        }
+    ]
+}

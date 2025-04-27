@@ -4,38 +4,38 @@
     "has_opted_out": true,
     "statutes": [
         {
-            "citation": "735 ILCS 5/12-901",
+            "citation": "735 Ill. Comp. Stat. 5/12-901",
             "description": "Sec. 12-901. Amount. Every individual is entitled to an estate of homestead to the extent in value of $15,000 of his or her interest in a farm or lot of land and buildings thereon, a condominium, or personal property, owned or rightly possessed by lease or otherwise and occupied by him or her as a residence, or in a cooperative that owns property that the individual uses as a residence. That homestead and all right in and title to that homestead is exempt from attachment, judgment, levy, or judgment sale for the payment of his or her debts or other purposes and from the laws of conveyance, descent, and legacy. This Section is not applicable between joint tenants or tenants in common but it is applicable as to any creditors of those persons. If 2 or more individuals own property that is exempt as a homestead, the value of the exemption of each individual may not exceed his or her proportionate share of $30,000 based upon percentage of ownership.",
             "single_limit": 15000,
             "married_limit": 30000
         },
         {
-            "citation": "735 ILCS 5/12-906",
+            "citation": "735 Ill. Comp. Stat. 5/12-906",
             "description": "Sec. 12-906. Proceeds of sale. When a homestead is conveyed by the owner thereof, such conveyance shall not subject the premises to any lien or incumbrance to which it would not be subject in the possession of such owner; and the proceeds thereof, to the extent of the amount of $15,000, shall be exempt from judgment or other process, for one year after the receipt thereof, by the person entitled to the exemption, and if reinvested in a homestead the same shall be entitled to the same exemption as the original homestead.",
             "single_limit": 0,
             "married_limit": 0,
-            "fallback_relationship": "735 ILCS 5/12-901",
+            "fallback_relationship": "735 Ill. Comp. Stat. 5/12-901",
             "single_fallback_limit": 15000,
             "married_fallback_limit": 30000
         },
         {
-            "citation": "735 ILCS 5/12-1001",
+            "citation": "735 Ill. Comp. Stat. 5/12-1001",
             "description": "Sec. 12-1001. Personal property exempt. The following personal property, owned by the debtor, is exempt from judgment, attachment, or distress for rent:"
         },
         {
-            "citation": "735 ILCS 5/12-1001(a)",
+            "citation": "735 Ill. Comp. Stat. 5/12-1001(a)",
             "description": "The necessary wearing apparel, bible, school books, and family pictures of the debtor and the debtor's dependents;",
             "single_limit": null,
             "married_limit": null
         },
         {
-            "citation": "735 ILCS 5/12-1001(b)",
+            "citation": "735 Ill. Comp. Stat. 5/12-1001(b)",
             "description": "The debtor's equity interest, not to exceed $4,000 in value, in any other property;",
             "single_limit": 4000,
             "married_limit": 8000
         },
         {
-            "citation": "735 ILCS 5/12-1001(c)",
+            "citation": "735 Ill. Comp. Stat. 5/12-1001(c)",
             "description": "The debtor's interest, not to exceed $2,400 in value, in any one motor vehicle;",
             "single_limit": 2400,
             "married_limit": 4800,
@@ -43,23 +43,23 @@
             "married_item_claim_count": 2
         },
         {
-            "citation": "735 ILCS 5/12-1001(d)",
+            "citation": "735 Ill. Comp. Stat. 5/12-1001(d)",
             "description": "The debtor's equity interest, not to exceed $1,500 in value, in any implements, professional books, or tools of the trade of the debtor;",
             "single_limit": 1500,
             "married_limit": 3000
         },
         {
-            "citation": "735 ILCS 5/12-1001(e)",
+            "citation": "735 Ill. Comp. Stat. 5/12-1001(e)",
             "description": "Professionally prescribed health aids for the debtor or a dependent of the debtor;",
             "single_limit": null,
             "married_limit": null
         },
         {
-            "citation": "735 ILCS 5/12-1001",
+            "citation": "735 Ill. Comp. Stat. 5/12-1001",
             "description": "The personal property exemptions set forth in this Section shall apply only to individuals and only to personal property that is used for personal rather than business purposes."
         },
         {
-            "citation": "735 ILCS 5/12-1201",
+            "citation": "735 Ill. Comp. Stat. 5/12-1201",
             "description": "Sec. 12-1201. Bankruptcy exemption. In accordance with the provision of Section 522(b) of the Bankruptcy Code of 1978, (11 U.S.C. 522(b)), residents of this State shall be prohibited from using the federal exemptions provided in Section 522(d) of the Bankruptcy Code of 1978 (11 U.S.C. 522(d))."
         }
     ]

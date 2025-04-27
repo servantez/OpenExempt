@@ -4,8 +4,11 @@ from enum import Enum, unique
 @unique
 class Jurisdiction(Enum):
     FEDERAL = 'FEDERAL'
-    WI = 'WISCONSIN'
+    AZ = 'ARIZONA'
     IL = 'ILLINOIS'
+    OR = 'OREGON'
+    PA = 'PENNSYLVANIA'
+    WI = 'WISCONSIN'
 
     @staticmethod
     def supported_jurisdictions():

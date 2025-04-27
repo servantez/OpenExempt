@@ -1,0 +1,139 @@
+{
+    "jurisdiction": "ARIZONA",
+    "authority": "Arizona Revised Statutes",
+    "has_opted_out": true,
+    "statutes": [
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1101(A)",
+            "description": "Homestead exemptions. Any person the age of eighteen or over, married or single, who resides within the state may hold as a homestead exempt from attachment, execution and forced sale, not exceeding $400,000 in value, any one of the following: The person's interest in real property in one compact body upon which exists a dwelling house in which the person resides; The person's interest in one condominium or cooperative in which the person resides; A mobile home in which the person resides; A mobile home in which the person resides plus the land upon which that mobile home is located.",
+            "single_limit": 400000,
+            "married_limit": 400000,
+            "single_item_claim_count": 1,
+            "married_item_claim_count": 1,
+            "mutual_exclusion": "Ariz. Rev. Stat. § 33-1101(C)"
+        },
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1101(B)",
+            "description": "Only one homestead exemption may be held by a married couple or a single person under this section. The value as specified in this section refers to the equity of a single person or married couple. If a married couple lived together in a dwelling house, a condominium or cooperative, a mobile home or a mobile home plus land on which the mobile home is located and are then divorced, the total exemption allowed for that residence to either or both persons shall not exceed $400,000 in value."
+        },
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1101(C)",
+            "description": "The homestead exemption, not exceeding the value provided for in subsection A, automatically attaches to the person's interest in identifiable cash proceeds from the voluntary or involuntary sale of the property. The homestead exemption in identifiable cash proceeds continues for eighteen months after the date of the sale of the property or until the person establishes a new homestead with the proceeds, whichever period is shorter. Only one homestead exemption at a time may be held by a person under this section.",
+            "single_limit": 400000,
+            "married_limit": 400000,
+            "single_item_claim_count": 1,
+            "married_item_claim_count": 1,
+            "mutual_exclusion": "Ariz. Rev. Stat. § 33-1101(A)"
+        },
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1121",
+            "description": "Availability of exemptions. In the case of married persons, each spouse is entitled to the exemptions provided in this article, which may be combined with the other spouse's exemption in the same property or taken in different exempt property."
+        },
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1123",
+            "description": "Household furniture, furnishings and appliances. Household furniture and furnishings, household goods, including consumer electronic devices, and household appliances personally used by the debtor or a dependent of the debtor and not otherwise specifically prescribed in this chapter are exempt from process provided their aggregate fair market value does not exceed $15,000.",
+            "single_limit": 15000,
+            "married_limit": 30000
+        },
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1125",
+            "description": "Personal items. The following property of a debtor used primarily for personal, family or household purposes is exempt from process:"
+        },
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1125(1)",
+            "description": "All wearing apparel of not more than a fair market value of five hundred dollars.",
+            "single_limit": 500,
+            "married_limit": 1000
+        },
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1125(2)",
+            "description": "All musical instruments provided for the debtor's individual or family use of not more than an aggregate fair market value of four hundred dollars.",
+            "single_limit": 400,
+            "married_limit": 800
+        },
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1125(3)",
+            "description": "Horses, milk cows and poultry of not more than an aggregate fair market value of one thousand dollars.",
+            "single_limit": 1000,
+            "married_limit": 2000
+        },
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1125(4)",
+            "description": "All engagement and wedding rings of not more than an aggregate fair market value of two thousand dollars.",
+            "single_limit": 2000,
+            "married_limit": 4000
+        },
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1125(5)",
+            "description": "The library of a debtor, including books, manuals, published materials and personal documents of not more than an aggregate fair market value of two hundred fifty dollars.",
+            "single_limit": 250,
+            "married_limit": 500
+        },
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1125(6)",
+            "description": "One watch of not more than a fair market value of two hundred fifty dollars.",
+            "single_limit": 250,
+            "married_limit": 500,
+            "single_item_claim_count": 1,
+            "married_item_claim_count": 2
+        },
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1125(8)",
+            "description": "Equity in one motor vehicle of not more than $15,000.",
+            "single_limit": 15000,
+            "married_limit": 30000,
+            "single_item_claim_count": 1,
+            "married_item_claim_count": 2
+        },
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1125(9)",
+            "description": "Professionally prescribed prostheses for the debtor or a dependent of the debtor, including a wheelchair or motorized mobility device.",
+            "single_limit": null,
+            "married_limit": null
+        },
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1125(10)",
+            "description": "All firearms of not more than an aggregate fair market value of two thousand dollars.",
+            "single_limit": 2000,
+            "married_limit": 4000
+        },
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1125(11)",
+            "description": "All domestic animals or household pets.",
+            "single_limit": null,
+            "married_limit": null
+        },
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1126(A)",
+            "description": "Money benefits or proceeds. The following property of a debtor is exempt from execution, attachment or sale on any process issued from any court:"
+        },
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1126(A)(9)",
+            "description": "A total of $5,000 held in a single account in any one financial institution.",
+            "single_limit": 5000,
+            "married_limit": 10000,
+            "single_item_claim_count": 1,
+            "married_item_claim_count": 2
+        },
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1130",
+            "description": "Tools and equipment used in a commercial activity, trade, business or profession. The following tools and equipment of a debtor used in a commercial activity, trade, business or profession shall be exempt from process:"
+        },
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1130(1)",
+            "description": "The tools, equipment, instruments and books, including telephone numbers, client or customer contact information, or marketing tools, such as websites, domain names or any other intangible work product, in the possession of a debtor or the spouse of a debtor primarily used in, and necessary to carry on or develop, the commercial activity, trade, business or profession of the debtor or the debtor's spouse, not in excess of an aggregate fair market value of five thousand dollars. For the purpose of this paragraph, tools do not include a motor vehicle primarily used by a debtor for personal, family or household purposes such as transportation to and from the debtor's place of employment.",
+            "single_limit": 5000,
+            "married_limit": 10000
+        },
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1130(2)",
+            "description": "Farm machinery, utensils, implements of husbandry, feed, seed, grain and animals not in excess of an aggregate value of two thousand five hundred dollars.",
+            "single_limit": 2500,
+            "married_limit": 5000
+        },
+        {
+            "citation": "Ariz. Rev. Stat. § 33-1133(B)",
+            "description": "In accordance with 11 U.S.C. 522 (b), residents of this state are not entitled to the federal exemptions provided in 11 U.S.C. 522 (d)."
+        }
+    ]
+}
