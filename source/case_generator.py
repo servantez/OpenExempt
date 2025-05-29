@@ -2,11 +2,12 @@ import os
 import string
 import random
 from math import ceil
-from typing import Dict
+from typing import Dict, List
 from datetime import datetime, timedelta
 from .config import Config
 from .jurisdiction import Jurisdiction
 from .party import Party
+from .asset import Asset
 from .case import Case
 from .asset_factory import AssetFactory
 from .utils import read_jsonl_file, infinite_sampler, infinite_sample
@@ -50,7 +51,10 @@ class CaseGenerator:
         return next(self.party_sampler)
     
     def sample_assets(self, asset_count: int):
-        return infinite_sample(self.asset_sampler, asset_count)
+        assets = infinite_sample(self.asset_sampler, asset_count)
+        assets = self.replace_duplicate_assets(assets)
+        assets = self.replace_duplicate_residences(assets)
+        return assets
     
     def sample_is_married(self):
         return next(self.is_married_sampler)
@@ -82,6 +86,34 @@ class CaseGenerator:
         remaining_dates = [petition_date - timedelta(days=days) for days in remaining_days]
         return [first_date] + remaining_dates
     
+    # Ensure assets are unique
+    def replace_duplicate_assets(self, assets: List[Asset]):
+        if len({asset.description for asset in assets}) == len(assets): # No duplicates
+            return assets
+        updated_assets = assets.copy()
+        observed_assets = set()
+        for index, asset in enumerate(updated_assets):
+            if asset.description in observed_assets:
+                new_asset = next(self.asset_sampler)
+                while new_asset.description in observed_assets:
+                    new_asset = next(self.asset_sampler)
+                updated_assets[index] = new_asset
+            observed_assets.add(updated_assets[index].description)
+        return updated_assets
+    
+    # Ensure there is at most one primary residence
+    def replace_duplicate_residences(self, assets: List[Asset]):
+        residence_indices = [index for index, asset in enumerate(assets) if "real_property" in asset.category_hints]
+        if len(residence_indices) <= 1: # No duplicates
+            return assets
+        updated_assets = assets.copy()
+        for index in residence_indices[1:]:
+            new_asset = next(self.asset_sampler)
+            while "real_property" in new_asset.category_hints:
+                new_asset = next(self.asset_sampler)
+            updated_assets[index] = new_asset
+        return updated_assets
+        
     def create_domicile_dates(self, petition_date: datetime, domicile_count: int, state_jurisdiction: Jurisdiction):
         applicable_state_placeholder = None
         # Its possible (albeit rare) for the applicable state jurisdiction to be ambiguous

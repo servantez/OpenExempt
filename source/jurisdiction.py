@@ -14,6 +14,10 @@ class Jurisdiction(Enum):
     def supported_jurisdictions():
         return [member.display_name() for member in Jurisdiction]
     
+    @staticmethod
+    def supported_state_jurisdictions():
+        return [member.display_name() for member in Jurisdiction if not member.is_federal()]
+    
     def display_name(self):
         return self.value.title()
     

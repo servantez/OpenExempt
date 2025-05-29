@@ -10,7 +10,7 @@
     "asset_count_min": 1,
     "asset_count_max": 4,
     "asset_selection": "random",
-    "married_percentage": 0.0,
+    "married_percentage": 0.5,
     "domicile_count_min": 1,
     "domicile_count_max": 4,
     "irrelevant_asset_facts": true,

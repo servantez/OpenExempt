@@ -5,7 +5,7 @@
     "statutes": [
         {
             "citation": "Ariz. Rev. Stat. § 33-1101(A)",
-            "description": "Homestead exemptions. Any person the age of eighteen or over, married or single, who resides within the state may hold as a homestead exempt from attachment, execution and forced sale, not exceeding $400,000 in value, any one of the following: The person's interest in real property in one compact body upon which exists a dwelling house in which the person resides; The person's interest in one condominium or cooperative in which the person resides; A mobile home in which the person resides; A mobile home in which the person resides plus the land upon which that mobile home is located.",
+            "description": "Homestead exemptions. Any person the age of eighteen or over, married or single, may hold as a homestead exempt from attachment, execution and forced sale, not exceeding $400,000 in value, any one of the following: The person's interest in real property in one compact body upon which exists a dwelling house in which the person resides; The person's interest in one condominium or cooperative in which the person resides; A mobile home in which the person resides; A mobile home in which the person resides plus the land upon which that mobile home is located.",
             "single_limit": 400000,
             "married_limit": 400000,
             "single_item_claim_count": 1,

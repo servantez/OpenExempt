@@ -184,7 +184,7 @@ class Solver:
                 else:
                     asset.applicable_exemptions.remove(citation)
                     new_solution = self.recursive_optimal_exemption_search(assets_copy, new_solution, new_optimal)
-                    new_optimal = new_solution if new_optimal is None else min(new_solution, new_optimal)
+            new_optimal = new_solution if new_optimal is None else min(new_solution, new_optimal)
 
         # Check solution where we claim no exemptions for this asset
         assets_copy = assets[:]
@@ -227,14 +227,22 @@ class Solver:
         for jurisdiction in allowable_jurisdictions:
             jurisdiction_solution = self.solve_case_for_jurisdiction(case, jurisdiction)
             solution[jurisdiction.display_name()] = jurisdiction_solution.total_non_exempt_value()
-            print(jurisdiction)
-            print(jurisdiction_solution.claimed_exemptions)
-            print(jurisdiction_solution.non_exempt_assets)
-            print(jurisdiction_solution.total_non_exempt_value())
         return solution
     
     # Solve TaskID.OPTIMAL_EXEMPTIONS
     def solve_optimal_exemptions(self, case: Case, allowable_jurisdictions: List[Jurisdiction]):
+        print(case.state_jurisdiction.display_name())
+        for asset in case.assets:
+            print(asset.description)
         solutions = [self.solve_case_for_jurisdiction(case, jurisdiction) for jurisdiction in allowable_jurisdictions]
+
+        for solution in solutions:
+            print(f"  Non-exempt value: {solution.total_non_exempt_value()}")
+            print(f"  Non-exempt assets: {solution.non_exempt_assets}")
+            print(f"  Claimed exemptions: {solution.claimed_exemptions}")
+            print(f"  UnClaimed exemptions: {solution.unclaimed_exemptions}")
         solution = min(solutions)
+        print(solution.claimed_exemptions)
+        print()
+        print()
         return solution.claimed_exemptions

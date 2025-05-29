@@ -23,7 +23,7 @@ def process_demo_request(start_task, terminal_task, asset_count_min, asset_count
     config.married_percentage = married_percentage / 100
     config.domicile_count_min = domicile_count_min
     config.domicile_count_max = domicile_count_max
-    config.state_jurisdictions = state_jurisdictions
+    config.state_jurisdictions = [state.upper() for state in state_jurisdictions]
     config.irrelevant_asset_facts = 'Irrelevant Asset Facts' in irrelevant_facts
     config.irrelevant_domicile_facts = 'Irrelevant Domicile Facts' in irrelevant_facts
     config.asset_opinions = 'Asset Opinions' in opinions
@@ -81,7 +81,7 @@ with gr.Blocks(css=custom_css) as demo:
                     terminal_task = gr.Radio(choices=TaskID.supported_tasks() , value=TaskID.OPTIMAL_EXEMPTIONS.display_name(), label="End Task", info="The last subtask to evaluate (must be greater than or equal to start task)")
 
         with gr.Tab("🏛️ Jurisdictions & Counts"):
-            state_jurisdictions = gr.CheckboxGroup(choices=Jurisdiction.supported_jurisdictions(), value=config.state_jurisdictions, label="State Jurisdictions", info="Choose which state jurisdictions will be involved (must select at least one)")
+            state_jurisdictions = gr.CheckboxGroup(choices=Jurisdiction.supported_state_jurisdictions(), value=Jurisdiction.supported_state_jurisdictions(), label="State Jurisdictions", info="Choose which state jurisdictions will be involved (must select at least one)")
             with gr.Row():
                 with gr.Column():
                     married_percentage = gr.Slider(value=config.married_percentage * 100, label="Percentage of married cases", minimum=0, maximum=100, step=10)

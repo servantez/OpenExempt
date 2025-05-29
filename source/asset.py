@@ -8,6 +8,7 @@ class Asset:
     description: str
     dollar_value: float
     applicable_exemptions: List[str] # List of exemption labels
+    category_hints: List[str] # Used only in the asset selection process, not exemption applicability
 
     def to_dict(self):
         return vars(self)

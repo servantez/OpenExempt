@@ -15,7 +15,9 @@
             "citation": "11 U.S.C. § 522(d)(1)",
             "description": "The debtor's aggregate interest, not to exceed $27,900 in value, in real property or personal property that the debtor or a dependent of the debtor uses as a residence, in a cooperative that owns property that the debtor or a dependent of the debtor uses as a residence, or in a burial plot for the debtor or a dependent of the debtor.",
             "single_limit": 27900,
-            "married_limit": 55800
+            "married_limit": 55800,
+            "single_item_claim_count": 1,
+            "married_item_claim_count": 2
         },
         {
             "citation": "11 U.S.C. § 522(d)(2)",
