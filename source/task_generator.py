@@ -9,12 +9,12 @@ from collections.abc import Generator
 from .case import Case
 from .asset import Asset
 from .party import Party
+from .task_id import TaskID
+from .task_dataset import Task
 from .jurisdiction import Jurisdiction
 from .statute_factory import StatuteFactory
-from .task_id import TaskID
-from .task_dataset import TaskDataset
 from .template_manager import TemplateManager
-from .solver import Solver, Solution
+from .solver import Solver
 from .utils import infinite_sampler
 
 
@@ -22,7 +22,7 @@ class TaskGenerator:
 
     def __init__(self, config):
         self.config = config
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger(self.config.dataset_name)
         self.inflect_engine = inflect.engine()
         self.template_manager = TemplateManager(config)
         self.instructions = self.read_json_file_in_data_directory('instructions.json')
@@ -117,7 +117,7 @@ class TaskGenerator:
     
     # For testing purposes
     def create_dummy_task(self):
-        return TaskDataset.create_task(1, 5, 'WISCONSIN', 'instruction', 'meta_instruction', 'response_format', 'context', 'solution')
+        return Task.create_task(1, 5, 'WISCONSIN', 'instruction', 'meta_instruction', 'response_format', 'context', 'solution')
     
     def hydrate_party_name(self, template: str, name_variant: str):
         name = name_variant
@@ -230,7 +230,7 @@ class TaskGenerator:
     def create_solved_reasoning_steps(self, case_: Case, allowable_jurisdictions: List[Jurisdiction]):
         solved_steps = 'Solved Reasoning Steps:\n' + self.instructions['solved_steps'] + '\n'
         match TaskID(self.config.start_task_id):
-            case TaskID.GOVERNING_JURISDICTIONS: # No solved reasoning steps
+            case TaskID.GOVERNING_JURISDICTION: # No solved reasoning steps
                 return None
             case TaskID.ASSET_EXEMPTION_CLASSIFICATION:
                 jurisdiction_names = ' and '.join(map(lambda jurisdiction: jurisdiction.display_name(), allowable_jurisdictions))
@@ -263,7 +263,7 @@ class TaskGenerator:
     
     def solve_case(self, case_: Case, task_id: TaskID, allowable_jurisdictions: List[Jurisdiction]):
         match task_id:
-            case TaskID.GOVERNING_JURISDICTIONS:
+            case TaskID.GOVERNING_JURISDICTION:
                 return ', '.join(map(lambda jurisdiction: jurisdiction.display_name(), allowable_jurisdictions))
             case TaskID.ASSET_EXEMPTION_CLASSIFICATION:
                 return self.solver.solve_asset_exemption_classification(case_, allowable_jurisdictions)
@@ -296,7 +296,7 @@ class TaskGenerator:
         statute_set_content = [statute_set.display_content() for statute_set in self.statute_set_map.values()]
         statutes = 'Statutes:\n' + '\n\n'.join(statute_set_content)
         solution = self.solve_case(case, TaskID(self.config.terminal_task_id), allowable_jurisdictions)
-        return TaskDataset.create_task(self.config.start_task_id,
+        return Task.create_task(self.config.start_task_id,
                                        self.config.terminal_task_id,
                                        case.state_jurisdiction.value,
                                        instruction,

@@ -15,3 +15,7 @@ venv/
 # Datasets
 tasks/*
 !tasks/.gitkeep
+
+# Predictions
+predictions/*
+!predictions/.gitkeep

@@ -29,7 +29,9 @@ class Solution:
     def total_non_exempt_value(self):
         return sum(self.non_exempt_assets.values())
     
-    # Attempt to allocate the claim amount for the specified exemption and return the actual amount allocated
+    # Attempt to allocate claim amount for the specified exemption and return the actual amount allocated.
+    # Returned allocation amount represents min(claim amount, max remaining amount available under this exemption).
+    # Exemptions with item claim counts will only return an allocation for a single item claim.
     def allocate_claim_amount(self, citation: str, claim_amount: float):
         if citation in self.excluded_exemptions: # Mutual exclusion relationship has been triggered for this exemption
             return 0
@@ -42,7 +44,7 @@ class Solution:
             item_claim_amount = self.item_claim_amounts[citation]
         max_claim_amount = claim_amount if item_claim_amount is None else min(item_claim_amount, claim_amount)
         per_item_limit = self.exemptions[citation].per_item_limit
-        max_claim_amount = claim_amount if per_item_limit is None else min(per_item_limit, claim_amount)
+        max_claim_amount = max_claim_amount if per_item_limit is None else min(per_item_limit, max_claim_amount)
         amount_claimed = self._process_claim(citation, max_claim_amount)
         if amount_claimed < max_claim_amount:
             # Exemption has been exhausted, check for any fallback relationships
@@ -87,7 +89,7 @@ class Solution:
     # Check if a given exemption has item claims still available
     def item_claim_exists(self, citation: str):
         remaining_item_claim_count = self.remaining_item_claim_counts[citation]
-        return remaining_item_claim_count is not None and remaining_item_claim_count > 1
+        return remaining_item_claim_count is not None and remaining_item_claim_count > 0
 
 
 class Solver:
@@ -138,7 +140,7 @@ class Solver:
         remaining_item_claim_counts = self.married_item_claim_count_map[jurisdiction] if case.has_married_couple() else self.single_item_claim_count_map[jurisdiction]
         item_claim_amounts = self.married_item_claim_amount_map[jurisdiction] if case.has_married_couple() else self.single_item_claim_amount_map[jurisdiction]
         remaining_fallback_relationships = self.married_fallback_relationship_map[jurisdiction] if case.has_married_couple() else self.single_fallback_relationship_map[jurisdiction]
-        return Solution(exemptions, unclaimed_exemptions, {}, {}, remaining_item_claim_counts, item_claim_amounts, remaining_fallback_relationships, [])
+        return deepcopy(Solution(exemptions, unclaimed_exemptions, {}, {}, remaining_item_claim_counts, item_claim_amounts, remaining_fallback_relationships, []))
     
     def solve_case_for_jurisdiction(self, case: Case, jurisdiction: Jurisdiction):
         solution = self.init_solution(case, jurisdiction)
@@ -163,7 +165,7 @@ class Solver:
                 return optimal
             return self.recursive_optimal_exemption_search(assets[1:], new_solution, optimal)
         
-        # Need to check every permutation of exemption application, including claiming no exemptions for the current asset
+        # Check every permutation of exemption application, including claiming no exemptions for the current asset
         new_optimal = optimal
         for citation in asset.applicable_exemptions:
             new_solution = deepcopy(solution)
@@ -173,25 +175,26 @@ class Solver:
             if allocated_amount == asset.dollar_value: # Asset is completely exempt
                 new_solution = self.recursive_optimal_exemption_search(assets[1:], new_solution, new_optimal)
             else: # Asset is not completely protected under current exemption
-                assets_copy = assets[:]
-                assets_copy[0] = deepcopy(assets[0])
-                asset = assets_copy[0]
-                asset.dollar_value -= allocated_amount
+                updated_assets = assets[:]
+                updated_assets[0] = deepcopy(assets[0])
+                updated_asset = updated_assets[0]
+                updated_asset.dollar_value -= allocated_amount
                 if new_solution.item_claim_exists(citation):
                     # We've just used an item claim, but additional item claims still exist for this exemption.
                     # Leave the citation in the applicable exemptions, so we may check the solution where additional item claims are used on this asset.
-                    new_solution = self.recursive_optimal_exemption_search(assets_copy, new_solution, new_optimal)
+                    new_solution = self.recursive_optimal_exemption_search(updated_assets, new_solution, new_optimal)
                 else:
-                    asset.applicable_exemptions.remove(citation)
-                    new_solution = self.recursive_optimal_exemption_search(assets_copy, new_solution, new_optimal)
+                    updated_exemptions = [exemption for exemption in updated_asset.applicable_exemptions if exemption != citation]
+                    updated_asset.applicable_exemptions = updated_exemptions
+                    new_solution = self.recursive_optimal_exemption_search(updated_assets, new_solution, new_optimal)
             new_optimal = new_solution if new_optimal is None else min(new_solution, new_optimal)
 
         # Check solution where we claim no exemptions for this asset
-        assets_copy = assets[:]
-        assets_copy[0] = deepcopy(assets[0])
-        assets_copy[0].applicable_exemptions = []
+        updated_assets = assets[:]
+        updated_assets[0] = deepcopy(assets[0])
+        updated_assets[0].applicable_exemptions = []
         new_solution = deepcopy(solution)
-        new_solution = self.recursive_optimal_exemption_search(assets_copy, new_solution, new_optimal)
+        new_solution = self.recursive_optimal_exemption_search(updated_assets, new_solution, new_optimal)
         new_optimal = new_solution if new_optimal is None else min(new_solution, new_optimal)
         return new_optimal
     
@@ -231,18 +234,6 @@ class Solver:
     
     # Solve TaskID.OPTIMAL_EXEMPTIONS
     def solve_optimal_exemptions(self, case: Case, allowable_jurisdictions: List[Jurisdiction]):
-        print(case.state_jurisdiction.display_name())
-        for asset in case.assets:
-            print(asset.description)
         solutions = [self.solve_case_for_jurisdiction(case, jurisdiction) for jurisdiction in allowable_jurisdictions]
-
-        for solution in solutions:
-            print(f"  Non-exempt value: {solution.total_non_exempt_value()}")
-            print(f"  Non-exempt assets: {solution.non_exempt_assets}")
-            print(f"  Claimed exemptions: {solution.claimed_exemptions}")
-            print(f"  UnClaimed exemptions: {solution.unclaimed_exemptions}")
         solution = min(solutions)
-        print(solution.claimed_exemptions)
-        print()
-        print()
         return solution.claimed_exemptions

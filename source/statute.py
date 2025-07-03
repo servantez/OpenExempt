@@ -4,7 +4,6 @@ from dataclasses import dataclass
 # Non-exemption statutes
 @dataclass
 class Statute:
-
     citation: str # citation should be a universal unique identifier
     description: str
 
@@ -18,7 +17,6 @@ class Statute:
 # Exemption statutes
 @dataclass
 class Exemption(Statute):
-
     single_limit: int
     married_limit: int
     per_item_limit: int = None

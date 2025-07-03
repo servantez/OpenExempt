@@ -4,6 +4,7 @@ from .statute import Statute, Exemption
 
 
 class StatuteSet:
+    
     def __init__(self,
                  jurisdiction: Jurisdiction,
                  authority: str,

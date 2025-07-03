@@ -13,7 +13,7 @@ The interface allows users to easily choose configuration settings, which are us
 '''
 
 # Load default config
-config = Config("demo")
+config = Config.from_default()
 
 def process_demo_request(start_task, terminal_task, asset_count_min, asset_count_max, married_percentage, domicile_count_min, domicile_count_max, state_jurisdictions, dataset_size, irrelevant_facts, opinions):
     config.start_task_id = TaskID.display_name_to_task_id(start_task).value
@@ -76,7 +76,7 @@ with gr.Blocks(css=custom_css) as demo:
 
             with gr.Row():
                 with gr.Column():
-                    start_task = gr.Radio(choices=TaskID.supported_tasks() , value=TaskID.GOVERNING_JURISDICTIONS.display_name(), label="Start Task", info="The first subtask to evaluate")
+                    start_task = gr.Radio(choices=TaskID.supported_tasks() , value=TaskID.GOVERNING_JURISDICTION.display_name(), label="Start Task", info="The first subtask to evaluate")
                 with gr.Column():
                     terminal_task = gr.Radio(choices=TaskID.supported_tasks() , value=TaskID.OPTIMAL_EXEMPTIONS.display_name(), label="End Task", info="The last subtask to evaluate (must be greater than or equal to start task)")
 
