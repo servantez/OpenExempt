@@ -29,6 +29,10 @@ def process_demo_request(start_task, terminal_task, asset_count_min, asset_count
     config.asset_opinions = 'Asset Opinions' in opinions
     config.domicile_opinions = 'Domicile Opinions' in opinions
 
+    error_message = config.validate_with_error_message()
+    if error_message:
+        return None, None, None, error_message
+
     case, task = generate_demo(config)
     prompt = task.prompt()
     solution = task.solution
@@ -36,7 +40,7 @@ def process_demo_request(start_task, terminal_task, asset_count_min, asset_count
     if isinstance(solution, str):
         solution = {"solution": solution}
 
-    return prompt, solution, case.serialize()
+    return prompt, solution, case.serialize(), None
 
 # Custom CSS for layout enhancements
 custom_css = """
@@ -127,8 +131,11 @@ with gr.Blocks(css=custom_css) as demo:
     """)
 
     def on_generate(*args):
-        prompt, solution, case = process_demo_request(*args)
-        return prompt, solution, case, gr.update(value="✅ Task successfully generated. See below.", visible=True)
+        prompt, solution, case, error_message = process_demo_request(*args)
+        if error_message:
+            return prompt, solution, case, gr.update(value=f"❌ Task generation failed: {error_message}", visible=True)
+        else:
+            return prompt, solution, case, gr.update(value="✅ Task successfully generated. See below.", visible=True)
 
     submit_btn.click(
         fn=on_generate,
