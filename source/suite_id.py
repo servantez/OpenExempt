@@ -8,6 +8,15 @@ from .config import Config
 @unique
 class SuiteID(Enum):
     TEMPORAL_REASONING = 'tr'
+    REASONING_DECOMPOSITION = 'rd'
+    MARITAL_REASONING = 'mr'
+    DISTRACTOR_ROBUSTNESS = 'dr'
+    SYCOPHANCY_ROBUSTNESS = 'sr'
+    ASSET_SCALING = 'as'
+    JURISDICTION_SCALING = 'js'
+    BASIC_COMPETENCY = 'bc'
+    INTERMEDIATE_COMPETENCY = 'ic'
+    ADVANCED_COMPETENCY = 'ac'
 
     def __init__(self, value):
         self.dataset_index_counter = {member: 0 for member in TaskID}
@@ -20,7 +29,16 @@ class SuiteID(Enum):
 
     def config_handler(self):
         handler_registry = {
-            SuiteID.TEMPORAL_REASONING: self.create_tr_config_files
+            SuiteID.TEMPORAL_REASONING: self.create_tr_config_files,
+            SuiteID.REASONING_DECOMPOSITION: self.create_rd_config_files,
+            SuiteID.MARITAL_REASONING: self.create_mr_config_files,
+            SuiteID.DISTRACTOR_ROBUSTNESS: self.create_dr_config_files,
+            SuiteID.SYCOPHANCY_ROBUSTNESS: self.create_sr_config_files,
+            SuiteID.ASSET_SCALING: self.create_as_config_files,
+            SuiteID.JURISDICTION_SCALING: self.create_js_config_files,
+            SuiteID.BASIC_COMPETENCY: self.create_bc_config_files,
+            SuiteID.INTERMEDIATE_COMPETENCY: self.create_ic_config_files,
+            SuiteID.ADVANCED_COMPETENCY: self.create_ac_config_files
         }
         return handler_registry[self] if self in handler_registry else None
     
@@ -36,7 +54,7 @@ class SuiteID(Enum):
         return f'{self.value.lower()}_config.json'
     
     def config_file_path(self):
-        return os.path.join('data/configs', self.config_file_name())
+        return os.path.join('data/suite_configs', self.config_file_name())
     
     def get_dataset_name_with_task_id(self, task_id: TaskID):
         dataset_index = self.dataset_index_counter[task_id]
@@ -63,10 +81,41 @@ class SuiteID(Enum):
         return dataset_config_file, dataset_name
         
     def create_tr_config_files(self, default_config_file: Dict[str, Any]):
-        config_files = []
-        for count in range(1, 4):
-            updates = {'state_jurisdictions': ["ILLINOIS", "WISCONSIN"], 
-                       'asset_count_max': 2}
-            config_file, dataset_name = self.dataset_config_file_with_update(default_config_file, updates)
-            config_files.append((config_file, dataset_name))
-        return config_files
+        return [self.dataset_config_file_with_update(default_config_file, {'domicile_count_min': count, 'domicile_count_max': count})
+                for count in range(1, 6)]
+    
+    def create_rd_config_files(self, default_config_file: Dict[str, Any]):
+        return [self.dataset_config_file_with_update(default_config_file, {'domicile_count_min': count, 'domicile_count_max': count})
+                for count in range(1, 6)]
+    
+    def create_mr_config_files(self, default_config_file: Dict[str, Any]):
+        return [self.dataset_config_file_with_update(default_config_file, {'domicile_count_min': count, 'domicile_count_max': count})
+                for count in range(1, 6)]
+    
+    def create_dr_config_files(self, default_config_file: Dict[str, Any]):
+        return [self.dataset_config_file_with_update(default_config_file, {'domicile_count_min': count, 'domicile_count_max': count})
+                for count in range(1, 6)]
+    
+    def create_sr_config_files(self, default_config_file: Dict[str, Any]):
+        return [self.dataset_config_file_with_update(default_config_file, {'domicile_count_min': count, 'domicile_count_max': count})
+                for count in range(1, 6)]
+    
+    def create_as_config_files(self, default_config_file: Dict[str, Any]):
+        return [self.dataset_config_file_with_update(default_config_file, {'domicile_count_min': count, 'domicile_count_max': count})
+                for count in range(1, 6)]
+    
+    def create_js_config_files(self, default_config_file: Dict[str, Any]):
+        return [self.dataset_config_file_with_update(default_config_file, {'domicile_count_min': count, 'domicile_count_max': count})
+                for count in range(1, 6)]
+    
+    def create_bc_config_files(self, default_config_file: Dict[str, Any]):
+        return [self.dataset_config_file_with_update(default_config_file, {'domicile_count_min': count, 'domicile_count_max': count})
+                for count in range(1, 6)]
+    
+    def create_ic_config_files(self, default_config_file: Dict[str, Any]):
+        return [self.dataset_config_file_with_update(default_config_file, {'domicile_count_min': count, 'domicile_count_max': count})
+                for count in range(1, 6)]
+    
+    def create_ac_config_files(self, default_config_file: Dict[str, Any]):
+        return [self.dataset_config_file_with_update(default_config_file, {'domicile_count_min': count, 'domicile_count_max': count})
+                for count in range(1, 6)]

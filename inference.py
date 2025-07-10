@@ -2,6 +2,7 @@ import os
 import json
 import argparse
 from dotenv import load_dotenv
+from source.config import Config
 from source.jurisdiction import Jurisdiction
 from source.statute_factory import StatuteFactory
 from source.task_dataset import TaskDataset
@@ -18,7 +19,8 @@ load_dotenv()
 
 def run_dataset(dataset_directory: str, output_directory: str, model: ModelClient, evaluator: Evaluator, verbose: bool = True):
     # Load dataset
-    dataset = TaskDataset.from_directory(dataset_directory)
+    config = Config.load_config_file_in_directory(dataset_directory)
+    dataset = TaskDataset.from_config(config)
 
     # Setup dataset output directory
     prediction_directory = os.path.join(output_directory, dataset.name)
@@ -81,7 +83,7 @@ def run_dataset(dataset_directory: str, output_directory: str, model: ModelClien
             json.dump(results, file, indent=4)
         logger.info('Finished saving results.')
     logger.info('OpenExempt finished.')
-    return predictions, results
+    return (config, predictions, results)
 
 def run_suite(suite_directory: str, output_directory: str, model: ModelClient, evaluator: Evaluator, verbose: bool = True):
     # Load suite
@@ -99,30 +101,36 @@ def run_suite(suite_directory: str, output_directory: str, model: ModelClient, e
     logger.info('OpenExempt initialized.')
 
     # Run inference on suite
+    experiments = []
     for dataset_directory in suite.get_dataset_directories():
         logger.info(f'Begin inference on dataset at: {dataset_directory}')
-        run_dataset(dataset_directory, suite_output_directory, model, evaluator, verbose)
+        experiment = run_dataset(dataset_directory, suite_output_directory, model, evaluator, verbose)
+        experiments.append(experiment)
         logger.info(f'Finished inference on dataset at: {dataset_directory}')
     logger.info('OpenExempt finished.')
+    return experiments
+
+def run_inference(mode: str, model_id: ModelID, directory: str, output_directory: str, statute_directory: str, verbose: bool = True):
+    model = ModelClient(model_id)
+    model_output_directory = os.path.join(output_directory, model_id.value) # Each model has its own output directory
+    statute_sets = StatuteFactory.load_statute_sets(statute_directory, list(Jurisdiction))
+    evaluator = Evaluator(statute_sets)
+    if mode == 'dataset':
+        return run_dataset(directory, model_output_directory, model, evaluator, verbose)
+    elif mode == 'suite':
+        return run_suite(directory, model_output_directory, model, evaluator, verbose)
+    else:
+        raise ValueError(f'Invalid inference mode: {mode}')
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description='Run inference and evaluation on a dataset or suite.')
     parser.add_argument('--mode', choices=['dataset', 'suite'], default='dataset', help='Choose to run dataset or suite.')
     parser.add_argument('--model', required=True, help='Official model name used by provider.')
     parser.add_argument('-d', '--directory', required=True, help='Path to dataset or suite directory.')
     parser.add_argument('-o', '--output_directory', default='predictions', help='Path to root output directory.')
     parser.add_argument('-s', '--statute_directory', default='data/statutes', help='Path to statute directory.')
-    parser.add_argument('-a', '--asset_directory', default='data/assets', help='Path to asset directory.')
     parser.add_argument('-v', '--verbose', action='store_true')
     args = parser.parse_args()
-
     model_id = ModelID(args.model)
-    model = ModelClient(model_id)
-    output_directory = os.path.join(args.output_directory, model_id.value) # Each model has its own output directory
-    statute_sets = StatuteFactory.load_statute_sets(args.statute_directory, list(Jurisdiction))
-    evaluator = Evaluator(statute_sets)
-    if args.mode == 'dataset':
-        run_dataset(args.directory, output_directory, model, evaluator, args.verbose)
-    elif args.mode == 'suite':
-        run_suite(args.directory, output_directory, model, evaluator, args.verbose)
+    run_inference(args.mode, model_id, args.directory, args.output_directory, args.statute_directory, args.verbose)

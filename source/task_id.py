@@ -1,8 +1,8 @@
 from enum import Enum, unique
 from langchain_core.output_parsers import PydanticOutputParser
 from .pydantic_response import (
-    AssetExemptionClassificationResponse, 
-    AssetExemptionDollarValueResponse, 
+    ExemptionClassificationResponse, 
+    ExemptionValuationResponse, 
     NonExemptAssetsResponse, 
     OptimalExemptionsResponse
     )
@@ -10,10 +10,10 @@ from .pydantic_response import (
 
 @unique
 class TaskID(Enum):
-    GOVERNING_JURISDICTION = 1
-    ASSET_EXEMPTION_CLASSIFICATION = 2
-    ASSET_EXEMPTION_DOLLAR_VALUE = 3
-    NON_EXEMPT_ASSETS = 4
+    ALLOWABLE_EXEMPTIONS = 1
+    EXEMPTION_CLASSIFICATION = 2
+    EXEMPTION_VALUATION = 3
+    NONEXEMPT_ASSETS = 4
     OPTIMAL_EXEMPTIONS = 5
 
     @staticmethod
@@ -30,18 +30,18 @@ class TaskID(Enum):
     
     def solution_type(self):
         match self:
-            case TaskID.GOVERNING_JURISDICTION:
+            case TaskID.ALLOWABLE_EXEMPTIONS:
                 return str
-            case TaskID.ASSET_EXEMPTION_CLASSIFICATION | TaskID.ASSET_EXEMPTION_DOLLAR_VALUE | TaskID.NON_EXEMPT_ASSETS | TaskID.OPTIMAL_EXEMPTIONS:
+            case TaskID.EXEMPTION_CLASSIFICATION | TaskID.EXEMPTION_VALUATION | TaskID.NONEXEMPT_ASSETS | TaskID.OPTIMAL_EXEMPTIONS:
                 return dict
             case _:
                 raise NotImplementedError(f'Response type not implemented for task: {self}.')
     
     def response_parser(self):
         response_class_registry = {
-            TaskID.ASSET_EXEMPTION_CLASSIFICATION: AssetExemptionClassificationResponse,
-            TaskID.ASSET_EXEMPTION_DOLLAR_VALUE: AssetExemptionDollarValueResponse,
-            TaskID.NON_EXEMPT_ASSETS: NonExemptAssetsResponse,
+            TaskID.EXEMPTION_CLASSIFICATION: ExemptionClassificationResponse,
+            TaskID.EXEMPTION_VALUATION: ExemptionValuationResponse,
+            TaskID.NONEXEMPT_ASSETS: NonExemptAssetsResponse,
             TaskID.OPTIMAL_EXEMPTIONS: OptimalExemptionsResponse
         }
         if self.solution_type() == str:

@@ -13,12 +13,13 @@ class ModelHost(Enum):
 @unique
 class ModelID(Enum):
     # Enum values must be official model names
-    GPT_4O = 'gpt-4o'
-    TEST = 'gpt-4.1-nano'
+    GPT_4_1 = 'gpt-4.1'
+    o3 = 'o3'
+    o4_mini = 'o4-mini'
 
     def host(self):
         match self:
-            case ModelID.GPT_4O | ModelID.TEST:
+            case ModelID.GPT_4_1 | ModelID.o3 | ModelID.o4_mini:
                 return ModelHost.OPENAI
             case _:
                 raise NotImplementedError(f'Model host not implemented for model: {self.name}')

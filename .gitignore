@@ -18,4 +18,3 @@ tasks/*
 
 # Predictions
 predictions/*
-!predictions/.gitkeep

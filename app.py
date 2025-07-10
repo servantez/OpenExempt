@@ -36,7 +36,7 @@ def process_demo_request(start_task, terminal_task, asset_count_min, asset_count
     if isinstance(solution, str):
         solution = {"solution": solution}
 
-    return prompt, solution, case.to_dict()
+    return prompt, solution, case.serialize()
 
 # Custom CSS for layout enhancements
 custom_css = """
@@ -66,8 +66,8 @@ with gr.Blocks(css=custom_css) as demo:
                 with gr.Column():
                     gr.Markdown("The process of exempting assets involves a sequence of subtasks - each requiring different types of reasoning. OpenExempt enables users to evaluate the entire exemption process, a single subtask, or any sequential interval of subtasks to examine specific combinations of reasoning skills.")
                     gr.Markdown("## Subtasks")
-                    gr.Markdown("*Select governing exemption laws.* To determine which state exemptions a debtor is allowed to claim, the Bankruptcy code considers which states the debtor has lived in the preceding 730 days. This task requires identifying the governing jurisdiction given residency dates and locations.")
-                    gr.Markdown("*Asset Exemption (categorization).* This task involves identifying applicable exemptions for each asset based on the governing state exemption laws. This is a multi-label classification problem since multiple exemptions can apply to a single asset. Federal exemptions may also need to be considered depending on whether the corresponding state has opted-out.")
+                    gr.Markdown("*Select applicable exemption laws.* To determine which state exemptions a debtor is allowed to claim, the Bankruptcy code considers which states the debtor has lived in the preceding 730 days. This task requires identifying the applicable exemption jurisdictions given residency dates and locations.")
+                    gr.Markdown("*Asset Exemption (categorization).* This task involves identifying applicable exemptions for each asset based on the applicable state exemption laws. This is a multi-label classification problem since multiple exemptions can apply to a single asset. Federal exemptions may also need to be considered depending on whether the corresponding state has opted-out.")
                     gr.Markdown("*Asset exemption (dollar value).* For the selected state exemptions, and federal exemptions if applicable, determine how much of the fair market value of each asset is protected.")
                     gr.Markdown("*Identify non-exempt assets.* Based on the optimal exemptions that can be claimed, determine the total dollar value of assets not protected under the exemption laws of each applicable jurisdiction.")
                     gr.Markdown("*Select optimal exemptions.* Select the optimal exemption set by minimizing the dollar value of non-exempt assets.")
@@ -76,7 +76,7 @@ with gr.Blocks(css=custom_css) as demo:
 
             with gr.Row():
                 with gr.Column():
-                    start_task = gr.Radio(choices=TaskID.supported_tasks() , value=TaskID.GOVERNING_JURISDICTION.display_name(), label="Start Task", info="The first subtask to evaluate")
+                    start_task = gr.Radio(choices=TaskID.supported_tasks() , value=TaskID.ALLOWABLE_EXEMPTIONS.display_name(), label="Start Task", info="The first subtask to evaluate")
                 with gr.Column():
                     terminal_task = gr.Radio(choices=TaskID.supported_tasks() , value=TaskID.OPTIMAL_EXEMPTIONS.display_name(), label="End Task", info="The last subtask to evaluate (must be greater than or equal to start task)")
 
@@ -102,13 +102,14 @@ with gr.Blocks(css=custom_css) as demo:
     submit_btn = gr.Button("Generate Task", variant="primary")
     success_note = gr.Markdown(visible=False)
     prompt_output = gr.Textbox(label="Task Prompt", interactive=False, elem_id="prompt-box")
-    solution_output = gr.JSON(label="Expected Solution")
+    solution_output = gr.JSON(label="Solution")
     case_output = gr.Accordion("View Full Case JSON", open=False)
     with case_output:
         case_json = gr.JSON()
 
     gr.Markdown("Build notes: this demo is still in alpha. Please report any issues observed.")
 
+    # Task prompt box should always scroll to top upon new task generation
     gr.HTML("""
     <script>
       const observer = new MutationObserver(() => {
@@ -126,9 +127,8 @@ with gr.Blocks(css=custom_css) as demo:
     """)
 
     def on_generate(*args):
-        success_note.visible = True
         prompt, solution, case = process_demo_request(*args)
-        return prompt, solution, case, "✅ Task successfully generated. See below."
+        return prompt, solution, case, gr.update(value="✅ Task successfully generated. See below.", visible=True)
 
     submit_btn.click(
         fn=on_generate,

@@ -198,16 +198,16 @@ class Solver:
         new_optimal = new_solution if new_optimal is None else min(new_solution, new_optimal)
         return new_optimal
     
-    # Solve TaskID.ASSET_EXEMPTION_CLASSIFICATION
-    def solve_asset_exemption_classification(self, case: Case, allowable_jurisdictions: List[Jurisdiction]):
+    # Solve TaskID.EXEMPTION_CLASSIFICATION
+    def solve_exemption_classification(self, case: Case, allowable_jurisdictions: List[Jurisdiction]):
         solution = {}
         allowable_exemptions = self.citations_for_jurisdictions(allowable_jurisdictions)
         for asset in case.assets:
             solution[asset.description] = list(filter(lambda exemption: exemption in allowable_exemptions, asset.applicable_exemptions))
         return solution
     
-    # Solve TaskID.ASSET_EXEMPTION_DOLLAR_VALUE
-    def solve_asset_exemption_dollar_value(self, case: Case, allowable_jurisdictions: List[Jurisdiction]):
+    # Solve TaskID.EXEMPTION_VALUATION
+    def solve_exemption_valuation(self, case: Case, allowable_jurisdictions: List[Jurisdiction]):
         solution = {}
         for jurisdiction in allowable_jurisdictions:
             # This object represents the solution state prior to exempting any assets. We will use it to calculate solutions at the asset level (without considering aggregate values).
@@ -224,8 +224,8 @@ class Solver:
                         solution[asset.description].append({'citation': citation, 'claim_value': claim_amount})
         return solution
     
-    # Solve TaskID.NON_EXEMPT_ASSETS
-    def solve_non_exempt_assets(self, case: Case, allowable_jurisdictions: List[Jurisdiction]):
+    # Solve TaskID.NONEXEMPT_ASSETS
+    def solve_nonexempt_assets(self, case: Case, allowable_jurisdictions: List[Jurisdiction]):
         solution = {}
         for jurisdiction in allowable_jurisdictions:
             jurisdiction_solution = self.solve_case_for_jurisdiction(case, jurisdiction)

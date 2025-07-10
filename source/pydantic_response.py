@@ -14,15 +14,15 @@ class Claim(BaseModel):
     def normalized_citation(self):
         return self.citation.strip().lower()
 
-# TaskID.ASSET_EXEMPTION_CLASSIFICATION
-class AssetExemptionClassificationResponse(RootModel):
+# TaskID.EXEMPTION_CLASSIFICATION
+class ExemptionClassificationResponse(RootModel):
     root: Dict[str, List[str]]
 
-# TaskID.ASSET_EXEMPTION_DOLLAR_VALUE
-class AssetExemptionDollarValueResponse(RootModel):
+# TaskID.EXEMPTION_VALUATION
+class ExemptionValuationResponse(RootModel):
     root: Dict[str, List[Claim]]
 
-# TaskID.NON_EXEMPT_ASSETS
+# TaskID.NONEXEMPT_ASSETS
 class NonExemptAssetsResponse(RootModel):
     root: Dict[str, float]
 

@@ -11,8 +11,8 @@ from source.solver import Solver
 from source.statute_set import StatuteSet
 from source.pydantic_response import (
     Claim,
-    AssetExemptionClassificationResponse, 
-    AssetExemptionDollarValueResponse, 
+    ExemptionClassificationResponse, 
+    ExemptionValuationResponse, 
     NonExemptAssetsResponse, 
     OptimalExemptionsResponse
     )
@@ -41,14 +41,14 @@ class Evaluator:
         parsed_predictions = self._parse_predictions(predictions, task_id)
         extracted_targets = [target_dict['target'] for target_dict in targets]
         match task_id:
-            case TaskID.GOVERNING_JURISDICTION:
-                return self._evaluate_governing_jurisdiction(parsed_predictions, extracted_targets)
-            case TaskID.ASSET_EXEMPTION_CLASSIFICATION:
-                return self._evaluate_asset_exemption_classification(parsed_predictions, extracted_targets)
-            case TaskID.ASSET_EXEMPTION_DOLLAR_VALUE:
-                return self._evaluate_asset_exemption_dollar_value(parsed_predictions, extracted_targets)
-            case TaskID.NON_EXEMPT_ASSETS:
-                return self._evaluate_non_exempt_assets(parsed_predictions, extracted_targets)
+            case TaskID.ALLOWABLE_EXEMPTIONS:
+                return self._evaluate_allowable_exemptions(parsed_predictions, extracted_targets)
+            case TaskID.EXEMPTION_CLASSIFICATION:
+                return self._evaluate_exemption_classification(parsed_predictions, extracted_targets)
+            case TaskID.EXEMPTION_VALUATION:
+                return self._evaluate_exemption_valuation(parsed_predictions, extracted_targets)
+            case TaskID.NONEXEMPT_ASSETS:
+                return self._evaluate_nonexempt_assets(parsed_predictions, extracted_targets)
             case TaskID.OPTIMAL_EXEMPTIONS:
                 return self._evaluate_optimal_exemptions(parsed_predictions, extracted_targets, cases)
             case _:
@@ -169,8 +169,8 @@ class Evaluator:
             asset_map[description] = asset
         return asset_map
         
-    # Evaluate TaskID.GOVERNING_JURISDICTION
-    def _evaluate_governing_jurisdiction(self, predictions: List[str], targets: List[str]):
+    # Evaluate TaskID.ALLOWABLE_EXEMPTIONS
+    def _evaluate_allowable_exemptions(self, predictions: List[str], targets: List[str]):
         prediction_sets = [self._parse_multi_label_string(prediction) for prediction in predictions]
         target_sets = [self._parse_multi_label_string(target) for target in targets]
         score_array = np.array([self.compute_precision_recall_f1_scores(prediction_set, target_set) for prediction_set, target_set in zip(prediction_sets, target_sets)])
@@ -178,8 +178,8 @@ class Evaluator:
         precision, recall, f1 = scores
         return {'precision': float(precision), 'recall': float(recall), 'f1': float(f1)}
     
-    # Evaluate TaskID.ASSET_EXEMPTION_CLASSIFICATION
-    def _evaluate_asset_exemption_classification(self, predictions: List[AssetExemptionClassificationResponse], targets: List[Dict]):
+    # Evaluate TaskID.EXEMPTION_CLASSIFICATION
+    def _evaluate_exemption_classification(self, predictions: List[ExemptionClassificationResponse], targets: List[Dict]):
         score_array = np.zeros((len(targets), 3)) # 3 columns for precision, recall, f1
         invalid_format_count = 0
         for sample_index, (prediction, target) in enumerate(zip(predictions, targets)):
@@ -206,8 +206,8 @@ class Evaluator:
                 'f1': float(f1), 
                 'invalid_format': invalid_format_count}
     
-    # Evaluate TaskID.ASSET_EXEMPTION_DOLLAR_VALUE
-    def _evaluate_asset_exemption_dollar_value(self, predictions: List[AssetExemptionDollarValueResponse], targets: List[Dict]):
+    # Evaluate TaskID.EXEMPTION_VALUATION
+    def _evaluate_exemption_valuation(self, predictions: List[ExemptionValuationResponse], targets: List[Dict]):
         score_array = np.zeros((len(targets), 4)) # 4 columns for precision, recall, f1, mare
         invalid_format_count = 0
         for sample_index, (prediction, target) in enumerate(zip(predictions, targets)):
@@ -239,8 +239,8 @@ class Evaluator:
                 'mare': mare,
                 'invalid_format': invalid_format_count}
     
-    # Evaluate TaskID.NON_EXEMPT_ASSETS
-    def _evaluate_non_exempt_assets(self, predictions: List[NonExemptAssetsResponse], targets: List[Dict]):
+    # Evaluate TaskID.NONEXEMPT_ASSETS
+    def _evaluate_nonexempt_assets(self, predictions: List[NonExemptAssetsResponse], targets: List[Dict]):
         score_array = np.zeros((len(targets), 4)) # 4 columns for precision, recall, f1, mare
         invalid_format_count = 0
         for sample_index, (prediction, target) in enumerate(zip(predictions, targets)):

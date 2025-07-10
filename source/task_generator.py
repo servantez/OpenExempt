@@ -230,22 +230,22 @@ class TaskGenerator:
     def create_solved_reasoning_steps(self, case_: Case, allowable_jurisdictions: List[Jurisdiction]):
         solved_steps = 'Solved Reasoning Steps:\n' + self.instructions['solved_steps'] + '\n'
         match TaskID(self.config.start_task_id):
-            case TaskID.GOVERNING_JURISDICTION: # No solved reasoning steps
+            case TaskID.ALLOWABLE_EXEMPTIONS: # No solved reasoning steps
                 return None
-            case TaskID.ASSET_EXEMPTION_CLASSIFICATION:
+            case TaskID.EXEMPTION_CLASSIFICATION:
                 jurisdiction_names = ' and '.join(map(lambda jurisdiction: jurisdiction.display_name(), allowable_jurisdictions))
                 solved_steps += f'The {case_.party_coreference()} may claim property exemptions under {jurisdiction_names} statutes.'
-            case TaskID.ASSET_EXEMPTION_DOLLAR_VALUE:
+            case TaskID.EXEMPTION_VALUATION:
                 solved_steps += self.snippets[str(self.config.start_task_id) + '_solved_steps']
-                solution = self.solve_case(case_, TaskID.ASSET_EXEMPTION_CLASSIFICATION, allowable_jurisdictions)
+                solution = self.solve_case(case_, TaskID.EXEMPTION_CLASSIFICATION, allowable_jurisdictions)
                 for asset_description, citations in solution.items():
                     if not citations:
                         solved_steps += f'\nThere are no applicable exemptions for the {asset_description}.'
                     else:
                         solved_steps += f'\nThe {asset_description} may be exempted under {self.inflect_engine.join(citations)}.'
-            case TaskID.NON_EXEMPT_ASSETS:
+            case TaskID.NONEXEMPT_ASSETS:
                 solved_steps += self.snippets[str(self.config.start_task_id) + '_solved_steps']
-                solution = self.solve_case(case_, TaskID.ASSET_EXEMPTION_DOLLAR_VALUE, allowable_jurisdictions)
+                solution = self.solve_case(case_, TaskID.EXEMPTION_VALUATION, allowable_jurisdictions)
                 for asset_description, exemption_dicts in solution.items():
                     if not exemption_dicts:
                         solved_steps += f'\nThere are no applicable exemptions for the {asset_description}.'
@@ -254,7 +254,7 @@ class TaskGenerator:
                         solved_steps += f'\nThe {asset_description} may be exempted under {self.inflect_engine.join(citations_with_values)}.'
             case TaskID.OPTIMAL_EXEMPTIONS:
                 solved_steps += self.snippets[str(self.config.start_task_id) + '_solved_steps']
-                solution = self.solve_case(case_, TaskID.NON_EXEMPT_ASSETS, allowable_jurisdictions)
+                solution = self.solve_case(case_, TaskID.NONEXEMPT_ASSETS, allowable_jurisdictions)
                 for jurisdiction, non_exempt_dollar_amount in solution.items():
                     solved_steps += f'\nUnder {jurisdiction} exemptions, the minimal total dollar value of non-exempt assets is ${non_exempt_dollar_amount:,}.'
             case _:
@@ -263,14 +263,14 @@ class TaskGenerator:
     
     def solve_case(self, case_: Case, task_id: TaskID, allowable_jurisdictions: List[Jurisdiction]):
         match task_id:
-            case TaskID.GOVERNING_JURISDICTION:
+            case TaskID.ALLOWABLE_EXEMPTIONS:
                 return ', '.join(map(lambda jurisdiction: jurisdiction.display_name(), allowable_jurisdictions))
-            case TaskID.ASSET_EXEMPTION_CLASSIFICATION:
-                return self.solver.solve_asset_exemption_classification(case_, allowable_jurisdictions)
-            case TaskID.ASSET_EXEMPTION_DOLLAR_VALUE:
-                return self.solver.solve_asset_exemption_dollar_value(case_, allowable_jurisdictions)
-            case TaskID.NON_EXEMPT_ASSETS:
-                return self.solver.solve_non_exempt_assets(case_, allowable_jurisdictions)
+            case TaskID.EXEMPTION_CLASSIFICATION:
+                return self.solver.solve_exemption_classification(case_, allowable_jurisdictions)
+            case TaskID.EXEMPTION_VALUATION:
+                return self.solver.solve_exemption_valuation(case_, allowable_jurisdictions)
+            case TaskID.NONEXEMPT_ASSETS:
+                return self.solver.solve_nonexempt_assets(case_, allowable_jurisdictions)
             case TaskID.OPTIMAL_EXEMPTIONS:
                 return self.solver.solve_optimal_exemptions(case_, allowable_jurisdictions)
             case _:
