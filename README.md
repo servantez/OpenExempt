@@ -52,6 +52,6 @@ Benchmark users are able to control the legal tasks specified in the dataset by 
 | State jurisdictions | The specific state jurisdictions which should be involved in the cases being generated. All datasets include federal statutes. | 
 | Minimum and maximum asset count | The upper and lower bound for the number of assets that should be included in each case. | 
 | Obfuscation facts | Language models can be susceptible to making errors when the input context includes irrelevant information or opinions. This arguments injects obfuscation facts into the task to gain insights on resulting hallucinations and sycophancy. | 
-| Percentage of married cases | The dollar amount protected under a given exemption typically increases for married couples. This argument indicates the percentage of cases which should involve married individuals. | 
+| Ratio of married cases | The dollar amount protected under a given exemption typically increases for married couples. This argument indicates the ratio of cases which should involve married individuals. | 
 | Minimum and maximum domicile count | The upper and lower bound for the number of prior residences of the Debtor before filing. | 
 | Dataset size | The number of tasks and solutions in the dataset. | 

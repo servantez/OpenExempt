@@ -43,25 +43,37 @@ class Config:
                             'dataset_directory': self.dataset_directory, 
                             **config_file}
         self.validate()
-
+    
     def validate(self):
+        error_message = self.validate_with_error_message()
+        if error_message:
+            raise ValueError(error_message)
+
+    def validate_with_error_message(self):
         if self.state_jurisdiction_count() < 1:
-            raise ValueError('At least one state jurisdiction must be provided.')
+            return 'At least one state jurisdiction must be provided.'
         if 'FEDERAL' in self.state_jurisdictions:
-            raise ValueError('Federal jurisdiction should not be included in state jurisdictions.')
+            return 'Federal jurisdiction should not be included in state jurisdictions.'
         if self.domicile_count_min < 1 or self.domicile_count_min > 5:
-            raise ValueError('Min domicile count must be at least one and at most five.')
+            return 'Min domicile count must be at least one and at most five.'
         if self.domicile_count_max < 1 or self.domicile_count_max > 5:
-            raise ValueError('Max domicile count must be at least one and at most five.')
+            return 'Max domicile count must be at least one and at most five.'
         if  self.domicile_count_min > self.domicile_count_max:
-            raise ValueError('Min domicile count must be less than or equal to max domicile count')
+            return 'Min domicile count must be less than or equal to max domicile count'
         if self.asset_count_min < 1 or self.asset_count_min > 8:
-            raise ValueError('Min asset count must be at least one and at most eight.')
+            return 'Min asset count must be at least one and at most eight.'
         if self.asset_count_max < 1 or self.asset_count_max > 8:
-            raise ValueError('Max asset count must be at least one and at most eight.')
+            return 'Max asset count must be at least one and at most eight.'
         if  self.asset_count_min > self.asset_count_max:
-            raise ValueError('Min asset count must be less than or equal to max asset count')
-        
+            return 'Min asset count must be less than or equal to max asset count'
+        if self.married_ratio < 0 or self.married_ratio > 1:
+            return 'Married Ratio must be between 0 and 1.'
+        if self.dataset_size < 1:
+            return 'Dataset size must be a positive integer.'
+        if self.start_task_id > self.terminal_task_id:
+            return 'Start task ID must be less than or equal to terminal task ID.'
+        return None
+    
     def state_jurisdiction_count(self):
         return len(self.state_jurisdictions)
 
