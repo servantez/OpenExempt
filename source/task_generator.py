@@ -278,7 +278,7 @@ class TaskGenerator:
 
     def generate_task(self, case: Case):
         instruction = self.instructions[str(self.config.terminal_task_id)]
-        meta_instruction = self.instructions['meta']
+        meta_instruction = self.instructions['meta'] if self.config.terminal_task_id > 1 else self.instructions['meta_without_assets']
         response_format = 'Response Format: ' + self.instructions[str(self.config.terminal_task_id) + '_response_format']
         name_variant_sampler = self.create_name_variant_sampler(case.debtor, case.joint_debtor)
         state_statute_set = self.statute_set_map[case.state_jurisdiction]

@@ -42,3 +42,6 @@ class ModelID(Enum):
         if not api_key:
             raise ValueError(f'API key not found for environment variable: {self.env_variable()}')
         return api_key
+    
+    def supports_temperature(self):
+        return self not in [ModelID.o3, ModelID.o4_mini]

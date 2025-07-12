@@ -19,7 +19,7 @@ load_dotenv()
 
 def run_dataset(dataset_directory: str, output_directory: str, model: ModelClient, evaluator: Evaluator, verbose: bool = True):
     # Load dataset
-    config = Config.load_config_file_in_directory(dataset_directory)
+    config = Config.from_directory(dataset_directory)
     dataset = TaskDataset.from_config(config)
 
     # Setup dataset output directory
@@ -34,7 +34,7 @@ def run_dataset(dataset_directory: str, output_directory: str, model: ModelClien
 
     # Setup logging
     log_file_path = os.path.join(prediction_directory, 'log.log')
-    logger = configure_logger_with_name(dataset.name, log_file_path)
+    logger = configure_logger_with_name(dataset.name, log_file_path, verbose)
     if not verbose:
         logger.disabled = True
     logger.info('OpenExempt initialized.')
@@ -95,7 +95,7 @@ def run_suite(suite_directory: str, output_directory: str, model: ModelClient, e
 
     # Setup logging
     log_file_path = os.path.join(suite_output_directory, 'log.log')
-    logger = configure_logger_with_name(suite.name, log_file_path)
+    logger = configure_logger_with_name(suite.name, log_file_path, verbose)
     if not verbose:
         logger.disabled = True
     logger.info('OpenExempt initialized.')

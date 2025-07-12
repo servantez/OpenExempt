@@ -11,11 +11,11 @@
     "asset_count_max": 1,
     "asset_selection": "random",
     "married_ratio": 0.5,
-    "domicile_count_min": 1,
-    "domicile_count_max": 1,
+    "domicile_count_min": 3,
+    "domicile_count_max": 3,
     "irrelevant_asset_facts": false,
     "irrelevant_domicile_facts": false,
     "asset_opinions": false,
     "domicile_opinions": false,
-    "state_jurisdictions": ["ARIZONA", "ILLINOIS", "OREGON", "PENNSYLVANIA", "WISCONSIN"]
+    "state_jurisdictions": ["ARIZONA", "OREGON", "PENNSYLVANIA"]
 }

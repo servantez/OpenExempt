@@ -22,27 +22,23 @@ class ModelClient:
 
     def _init_model(self):
         api_key = self.model_id.get_api_key()
+        parameters = {
+            "model": self.model_id.value,
+            "timeout": ModelClient._timeout,
+            "max_retries": ModelClient._retries,
+            "api_key": api_key
+        }
+        if self.model_id.supports_temperature():
+            parameters["temperature"] = self.temperature
         match self.model_id.host():
             case ModelHost.OPENAI:
-                return ChatOpenAI(model=self.model_id.value,
-                                  temperature=self.temperature,
-                                  timeout=ModelClient._timeout,
-                                  max_retries=ModelClient._retries,
-                                  api_key=api_key)
+                return ChatOpenAI(**parameters)
             case ModelHost.ANTHROPIC:
-                return ChatAnthropic(model=self.model_id.value,
-                                     temperature=self.temperature,
-                                     timeout=ModelClient._timeout,
-                                     max_retries=ModelClient._retries,
-                                     api_key=api_key)
+                return ChatAnthropic(**parameters)
             case ModelHost.GOOGLE:
-                return ChatGoogleGenerativeAI(model=self.model_id.value,
-                                              temperature=self.temperature,
-                                              timeout=ModelClient._timeout,
-                                              max_retries=ModelClient._retries,
-                                              api_key=api_key)
+                return ChatGoogleGenerativeAI(**parameters)
             case ModelHost.HUGGINGFACE:
-                return ChatHuggingFace(api_key)
+                return ChatHuggingFace(**parameters)
     
     def __call__(self, prompt: str):
         self.messages.append(HumanMessage(content=prompt))

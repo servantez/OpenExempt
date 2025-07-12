@@ -61,7 +61,7 @@ class Task:
         return {'uid': self.uid, 'target': self.solution}
     
     def serialize(self):
-        serialized = self.to_dict()
+        serialized = self.to_dict().copy()
         serialized['start_task_id'] = serialized['start_task_id'].value
         serialized['terminal_task_id'] = serialized['terminal_task_id'].value
         serialized['jurisdiction'] = serialized['jurisdiction'].value
@@ -79,6 +79,18 @@ class Task:
     
     def prompt(self):
         return '\n\n'.join(filter(None, self.prompt_inputs()))
+    
+    def shared_keys(self):
+        return ['start_task_id', 'terminal_task_id', 'instruction', 'meta_instruction', 'response_format', 'statutes']
+    
+    def dynamic_keys(self):
+        return ['uid', 'jurisdiction', 'facts', 'solved_steps', 'solution']
+    
+    def shared_components(self):
+        return {key: value for key, value in self.serialize().items() if key in self.shared_keys()}
+
+    def dynamic_components(self):
+        return {key: value for key, value in self.serialize().items() if key in self.dynamic_keys()}
 
 
 class TaskDataset:
@@ -119,6 +131,9 @@ class TaskDataset:
         file_name = 'cases' if split == 'test' else f'{split}_cases'
         return os.path.join(self.dataset_directory, f'{file_name}.jsonl')
     
+    def shared_component_file_path(self):
+        return os.path.join(self.dataset_directory, 'shared.json')
+    
     @property
     def splits(self):
         return list(self._tasks.keys())
@@ -138,13 +153,18 @@ class TaskDataset:
         save_splits = splits or self.splits
         for split in save_splits:
             self.save_to_path(self.task_file_path(split), 
-                              self.case_file_path(split) if save_cases else None, 
+                              self.case_file_path(split) if save_cases else None,
+                              self.shared_component_file_path() if split == 'test' else None,
                               split)
 
-    def save_to_path(self, path: str, case_file_path: str = None, split: str = 'test'):
+    def save_to_path(self, path: str, case_file_path: str = None, shared_file_path: str = None, split: str = 'test'):
         self.logger.info(f'Begin saving {split} dataset: {self.name} to path: {path}')
-        serialized_tasks = list(map(lambda task: task.serialize(), self._tasks[split]))
+        assert len(self._tasks[split]) > 0, f'Attempting to save empty {split} dataset: {self.name}'
+        serialized_tasks = list(map(lambda task: task.dynamic_components(), self._tasks[split]))
         write_jsonl_file(path, serialized_tasks)
+        if shared_file_path:
+            with open(shared_file_path, 'w') as file:
+                json.dump(self._tasks[split][0].shared_components(), file, indent=4)
         if case_file_path:
             assert len(self._cases[split]) == len(self._tasks[split]), (
                 f"Failed to save {split} dataset: {self.name} due to task count {len(self._tasks[split])} not being equal to case count {len(self._cases[split])}."
@@ -155,7 +175,9 @@ class TaskDataset:
 
     def _load_data(self, split: str = 'test'):
         task_dicts = read_jsonl_file(self.task_file_path(split))
-        return list(map(lambda task_dict: Task.create_task(**task_dict), task_dicts))
+        with open(self.shared_component_file_path(), 'r') as file:
+            shared_components = json.load(file)
+        return list(map(lambda task_dict: Task.create_task(**(task_dict | shared_components)), task_dicts))
     
     def _load_cases(self, split: str = 'test'):
         case_dicts = read_jsonl_file(self.case_file_path(split))

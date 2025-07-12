@@ -17,8 +17,17 @@ class Config:
         return Config.load_config_file(os.path.join(directory, Config.default_file_name))
     
     @staticmethod
-    def from_path(config_path: str, dataset_name: str, verbose: bool = True):
+    def from_path(config_path: str, dataset_name: str = None, verbose: bool = True):
         config_file = Config.load_config_file(config_path)
+        # Config file for existing dataset already has name
+        dataset_name = dataset_name or config_file['dataset_name']
+        return Config(config_file, dataset_name, verbose)
+    
+    @staticmethod
+    def from_directory(directory: str, dataset_name: str = None, verbose: bool = True):
+        config_file = Config.load_config_file_in_directory(directory)
+        # Config file for existing dataset already has name
+        dataset_name = dataset_name or config_file['dataset_name']
         return Config(config_file, dataset_name, verbose)
     
     @staticmethod
@@ -72,11 +81,15 @@ class Config:
             return 'Dataset size must be a positive integer.'
         if self.start_task_id > self.terminal_task_id:
             return 'Start task ID must be less than or equal to terminal task ID.'
+        if self.terminal_task_id == 1 and self.irrelevant_asset_facts:
+            return 'This task does not contain asset facts, therefore irrelevant asset facts cannot be present.'
+        if self.terminal_task_id == 1 and self.asset_opinions:
+            return 'This task does not contain asset facts, therefore asset opinions cannot be present.'
         return None
     
     def state_jurisdiction_count(self):
         return len(self.state_jurisdictions)
-
+    
     def copy_config_file_to_dataset_directory(self):
         with open(os.path.join(self.dataset_directory, Config.default_file_name), 'w') as file:
             json.dump(self.config_file, file, indent=4)
