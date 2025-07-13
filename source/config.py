@@ -43,10 +43,10 @@ class Config:
         for key, value in config_file.items():
             setattr(self, key, value)
         self.verbose = verbose
-        self.dataset_directory = config_file.get('dataset_directory', os.path.join(config_file['output_directory'], self.dataset_name))
-        self.log_file_path = os.path.join(self.dataset_directory, 'log.log')
         suite_id = config_file.get('suite_id')
         self.dataset_id = config_file.get('dataset_id', f'{suite_id}_{dataset_name}' if suite_id else dataset_name)
+        self.dataset_directory = config_file.get('dataset_directory', os.path.join(config_file['output_directory'], self.dataset_id))
+        self.log_file_path = os.path.join(self.dataset_directory, 'log.log')
         self.config_file = {'dataset_name': self.dataset_name, 
                             'dataset_id': self.dataset_id, 
                             'dataset_directory': self.dataset_directory, 

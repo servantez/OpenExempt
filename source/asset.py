@@ -6,7 +6,7 @@ from typing import List
 class Asset:
     description: str
     dollar_value: float
-    applicable_exemptions: List[str] # List of exemption labels
+    applicable_exemptions: List[str] # List of applicable exemption citations across all jurisdictions
     category_hints: List[str] # Used only in the asset selection process, not exemption applicability
 
     def __str__(self):

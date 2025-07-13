@@ -19,7 +19,7 @@ class SuiteID(Enum):
     ADVANCED_COMPETENCY = 'ac'
 
     def __init__(self, value):
-        self.dataset_index_counter = {member: 0 for member in TaskID}
+        self.dataset_index_counter = {member: 1 for member in TaskID}
 
     def display_name(self):
         return self.name.lower()
