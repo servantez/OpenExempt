@@ -56,10 +56,10 @@ class SuiteID(Enum):
     def config_file_path(self):
         return os.path.join('data/suite_configs', self.config_file_name())
     
-    def get_dataset_name_with_task_id(self, task_id: TaskID, suite_id: str):
+    def get_dataset_name_with_task_id(self, task_id: TaskID):
         dataset_index = self.dataset_index_counter[task_id]
         self.dataset_index_counter[task_id] += 1
-        return f'{suite_id}_{task_id.name.lower()}_{dataset_index}'
+        return f'{task_id.name.lower()}_{dataset_index}'
         
     def get_default_suite_config_file(self):
         suite_config = Config.load_config_file(self.config_file_path())
@@ -77,8 +77,7 @@ class SuiteID(Enum):
         dataset_config_file = default_config_file.copy()
         dataset_config_file.update(update_dict)
         terminal_task_id = TaskID(dataset_config_file['terminal_task_id'])
-        suite_id = dataset_config_file['suite_id']
-        dataset_name = self.get_dataset_name_with_task_id(terminal_task_id, suite_id)
+        dataset_name = self.get_dataset_name_with_task_id(terminal_task_id)
         return dataset_config_file, dataset_name
         
     def create_tr_config_files(self, default_config_file: Dict[str, Any]):

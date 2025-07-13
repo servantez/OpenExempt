@@ -23,7 +23,7 @@ def run_dataset(dataset_directory: str, output_directory: str, model: ModelClien
     dataset = TaskDataset.from_config(config)
 
     # Setup dataset output directory
-    prediction_directory = os.path.join(output_directory, dataset.name)
+    prediction_directory = os.path.join(output_directory, dataset.dataset_id)
     prediction_file_path = os.path.join(prediction_directory, 'predictions.jsonl')
     result_file_path = os.path.join(prediction_directory, 'results.jsonl')
     os.makedirs(prediction_directory, exist_ok=True)
