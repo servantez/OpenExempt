@@ -285,7 +285,7 @@ class TaskGenerator:
         allowable_jurisdictions = state_statute_set.allowable_exemption_jurisdictions()
 
         facts = 'Facts:\n' + self.create_preamble(case.debtor, case.joint_debtor, case.petition_date)
-        if self.config.start_task_id == 1:
+        if self.config.start_task_id == 1: # If allowable exemptions have been solved, omit domicile facts
             domicile_facts = self.create_domicile_facts(case, name_variant_sampler)
             facts += ' ' + ' '.join(domicile_facts)
         if self.config.terminal_task_id > 1:
