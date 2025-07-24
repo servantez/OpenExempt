@@ -7,4 +7,4 @@ langchain-core>=0.3.65
 langchain-openai>=0.3.23
 langchain-anthropic>=0.3.15
 langchain-google-genai>=2.1.5
-langchain-community>=0.3.25
+langchain-huggingface>=0.3.0

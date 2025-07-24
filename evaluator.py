@@ -1,3 +1,4 @@
+import re
 import numpy as np
 from copy import deepcopy
 from logging import Logger
@@ -6,6 +7,7 @@ from rapidfuzz import process, fuzz
 from langchain_core.exceptions import OutputParserException
 from source.jurisdiction import Jurisdiction
 from source.task_id import TaskID
+from source.model_id import ModelID
 from source.case import Case
 from source.solver import Solver
 from source.statute_set import StatuteSet
@@ -32,13 +34,13 @@ class Evaluator:
         self.logger = None # Set to dataset logger at time of evaluation
 
     # This is the only method needed for evaluation - all evaluation logic is handled by evaluator.
-    def evaluate(self, task_id: TaskID, predictions: List[Dict[str, str]], targets: List[Dict[str, str | Dict]], cases: List[Case], logger: Logger):
+    def evaluate(self, task_id: TaskID, predictions: List[Dict[str, str]], targets: List[Dict[str, str | Dict]], cases: List[Case], model_id: ModelID, logger: Logger):
         self.logger = logger
         assert len(predictions) == len(targets), f'Number of predictions ({len(predictions)}) and targets ({len(targets)}) must be the same.'
         assert len(targets) == len(cases), f'Number of targets ({len(targets)}) and cases ({len(cases)}) must be the same.'
         uid_sanity_check = all(prediction['uid'] == target['uid'] for prediction, target in zip(predictions, targets))
         assert uid_sanity_check, 'Prediction and target lists contain mismatched UIDs (prediction UID != target UID).'
-        parsed_predictions = self._parse_predictions(predictions, task_id)
+        parsed_predictions = self._parse_predictions(predictions, task_id, model_id)
         extracted_targets = [target_dict['target'] for target_dict in targets]
         match task_id:
             case TaskID.ALLOWABLE_EXEMPTIONS:
@@ -54,14 +56,18 @@ class Evaluator:
             case _:
                 raise NotImplementedError(f'Evaluation not implemented for task ID: {task_id}')
             
-    def _parse_predictions(self, predictions: List[Dict[str, str]], task_id: TaskID):
+    def _parse_predictions(self, predictions: List[Dict[str, str]], task_id: TaskID, model_id: ModelID):
         parser = task_id.response_parser()
-        if not parser: # No parsing needed
-            return [prediction_dict['prediction'] for prediction_dict in predictions]
         parsed_predictions = []
         for prediction_dict in predictions:
+            parsed_prediction = prediction_dict['prediction']
+            if model_id == ModelID.DEEPSEEK_R1: # Remove think tags
+                parsed_prediction = re.sub(r'<think>.*?</think>', '', parsed_prediction, count=1, flags=re.DOTALL)
+            if not parser: # No parsing needed
+                parsed_predictions.append(parsed_prediction)
+                continue
             try:
-                parsed_prediction = parser.parse(prediction_dict['prediction'])
+                parsed_prediction = parser.parse(parsed_prediction)
             except OutputParserException as parser_exception: # Invalid response format
                 uid = prediction_dict['uid']
                 self.logger.info(f'Encountered invalid response format for task: {uid}.')
@@ -123,6 +129,8 @@ class Evaluator:
         return precision, recall, f1, mare
     
     def _find_matching_asset_description(self, asset_description: str, candidates: List[str]):
+        if not candidates:
+            return None
         # If exact match exists, return asset description
         if asset_description in candidates:
             return asset_description
@@ -173,7 +181,7 @@ class Evaluator:
     def _evaluate_allowable_exemptions(self, predictions: List[str], targets: List[str]):
         prediction_sets = [self._parse_multi_label_string(prediction) for prediction in predictions]
         target_sets = [self._parse_multi_label_string(target) for target in targets]
-        score_array = np.array([self.compute_precision_recall_f1_scores(prediction_set, target_set) for prediction_set, target_set in zip(prediction_sets, target_sets)])
+        score_array = np.array([self._compute_precision_recall_f1_scores(prediction_set, target_set) for prediction_set, target_set in zip(prediction_sets, target_sets)])
         scores = score_array.mean(axis=0)
         precision, recall, f1 = scores
         return {'precision': float(precision), 'recall': float(recall), 'f1': float(f1)}
@@ -316,7 +324,13 @@ class Evaluator:
                     invalid_claim_count += len(claims)
                     continue
                 case_asset = case_asset_map[matching_asset_description]
+                deduped_claim_map = {}
                 for claim in claims:
+                    if claim.normalized_citation not in deduped_claim_map:
+                        deduped_claim_map[claim.normalized_citation] = 0
+                    deduped_claim_map[claim.normalized_citation] += claim.claim_value
+                deduped_claims = [Claim(citation=citation, claim_value=value) for citation, value in deduped_claim_map.items()]
+                for claim in deduped_claims:
                     if (claim.normalized_citation not in case_asset.applicable_exemptions or 
                         claim.claim_value > case_asset.dollar_value):
                         invalid_claim_count += 1

@@ -277,9 +277,11 @@ class TaskGenerator:
                 raise ValueError(f'Encountered unsupported task ID: {task_id}')
 
     def generate_task(self, case: Case):
-        instruction = self.instructions[str(self.config.terminal_task_id)]
-        meta_instruction = self.instructions['meta'] if self.config.terminal_task_id > 1 else self.instructions['meta_without_assets']
-        response_format = 'Response Format: ' + self.instructions[str(self.config.terminal_task_id) + '_response_format']
+        terminal_task_id = TaskID(self.config.terminal_task_id)
+        instruction = self.instructions[str(terminal_task_id.value)]
+        meta_instruction = self.instructions['meta'] if terminal_task_id.value > 1 else self.instructions['meta_without_assets']
+        json_response_format = '' if terminal_task_id.solution_type() == str else self.instructions['json_response_format'] + ' '
+        response_format = 'Response Format: ' + json_response_format + self.instructions[str(terminal_task_id.value) + '_response_format']
         name_variant_sampler = self.create_name_variant_sampler(case.debtor, case.joint_debtor)
         state_statute_set = self.statute_set_map[case.state_jurisdiction]
         allowable_jurisdictions = state_statute_set.allowable_exemption_jurisdictions()

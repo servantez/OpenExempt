@@ -3,19 +3,17 @@ from langchain_core.messages import BaseMessage, HumanMessage, SystemMessage
 from langchain_openai import ChatOpenAI
 from langchain_anthropic import ChatAnthropic
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_community.chat_models import ChatHuggingFace
-from langchain_community.llms import HuggingFaceEndpoint
+from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
 from langchain_core.output_parsers import JsonOutputParser
 from .model_id import ModelID, ModelHost
 
 
 class ModelClient:
     _retries = 3
-    _timeout = 60
+    _timeout = 600
 
-    def __init__(self, model_id: ModelID, temperature=None):
+    def __init__(self, model_id: ModelID):
         self.model_id = model_id
-        self.temperature = temperature or 0
         self.model = self._init_model()
         self.json_output_parser = JsonOutputParser()
         self.messages: List[BaseMessage] = []
@@ -25,20 +23,28 @@ class ModelClient:
         parameters = {
             "model": self.model_id.value,
             "timeout": ModelClient._timeout,
-            "max_retries": ModelClient._retries,
             "api_key": api_key
         }
         if self.model_id.supports_temperature():
-            parameters["temperature"] = self.temperature
-        match self.model_id.host():
+            parameters["temperature"] = self.model_id.temperature()
+        match self.model_id.host:
             case ModelHost.OPENAI:
-                return ChatOpenAI(**parameters)
+                model = ChatOpenAI(**parameters)
             case ModelHost.ANTHROPIC:
-                return ChatAnthropic(**parameters)
+                model = ChatAnthropic(**parameters)
             case ModelHost.GOOGLE:
-                return ChatGoogleGenerativeAI(**parameters)
+                model = ChatGoogleGenerativeAI(**parameters)
             case ModelHost.HUGGINGFACE:
-                return ChatHuggingFace(**parameters)
+                hf_parameters = {'repo_id': self.model_id.hf_repo_id, 
+                                 "timeout": ModelClient._timeout,
+                                 'huggingfacehub_api_token': api_key}
+                if self.model_id.supports_temperature():
+                    hf_parameters["temperature"] = self.model_id.temperature()
+                llm = HuggingFaceEndpoint(**hf_parameters)
+                model = ChatHuggingFace(llm=llm, streaming=True) # Stream to prevent provider timeout
+            case _:
+                raise NotImplementedError(f'Model initialization not implemented for host: {self.model_id.host}')
+        return model.with_retry(stop_after_attempt=ModelClient._retries + 1)
     
     def __call__(self, prompt: str):
         self.messages.append(HumanMessage(content=prompt))
