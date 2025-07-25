@@ -204,6 +204,7 @@ class Evaluator:
                     asset_score_array[asset_index, :] = 0
                     continue
                 predicted_citations = normalized_prediction[matching_asset_description]
+                predicted_citations = [Claim.normalize_citation(citation) for citation in predicted_citations]
                 precision, recall, f1 = self._compute_precision_recall_f1_scores(set(predicted_citations), set(citations))
                 asset_score_array[asset_index] = [precision, recall, f1]
             score_array[sample_index, :] = asset_score_array.mean(axis=0) # Macro averaged across assets

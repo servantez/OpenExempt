@@ -1,6 +1,6 @@
 {
     "1": "Determine which state or federal exemptions may be claimed by the Debtor(s) under the provided statutes.",
-    "1_response_format": "Your response must be only a comma-separated list of jurisdictions, without any additional text. States should be identified by name. If federal exemptions are allowed, include 'Federal' in the list. \nExample response format: Alaska, Federal",
+    "1_response_format": "Your response must consist of only a comma-separated list of jurisdictions, without any additional text. States should be identified by name. If federal exemptions are allowed, include 'Federal' in the list. \nExample response format: Alaska, Federal",
     "2": "For each asset in the estate, identify all applicable exemptions under which that asset may be protected.",
     "2_response_format": "Provide your response as a JSON object where: each key is the exact asset description provided in the fact pattern, and each value is an array of applicable exemption citations. \nExample response format: {\"1981 DeLorean DMC-12\": [\"11 U.S.C. § 522(d)(2)\", \"11 U.S.C. § 522(d)(5)\"]}",
     "3": "For each asset in the estate, identify all applicable exemptions under which that asset may be protected, and determine how much of the asset's dollar value can be claimed under each exemption. Consider each asset-exemption pair independently, without factoring in aggregate values across multiple assets.",

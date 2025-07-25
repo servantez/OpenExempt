@@ -1,3 +1,4 @@
+import re
 from typing import Dict, List
 from pydantic import BaseModel, RootModel
 
@@ -7,12 +8,17 @@ class Claim(BaseModel):
     citation: str
     claim_value: float
 
+    @staticmethod
+    def normalize_citation(citation: str):
+        normalized = re.sub(r'§(?!\s)', '§ ', citation) # Ensure § is followed by a space
+        return normalized.strip().lower()
+
     def __str__(self):
         return f'Claim(citation: {self.citation}, value: {self.claim_value:,})'
     
     @property
     def normalized_citation(self):
-        return self.citation.strip().lower()
+        return Claim.normalize_citation(self.citation)
 
 # TaskID.EXEMPTION_CLASSIFICATION
 class ExemptionClassificationResponse(RootModel):
