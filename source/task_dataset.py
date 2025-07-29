@@ -22,6 +22,7 @@ class Task:
     facts: str
     solved_steps: str
     statutes: str
+    format_reminder: str
     solution: str | Dict
 
     @staticmethod
@@ -34,6 +35,7 @@ class Task:
                     facts: str,
                     solved_steps: str,
                     statutes: str, 
+                    format_reminder: str,
                     solution: str | Dict,
                     uid: str = None): # Task UID will exist only if task has been added to a dataset
         
@@ -47,6 +49,7 @@ class Task:
                     facts,
                     solved_steps,
                     statutes,
+                    format_reminder,
                     solution)
         
         if not task.is_valid(ignore_uid=True):
@@ -75,13 +78,24 @@ class Task:
         return all(value is not None for value in task_dict.values())
     
     def prompt_inputs(self):
-        return [self.instruction, self.meta_instruction, self.response_format, self.facts, self.solved_steps, self.statutes]
+        return [self.instruction, 
+                self.meta_instruction, 
+                self.response_format, 
+                self.facts, self.solved_steps, 
+                self.statutes,
+                self.format_reminder]
     
     def prompt(self):
         return '\n\n'.join(filter(None, self.prompt_inputs()))
     
     def shared_keys(self):
-        return ['start_task_id', 'terminal_task_id', 'instruction', 'meta_instruction', 'response_format', 'statutes']
+        return ['start_task_id', 
+                'terminal_task_id', 
+                'instruction', 
+                'meta_instruction', 
+                'response_format', 
+                'statutes', 
+                'format_reminder']
     
     def dynamic_keys(self):
         return ['uid', 'jurisdiction', 'facts', 'solved_steps', 'solution']

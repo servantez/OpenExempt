@@ -61,8 +61,10 @@ class Evaluator:
         parsed_predictions = []
         for prediction_dict in predictions:
             parsed_prediction = prediction_dict['prediction']
-            if model_id == ModelID.DEEPSEEK_R1: # Remove think tags
-                parsed_prediction = re.sub(r'<think>.*?</think>', '', parsed_prediction, count=1, flags=re.DOTALL)
+            parsed_prediction = self._extract_final_answer(parsed_prediction)
+            match model_id: # Remove think tags
+                case ModelID.DEEPSEEK_R1: 
+                    parsed_prediction = re.sub(r'<think>.*?</think>', '', parsed_prediction, count=1, flags=re.DOTALL)
             if not parser: # No parsing needed
                 parsed_predictions.append(parsed_prediction)
                 continue
@@ -77,6 +79,13 @@ class Evaluator:
             else:
                 parsed_predictions.append(parsed_prediction)
         return parsed_predictions
+    
+    def _extract_final_answer(self, prediction: str):
+        separator = 'FINAL ANSWER:'
+        index = prediction.rfind(separator)
+        if index == -1:
+            return prediction
+        return prediction[index + len(separator):].strip()
     
     def _init_solver(self, statute_sets: List[StatuteSet]):
         normalized_statute_sets = deepcopy(statute_sets)

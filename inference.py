@@ -55,6 +55,7 @@ def run_dataset(dataset_directory: str, output_directory: str, model: ModelClien
             model.start_new_conversation()
             
             prediction = model(task.prompt())
+            
             predictions.append({'uid': task.uid, 'prediction': prediction})
             logger.info(f'Finished inference on task: {task.uid}')
         logger.info(f'Finished inference on dataset: {dataset.dataset_id}')

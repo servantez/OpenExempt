@@ -69,13 +69,13 @@ class ModelID(Enum):
     def env_variable(self):
         match self.host:
             case ModelHost.OPENAI:
-                return "OPENAI_API_KEY"
+                return 'OPENAI_API_KEY'
             case ModelHost.ANTHROPIC:
-                return "ANTHROPIC_API_KEY"
+                return 'ANTHROPIC_API_KEY'
             case ModelHost.GOOGLE:
-                return "GOOGLE_API_KEY"
+                return 'GOOGLE_API_KEY'
             case ModelHost.HUGGINGFACE:
-                return "HUGGINGFACEHUB_API_TOKEN"
+                return 'HUGGINGFACEHUB_API_TOKEN'
             case _:
                 raise NotImplementedError(f'Environment variable not implemented for host: {self.host}')
     
@@ -97,3 +97,12 @@ class ModelID(Enum):
                 return 0.6 # Recommended by developer (https://huggingface.co/deepseek-ai/DeepSeek-R1)
             case _:
                 return 0
+            
+    def model_parameters(self):
+        parameters = {'temperature': self.temperature()} if self.supports_temperature() else {}
+        match self:
+            case ModelID.LLAMA_4_MAVERICK:
+                parameters['max_new_tokens'] = 8192
+            case _:
+                parameters['max_tokens'] = 8192
+        return parameters

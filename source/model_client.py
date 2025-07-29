@@ -4,7 +4,6 @@ from langchain_openai import ChatOpenAI
 from langchain_anthropic import ChatAnthropic
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_huggingface import ChatHuggingFace, HuggingFaceEndpoint
-from langchain_core.output_parsers import JsonOutputParser
 from .model_id import ModelID, ModelHost
 
 
@@ -15,7 +14,6 @@ class ModelClient:
     def __init__(self, model_id: ModelID):
         self.model_id = model_id
         self.model = self._init_model()
-        self.json_output_parser = JsonOutputParser()
         self.messages: List[BaseMessage] = []
 
     def _init_model(self):
@@ -25,8 +23,7 @@ class ModelClient:
             "timeout": ModelClient._timeout,
             "api_key": api_key
         }
-        if self.model_id.supports_temperature():
-            parameters["temperature"] = self.model_id.temperature()
+        parameters.update(self.model_id.model_parameters())
         match self.model_id.host:
             case ModelHost.OPENAI:
                 model = ChatOpenAI(**parameters)
@@ -38,8 +35,7 @@ class ModelClient:
                 hf_parameters = {'repo_id': self.model_id.hf_repo_id, 
                                  "timeout": ModelClient._timeout,
                                  'huggingfacehub_api_token': api_key}
-                if self.model_id.supports_temperature():
-                    hf_parameters["temperature"] = self.model_id.temperature()
+                hf_parameters.update(self.model_id.model_parameters())
                 llm = HuggingFaceEndpoint(**hf_parameters)
                 model = ChatHuggingFace(llm=llm, streaming=True) # Stream to prevent provider timeout
             case _:
@@ -54,10 +50,3 @@ class ModelClient:
     
     def start_new_conversation(self, system_prompt: str = None):
         self.messages = [SystemMessage(content=system_prompt)] if system_prompt else []
-    
-    def invoke_with_json_output(self, prompt: str):
-        content = self(prompt)
-        try:
-            return content, self.json_output_parser.parse(content)
-        except:
-            return content, None

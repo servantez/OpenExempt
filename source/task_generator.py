@@ -280,8 +280,10 @@ class TaskGenerator:
         terminal_task_id = TaskID(self.config.terminal_task_id)
         instruction = self.instructions[str(terminal_task_id.value)]
         meta_instruction = self.instructions['meta'] if terminal_task_id.value > 1 else self.instructions['meta_without_assets']
-        json_response_format = '' if terminal_task_id.solution_type() == str else self.instructions['json_response_format'] + ' '
-        response_format = 'Response Format: ' + json_response_format + self.instructions[str(terminal_task_id.value) + '_response_format']
+        answer_format = (self.instructions['answer_format_json'] 
+                         if terminal_task_id.solution_type() == dict 
+                         else self.instructions['answer_format'])
+        response_format = 'Response Format: ' + answer_format + ' ' + self.instructions[f'{terminal_task_id.value}_response_format']
         name_variant_sampler = self.create_name_variant_sampler(case.debtor, case.joint_debtor)
         state_statute_set = self.statute_set_map[case.state_jurisdiction]
         allowable_jurisdictions = state_statute_set.allowable_exemption_jurisdictions()
@@ -297,6 +299,9 @@ class TaskGenerator:
         solved_steps = self.create_solved_reasoning_steps(case, allowable_jurisdictions)
         statute_set_content = [statute_set.display_content() for statute_set in self.statute_set_map.values()]
         statutes = 'Statutes:\n' + '\n\n'.join(statute_set_content)
+        format_reminder = (self.instructions['format_reminder_json'] 
+                           if terminal_task_id.solution_type() == dict 
+                           else self.instructions['format_reminder_list'])
         solution = self.solve_case(case, TaskID(self.config.terminal_task_id), allowable_jurisdictions)
         return Task.create_task(self.config.start_task_id,
                                        self.config.terminal_task_id,
@@ -307,4 +312,5 @@ class TaskGenerator:
                                        facts,
                                        solved_steps,
                                        statutes,
+                                       format_reminder,
                                        solution)
