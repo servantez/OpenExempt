@@ -7,7 +7,6 @@ from rapidfuzz import process, fuzz
 from langchain_core.exceptions import OutputParserException
 from source.jurisdiction import Jurisdiction
 from source.task_id import TaskID
-from source.model_id import ModelID
 from source.case import Case
 from source.solver import Solver
 from source.statute_set import StatuteSet
@@ -34,13 +33,13 @@ class Evaluator:
         self.logger = None # Set to dataset logger at time of evaluation
 
     # This is the only method needed for evaluation - all evaluation logic is handled by evaluator.
-    def evaluate(self, task_id: TaskID, predictions: List[Dict[str, str]], targets: List[Dict[str, str | Dict]], cases: List[Case], model_id: ModelID, logger: Logger):
+    def evaluate(self, task_id: TaskID, predictions: List[Dict[str, str]], targets: List[Dict[str, str | Dict]], cases: List[Case], logger: Logger):
         self.logger = logger
         assert len(predictions) == len(targets), f'Number of predictions ({len(predictions)}) and targets ({len(targets)}) must be the same.'
         assert len(targets) == len(cases), f'Number of targets ({len(targets)}) and cases ({len(cases)}) must be the same.'
         uid_sanity_check = all(prediction['uid'] == target['uid'] for prediction, target in zip(predictions, targets))
         assert uid_sanity_check, 'Prediction and target lists contain mismatched UIDs (prediction UID != target UID).'
-        parsed_predictions = self._parse_predictions(predictions, task_id, model_id)
+        parsed_predictions = self._parse_predictions(predictions, task_id)
         extracted_targets = [target_dict['target'] for target_dict in targets]
         match task_id:
             case TaskID.ALLOWABLE_EXEMPTIONS:
@@ -56,15 +55,12 @@ class Evaluator:
             case _:
                 raise NotImplementedError(f'Evaluation not implemented for task ID: {task_id}')
             
-    def _parse_predictions(self, predictions: List[Dict[str, str]], task_id: TaskID, model_id: ModelID):
+    def _parse_predictions(self, predictions: List[Dict[str, str]], task_id: TaskID):
         parser = task_id.response_parser()
         parsed_predictions = []
         for prediction_dict in predictions:
             parsed_prediction = prediction_dict['prediction']
             parsed_prediction = self._extract_final_answer(parsed_prediction)
-            match model_id: # Remove think tags
-                case ModelID.DEEPSEEK_R1: 
-                    parsed_prediction = re.sub(r'<think>.*?</think>', '', parsed_prediction, count=1, flags=re.DOTALL)
             if not parser: # No parsing needed
                 parsed_predictions.append(parsed_prediction)
                 continue
@@ -216,7 +212,7 @@ class Evaluator:
                 predicted_citations = [Claim.normalize_citation(citation) for citation in predicted_citations]
                 precision, recall, f1 = self._compute_precision_recall_f1_scores(set(predicted_citations), set(citations))
                 asset_score_array[asset_index] = [precision, recall, f1]
-            score_array[sample_index, :] = asset_score_array.mean(axis=0) # Macro averaged across assets
+            score_array[sample_index, :] = asset_score_array.mean(axis=0) # Sample-based scores
         # Compute precision, recall and f1 scores across all samples
         precision, recall, f1 = score_array.mean(axis=0)
         return {'precision': float(precision), 
@@ -247,7 +243,7 @@ class Evaluator:
                 predicted_claims = normalized_prediction[matching_asset_description]
                 precision, recall, f1, mare = self._compute_precision_recall_f1_mare_scores(predicted_claims, claims)
                 asset_score_array[asset_index] = [precision, recall, f1, mare]
-            score_array[sample_index, :] = np.nanmean(asset_score_array, axis=0) # Macro averaged across assets
+            score_array[sample_index, :] = np.nanmean(asset_score_array, axis=0) # Sample-based scores
         # Compute precision, recall, f1 and MARE scores across all samples
         precision, recall, f1, mare = np.nanmean(score_array, axis=0)
         mare = None if np.isnan(mare) else float(mare)

@@ -9,9 +9,10 @@ from .config import Config
 class SuiteID(Enum):
     TEMPORAL_REASONING = 'tr'
     REASONING_DECOMPOSITION = 'rd'
-    MARITAL_REASONING = 'mr'
     DISTRACTOR_ROBUSTNESS = 'dr'
     SYCOPHANCY_ROBUSTNESS = 'sr'
+    OBFUSCATION_ROBUSTNESS = 'or'
+    BASELINE_ROBUSTNESS = 'br'
     ASSET_SCALING = 'as'
     JURISDICTION_SCALING = 'js'
     BASIC_COMPETENCY = 'bc'
@@ -31,9 +32,10 @@ class SuiteID(Enum):
         handler_registry = {
             SuiteID.TEMPORAL_REASONING: self.create_tr_config_files,
             SuiteID.REASONING_DECOMPOSITION: self.create_rd_config_files,
-            SuiteID.MARITAL_REASONING: self.create_mr_config_files,
             SuiteID.DISTRACTOR_ROBUSTNESS: self.create_dr_config_files,
             SuiteID.SYCOPHANCY_ROBUSTNESS: self.create_sr_config_files,
+            SuiteID.OBFUSCATION_ROBUSTNESS: self.create_or_config_files,
+            SuiteID.BASELINE_ROBUSTNESS: self.create_br_config_files,
             SuiteID.ASSET_SCALING: self.create_as_config_files,
             SuiteID.JURISDICTION_SCALING: self.create_js_config_files,
             SuiteID.BASIC_COMPETENCY: self.create_bc_config_files,
@@ -85,20 +87,42 @@ class SuiteID(Enum):
                 for count in range(1, 6)]
     
     def create_rd_config_files(self, default_config_file: Dict[str, Any]):
-        return [self.dataset_config_file_with_update(default_config_file, {'domicile_count_min': count, 'domicile_count_max': count})
-                for count in range(1, 6)]
-    
-    def create_mr_config_files(self, default_config_file: Dict[str, Any]):
-        return [self.dataset_config_file_with_update(default_config_file, {'domicile_count_min': count, 'domicile_count_max': count})
-                for count in range(1, 6)]
+        updates = []
+        for terminal_task_id in range(2, 6): # All tasks except AE (which has no task variants)
+            for start_task_id in range(1, terminal_task_id + 1): # All task variants
+                updates.append({'start_task_id': start_task_id, 
+                                'terminal_task_id': terminal_task_id})
+        return [self.dataset_config_file_with_update(default_config_file, update) for update in updates]
     
     def create_dr_config_files(self, default_config_file: Dict[str, Any]):
-        return [self.dataset_config_file_with_update(default_config_file, {'domicile_count_min': count, 'domicile_count_max': count})
-                for count in range(1, 6)]
+        updates = []
+        for task_id in list(TaskID):
+            irrelevant_asset_facts = task_id != TaskID.ALLOWABLE_EXEMPTIONS # AE contains no asset facts
+            updates.append({'terminal_task_id': task_id.value,
+                            'irrelevant_asset_facts': irrelevant_asset_facts})
+        return [self.dataset_config_file_with_update(default_config_file, update) for update in updates]
     
     def create_sr_config_files(self, default_config_file: Dict[str, Any]):
-        return [self.dataset_config_file_with_update(default_config_file, {'domicile_count_min': count, 'domicile_count_max': count})
-                for count in range(1, 6)]
+        updates = []
+        for task_id in list(TaskID):
+            asset_opinions = task_id != TaskID.ALLOWABLE_EXEMPTIONS # AE contains no asset facts
+            updates.append({'terminal_task_id': task_id.value,
+                            'asset_opinions': asset_opinions})
+        return [self.dataset_config_file_with_update(default_config_file, update) for update in updates]
+    
+    def create_or_config_files(self, default_config_file: Dict[str, Any]):
+        updates = []
+        for task_id in list(TaskID):
+            irrelevant_asset_facts = task_id != TaskID.ALLOWABLE_EXEMPTIONS # AE contains no asset facts
+            asset_opinions = task_id != TaskID.ALLOWABLE_EXEMPTIONS
+            updates.append({'terminal_task_id': task_id.value,
+                            'irrelevant_asset_facts': irrelevant_asset_facts,
+                            'asset_opinions': asset_opinions})
+        return [self.dataset_config_file_with_update(default_config_file, update) for update in updates]
+
+    def create_br_config_files(self, default_config_file: Dict[str, Any]):
+        return [self.dataset_config_file_with_update(default_config_file, {'terminal_task_id': task_id.value}) 
+                for task_id in list(TaskID)]
     
     def create_as_config_files(self, default_config_file: Dict[str, Any]):
         return [self.dataset_config_file_with_update(default_config_file, {'domicile_count_min': count, 'domicile_count_max': count})
@@ -111,12 +135,10 @@ class SuiteID(Enum):
     def create_bc_config_files(self, default_config_file: Dict[str, Any]):
         updates = []
         for task_id in list(TaskID):
-            for count in range(1, 3):
+            for count in range(2, 4):
                 updates.append({'terminal_task_id': task_id.value, 
                                 'domicile_count_min': count, 
-                                'domicile_count_max': count,
-                                'asset_count_min': count, 
-                                'asset_count_max': count})
+                                'domicile_count_max': count})
         return [self.dataset_config_file_with_update(default_config_file, update) for update in updates]
     
     def create_ic_config_files(self, default_config_file: Dict[str, Any]):
@@ -140,7 +162,7 @@ class SuiteID(Enum):
         for task_id in list(TaskID):
             for count in range(6, 9):
                 # Incremently increase obfuscation complexity (irrelevant domicile facts present by default)
-                irrelevant_domicile_facts = task_id != TaskID.ALLOWABLE_EXEMPTIONS
+                irrelevant_asset_facts = task_id != TaskID.ALLOWABLE_EXEMPTIONS
                 domicile_opinions = count > 6
                 asset_opinions = count > 7
                 if task_id == TaskID.ALLOWABLE_EXEMPTIONS and asset_opinions:
@@ -150,5 +172,5 @@ class SuiteID(Enum):
                                 'asset_count_max': count,
                                 'asset_opinions': asset_opinions,
                                 'domicile_opinions': domicile_opinions,
-                                'irrelevant_domicile_facts': irrelevant_domicile_facts})
+                                'irrelevant_asset_facts': irrelevant_asset_facts})
         return [self.dataset_config_file_with_update(default_config_file, update) for update in updates]

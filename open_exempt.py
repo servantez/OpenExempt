@@ -8,6 +8,7 @@ from source.case_generator import CaseGenerator
 from source.task_generator import TaskGenerator
 from source.task_dataset import TaskDataset
 from source.task_suite import TaskSuite
+from source.utils import set_random_seed
 
 
 def configure_logger_with_name(name: str, log_file_path: str, verbose: bool):
@@ -89,8 +90,9 @@ if __name__ == "__main__":
     parser.add_argument('-s', '--seed', type=int, default=None, help='Set random seed.')
     parser.add_argument('-v', '--verbose', action='store_true')
     args = parser.parse_args()
+    RANDOM_SEED = args.seed
     if args.seed is not None:
-        random.seed(args.seed)
+        set_random_seed(args.seed)
     if args.mode == 'dataset':
         config = Config.from_path(args.config_path, args.name, args.verbose)
         dataset = generate_dataset(config)

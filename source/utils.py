@@ -5,6 +5,16 @@ from collections.abc import Sequence, Generator
 from typing import List, Dict, Any
 
 
+RANDOM_SEED = None
+
+def set_random_seed(seed: int):
+    global RANDOM_SEED
+    RANDOM_SEED = seed
+    random.seed(seed)
+
+def get_random_seed():
+    return RANDOM_SEED
+
 def read_jsonl_file(path: str):
     with open(path, 'r') as file:
         return [json.loads(line) for line in file]

@@ -15,7 +15,6 @@ from evaluator import Evaluator
 
 
 
-
 # Load API keys from .env file
 load_dotenv()
 
@@ -77,7 +76,7 @@ def run_dataset(dataset_directory: str, output_directory: str, model: ModelClien
         cases = [case for case in dataset.get_cases()]
         targets = [task.to_target() for task in tasks]
         task_id = tasks[0].terminal_task_id
-        results = evaluator.evaluate(task_id, predictions, targets, cases, model.model_id, logger)
+        results = evaluator.evaluate(task_id, predictions, targets, cases, logger)
         logger.info(f'Finished evaluation on dataset: {dataset.dataset_id}')
 
         # Save results
