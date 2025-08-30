@@ -17,5 +17,5 @@
     "irrelevant_domicile_facts": false,
     "asset_opinions": true,
     "domicile_opinions": true,
-    "state_jurisdictions": ["ARIZONA", "WISCONSIN"]
+    "state_jurisdictions": ["ARIZONA", "PENNSYLVANIA", "WISCONSIN"]
 }

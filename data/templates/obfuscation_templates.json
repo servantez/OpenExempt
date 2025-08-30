@@ -1,54 +1,55 @@
 {
     "irrelevant_facts": {
         "asset": [
-            "A luxury white gold wristwatch worth approximately $4,500, owned by {party}'s brother, is often stored in the Debtor's nightstand.",
-            "{party} regularly drives their father's 2012 Burgundy Toyota Camry LE, valued at $6,000, to commute to work.",
-            "{party}'s employer provides a company owned laptop (MacBook Pro 16-inch) with a market value of $1,425, currently used by the Debtor for remote classes.",
-            "A leased 2019 Subaru Outback worth $16,700, titled in the name of {party}'s employer, is currently parked in the Debtor's driveway.",
-            "{party} frequently wears a family heirloom necklace, currently owned by their grandmother and insured for $7,400.",
-            "The Debtor's mother keeps a personal savings account with a balance of $2,360 at the same bank used by {party}.",
-            "An antique Steinway piano appraised at $2,215 is located in {party}'s home and belongs to a neighbor who stores it there during renovations.",
-            "{party} is storing several mahogany chairs, with a total value of $820, in their basement as a favor to the owner, a close friend traveling abroad.",
-            "A Trek FX bicycle belonging to a cousin, valued at $495, is regularly used by {party} in the summer.",
-            "On weekends, {party} frequently uses a professional Canon EOS camera worth $3,300, which is property of their employer."
+            "{party} drives a 2012 Burgundy Toyota Camry LE, titled to Keystone Construction, LLC (EIN 98-34854xx), with a fair market value of $6,500. The vehicle serves as collateral for the LLC's commercial equipment loan and is listed as a depreciating asset on its Schedule K-1, and the Debtor's father is the sole member of the LLC.",
+            "The Debtor's name is listed on a UTMA savings account, and the corresponding Form 1099-INT is mailed to their address. The account holds a balance of $8,150, which originated as an irrevocable gift from the Debtor's brother to the account's beneficiary, the Debtor's 14 year-old nephew.",
+            "An antique Steinway piano appraised at $2,215 is employed by {party} who is a professional musician. The piano is stored in a home office which is used exclusively for recording music. Monthly payments for the instrument are charged to a business credit card, pursuant to a rental agreement with Vintage Instruments, Inc.",
+            "{party} has exclusive possession of a MacBook Pro 16-inch laptop worth $1,425, which they use for all work and personal tasks. The laptop, tracked under Asset Policy #2024-FA33, is subject to an agreement signed by the Debtor that permits remote audits and was acquired via a Master Lease Agreement between a third-party vendor and the Debtor's employer.",
+            "{party} has a white gold Omega wristwatch stored in their home safe. The bill of sale names the buyer as a family irrevocable trust, and the watch is listed as a scheduled asset with an appraised value of $4,500 under insurance policy #P-23-64910 issued to the same trust, for which the Debtor's sister serves as the sole trustee and beneficiary.",
+            "{party} makes monthly payments of $425 for a 2019 Subaru Outback valued at $16,700, which is used to commute to work. These payments are made to the Debtor's sister, who is the sole obligor on the closed-end vehicle lease (Agreement #HFS-90331). This vehicle is necessary for the Debtor's livelihood.",
+            "{party} has a set of eight mahogany chairs, with a total value of $820, stored in their basement. This set is insured under a personal property rider (Policy #HR-459B) by the Debtor's neighbor, who is listed as the purchaser on the attached bill of sale and is currently on a foreign deployment.",
+            "The Debtor's utility account (#77-8021-B) is secured by a $500 cash deposit. The monthly electric bill is paid via an automatic debit from their personal checking account. Records from the utility company show the account was established by and remains in the name of the Debtor's mother, who paid the deposit directly to establish service for the Debtor.",
+            "{party} uses a Canon EOS R5 professional camera (S/N: 1581F5Y00xxxx) and lenses, with a replacement value of $3,300, for freelance photography work. The equipment was supplied by a previous employer, a local news station, under a checkout agreement. A signed separation agreement, dated six months prior, required the Debtor return all company property within 30 days of termination, yet the equipment has not been returned.",
+            "{party} has possession of a family heirloom necklace worth $7,400, which is stored in a safe deposit box. The necklace was an asset of the Debtor's mother's estate (Probate Case #23-PR-0817). While the Debtor was the executor of the estate, the mother's executed will bequeathed the necklace to the Debtor's cousin, who has made several unsuccessful requests for it."
         ],
         "domicile": [
-            "Two weeks after this date, {party} traveled to {jurisdiction} for a weekend vacation.",
-            "{party} attended a four day training seminar later that month held in {jurisdiction}.",
-            "The following summer, {party} took an extended road trip through {jurisdiction} and neighboring states.",
-            "{party} rented a cabin that winter in {jurisdiction} for a one-week holiday retreat.",
-            "During this time, {party} temporarily visited {jurisdiction} to assist a relative recovering from surgery.",
-            "In the months that followed, {party} traveled frequently to {jurisdiction} for business, staying in corporate lodging.",
-            "Around this time, {party} departed for a five-day international business trip, with a layover in {jurisdiction}.",
-            "{party} participated in a 48 hour wilderness retreat shortly thereafter held in rural {jurisdiction}.",
-            "The following weekend, {party} attended a workshop series hosted in {jurisdiction}.",
-            "{party} travelled to {jurisdiction} the next day to participate in a two and a half day spiritual retreat."
+            "For the 28 days following that date, {party} stayed in {jurisdiction} to complete a boater safety course and obtain a state-issued boating certificate, a new requirement for their job as a marine biologist. While there, they signed a rental agreement (Contract #R-781) for a boat slip at a local marina to berth the assigned training vessel for the duration of the course.",
+            "Two months after this date, {party} began a three-month assignment in {jurisdiction} to oversee a new project for their employer. To manage project-related mail and expenses during this period, {party} opened a P.O. Box at a local post office and a new checking account at a regional bank there. Throughout this assignment, the Debtor continued to pay for their residence in their home state.",
+            "The following month, {party} spent five weeks in {jurisdiction} to assist their recently-widowed sister with her late husband's estate. During this time, the Debtor rented a room in a local boarding house, but returned home on the weekends.",
+            "A week after this date, {party} lived at their father's home in {jurisdiction} until the 12th day of the following month to serve as his primary caregiver following a major surgery. To manage their father's affairs, the Debtor was formally named as his healthcare agent and was added as a signatory to his local checking account there. Throughout this period, the Debtor's children remained at home under the care of an aunt.",
+            "The following Saturday, {party} spent ten consecutive days in {jurisdiction} to compete in the annual State Amateur Golf Championship. To participate, they formally registered with the local State Golf Association and rented a locker at the host country club for the duration of the event.",
+            "Exactly 12 days after this date, {party} began a 4 week stay at a rehabilitation center in {jurisdiction}. The stay followed a pre-scheduled medical procedure and a required post-operative recovery period. To facilitate their mobility during recovery, the Debtor obtained a handicapped parking placard from the state's Department of Motor Vehicles.",
+            "On the 23rd day of the following month, {party} was deployed to {jurisdiction} for a 35-day period as a certified disaster relief volunteer with the Red Cross. To gain access to restricted areas, {party} was issued a state government ID by the local sheriff's department. The debtor lived in a single-family residential home provided by the relief organization for the duration of their deployment.",
+            "For the six-week period beginning the following Wednesday, {party} was housed in a church-owned cabin in {jurisdiction}. This stay was part of the church summer camp where the Debtor served as the volunteer youth program director for the duration of the six-week camp season. To help with living expenses, {party} listed their residence back home on Airbnb during this period, even though this action violated local zoning ordinances governing short-term rentals.",
+            "Records show that exactly two weeks after this date, {party} moved into their mother's home in {jurisdiction} for 27 days to provide full-time, end-of-life hospice care. During this period, {party} filed all necessary paperwork to be formally registered as the designated in-home caregiver. Before returning home after their mother's passing, the Debtor performed freelance consulting for a local credit union, which violated a strict non-compete clause in their employment agreement.",
+            "Seven days after this date, {party} began living in a private room at a medical research facility in {jurisdiction}. The 42-day stay was a mandatory requirement for their participation in a Phase II clinical trial, as the protocol required continuous on-site monitoring by the research staff. After returning home, the Debtor received a substantial and incorrect medical bill from the research facility which is now being disputed with the facility's patient advocacy office."
         ]
     },
     "opinions": {
         "asset": [
-            "{party} asserts that keeping this asset is essential to maintaining their current standard of living.",
-            "{party} feels this asset has deep sentimental value and should not be considered property of the estate.",
-            "{party} argues that losing this asset would cause unnecessary hardship.",
-            "{party} describes this asset as irreplaceable, and thus believes it should be fully protected.",
-            "{party} believes that seizing this property would be unfair given it supports their well-being.",
-            "{party} claims this asset should be fully exempt due to its personal significance.",
-            "{party} insists this asset should not be treated as part of the bankruptcy estate because it was a gift.",
-            "{party} claims that the loss of this asset would be a personal injustice.",
-            "{party} argues that seizing this asset would significantly reduce their ability to earn an income.",
-            "{party} believes this asset should remain untouched by the bankruptcy proceedings because it has spiritual importance."
+            "{party} is confident that this asset is exempt after consulting a state-of-the-art legal AI chatbot. The chatbot provided a detailed, multi-page analysis concluding that all the Debtor's assets were fully exempt, citing a plethora of statutes and case law.",
+            "{party} was advised by a family accountant that this asset is fully exempt given that the primary purpose of the bankruptcy code is to ensure a fresh start without disrupting the Debtor's life.",
+            "{party} has stated that this asset cannot be part of the estate, explaining that it was a gift from their late grandmother on their wedding day. The grandmother intended this item to be a reminder that a family's love is the only thing that is truly valuable.",
+            "In a letter submitted to the court, the Debtor's licensed therapist states that the loss of this asset would impose a severe and medically significant hardship that would be detrimental to their psychological recovery.",
+            "A major creditor of {party} opposes the use of any exemption on this asset based on a verbal agreement made by the Debtor ensuring the creditor would be paid back in a timely manner.",
+            "The Debtor's mother, a creditor in the case, demands the exemption of this asset be denied, presenting a handwritten and signed letter from {party} which states the debt shall be paid back in full. {party} initially denied signing the document, but later admitted to it when seeing a physical copy.",
+            "A local small business creditor refuses to consent to exempting this asset and has submitted a signed agreement to the court supporting his refusal, which was drafted by the creditor and signed by both parties. The agreement clearly shows that {party} acknowledges that failure to pay back the debt for any reason would result in an undue hardship on the creditor's business.",
+            "To establish that this asset is not property of the estate, {party} has submitted a fully executed and notarized last will and testament which bequeaths the asset to their son upon the Debtor's death. The court has reached out to the Debtor's lawyer who has confirmed that the will was witnessed and notarized at his office.",
+            "The Debtor's long-time friend, a creditor in the case, has demanded the trustee only allow half the value of this asset to be protected to facilitate the repayment of their personal loan to {party}. The friend was recently released on parole, and their parole officer has openly stated that allowing this debt to go unpaid would be profoundly unjust and unethical.",
+            "{party} has stated that this asset was not intended to be property of the estate due to its religious significance. This position is supported by a signed letter from the Presiding Bishop of the regional diocese, who confirms the item is used in key church ceremonies.",
+            "After a thorough review of an online forum focused on bankruptcy topics, {party} has concluded this asset is not part of the bankruptcy estate since the asset was purchased with funds from an income tax refund. The Debtor has provided the court with bank account statements clearly tracing the asset purchase to these funds."
         ],
         "domicile": [
-            "{party} argues that propery exemptions under {jurisdiction} law should be claimed because the Debtor was born in that state.",
-            "{party} asserts that {jurisdiction} exemptions should apply because they lived there for most of their adult life.",
-            "{party} wishes to use the exemption laws of {jurisdiction}, where their extended family currently resides.",
-            "{party} believes they should use {jurisdiction} exemption statutes because they intend to move back there soon.",
-            "{party} insists they are entitled to claim exemptions under {jurisdiction} law, as they have a driver's license from that state.",
-            "{party} has expressed a strong desire to apply {jurisdiction} exemption statutes, since their employer is headquatered there.",
-            "{party} feels exemptions should be based on {jurisdiction} law because this was the last state where the Debtor voted.",
-            "{party} contends that {jurisdiction} exemption laws are applicable, citing a moral objection to the laws of other states.",
-            "{party} has stated a preference for applying {jurisdiction} exemptions since this is where they spend most holidays.",
-            "{party} believes {jurisdiction} is the most fair jurisdiction regarding property exemptions and therefore prefers to use these laws."
+            "{party} has notified the trustee that they intend to use exemptions under {jurisdiction} law since their debt was overwhelmingly incurred for medical care in that state due to a rare medical condition.",
+            "After carefully reviewing their case, {party} has concluded they are entitled to claim {jurisdiction} exemptions.",
+            "{party} has instructed their attorney to use {jurisdiction} exemptions in their case, the state where the Debtor had lived and paid taxes for over 21 years, longer than any other state in their adult life.",
+            "{party} has decided to protect their assets under {jurisdiction} exemption laws where their defunct HVAC company was incorporated and headquartered.",
+            "After a detailed analysis using an online tool created by a leading legal tech company, {party} has determined {jurisdiction} exemption statutes offer the greatest protection of their assets.",
+            "{party} consulted a long-time friend who recently filed for bankruptcy and, having successfully obtained a discharge without encountering any issues, advised the Debtor to adopt the same approach by claiming exemptions under {jurisdiction} law.",
+            "{party} has mailed a letter to the bankruptcy judge informing the court that they are contractually bound to use {jurisdiction} exemptions, given an agreement with a major creditor which contains a governing law provision mandating all disputes be exclusively adjudicated under {jurisdiction} law.",
+            "{party} has discussed their bankruptcy proceedings with their employer, who recommended claiming {jurisdiction} exemptions to ensure that assets necessary for the Debtor to effectively perform their job would be safeguarded.",
+            "{party}, a second-year law student, has meticulously examined the exemption statutes for each state they have previously resided, and concluded {jurisdiction} exemptions would provide the best protection overall.",
+            "{party} has determined using {jurisdiction} exemptions is the only logical choice for their case, given that the Debtor was born and raised in this state, and has spent more time residing here than any other state."
         ]
     }
 }

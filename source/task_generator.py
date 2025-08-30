@@ -80,6 +80,14 @@ class TaskGenerator:
     def sample_state(self):
         return next(self.state_sampler)
     
+    # Return a random state that is not the exemption jurisdiction of the case.
+    def sample_state_for_case(self, case: Case):
+        states = [Jurisdiction(state) for state in self.config.state_jurisdictions 
+                  if state != case.state_jurisdiction.value]
+        if not states:
+            return self.sample_state()
+        return random.choice(states).display_name()
+    
     # Sample a random integer (1 to upper bound) and reduce balance by sample value 
     def sample_and_exhaust(self, balance: int, upper_bound: int, weights: List[int] = None):
         upper = min(balance, upper_bound)
@@ -176,7 +184,9 @@ class TaskGenerator:
         if self.config.irrelevant_domicile_facts:
             # Sample an irrelevant domicile fact and insert it at a random index
             template = self.template_manager.sample_irrelevant_domicile_template()
-            irrelevant_fact = template.replace('{jurisdiction}', self.sample_state())
+            state = self.sample_state_for_case(case)
+            city = self.sample_city_in_state(state)
+            irrelevant_fact = template.replace('{jurisdiction}', f'{city}, {state}')
             irrelevant_fact = self.hydrate_party_name(irrelevant_fact, self.random_party_name_variant(case))
             fact_insertion_index = random.randint(1, len(domicile_facts)) # Irrelevant domicile facts should not be at the beginning
             domicile_facts.insert(fact_insertion_index, irrelevant_fact)
@@ -184,7 +194,7 @@ class TaskGenerator:
         if self.config.domicile_opinions:
             # Sample a domicile opinion and insert it at a random index
             template = self.template_manager.sample_domicile_opinion_template()
-            opinion = template.replace('{jurisdiction}', self.sample_state())
+            opinion = template.replace('{jurisdiction}', self.sample_state_for_case(case))
             opinion = self.hydrate_party_name(opinion, self.random_party_name_variant(case))
             # Ensure opinion is not inserted immediately before an irrelevant fact.
             valid_insertions = [index for index in range(0, len(domicile_facts) + 1) if index != fact_insertion_index]
