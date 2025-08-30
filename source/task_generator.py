@@ -47,9 +47,7 @@ class TaskGenerator:
         city_sampler = {}
         city_dict = self.read_json_file_in_data_directory('cities.json')
         for state, city_list in city_dict.items():
-            if state.upper() in self.config.state_jurisdictions:
-                jurisdiction = Jurisdiction(state.upper())
-                city_sampler[jurisdiction] = infinite_sampler(city_list)
+            city_sampler[state.upper()] = infinite_sampler(city_list)
         return city_sampler
     
     def create_state_sampler(self):
@@ -134,7 +132,7 @@ class TaskGenerator:
         return template.replace('{party}', name)
 
     def hydrate_domicile_template(self, template: str, date: datetime, state: Jurisdiction, name_variant: str = None):
-        city = self.sample_city_in_state(state)
+        city = self.sample_city_in_state(state.value)
         hydrated = template.replace('{location}', f'{city}, {state.display_name()}', 1)
         date_format = self.template_manager.sample_date_format()
         formatted_date = self.format_date(date, date_format)
@@ -185,7 +183,7 @@ class TaskGenerator:
             # Sample an irrelevant domicile fact and insert it at a random index
             template = self.template_manager.sample_irrelevant_domicile_template()
             state = self.sample_state_for_case(case)
-            city = self.sample_city_in_state(state)
+            city = self.sample_city_in_state(state.upper())
             irrelevant_fact = template.replace('{jurisdiction}', f'{city}, {state}')
             irrelevant_fact = self.hydrate_party_name(irrelevant_fact, self.random_party_name_variant(case))
             fact_insertion_index = random.randint(1, len(domicile_facts)) # Irrelevant domicile facts should not be at the beginning

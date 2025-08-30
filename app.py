@@ -15,12 +15,12 @@ The interface allows users to easily choose configuration settings, which are us
 # Load default config
 config = Config.from_default()
 
-def process_demo_request(start_task, terminal_task, asset_count_min, asset_count_max, married_ratio, domicile_count_min, domicile_count_max, state_jurisdictions, dataset_size, irrelevant_facts, opinions):
+def process_demo_request(start_task, terminal_task, asset_count_min, asset_count_max, married_percentage, domicile_count_min, domicile_count_max, state_jurisdictions, irrelevant_facts, opinions):
     config.start_task_id = TaskID.display_name_to_task_id(start_task).value
     config.terminal_task_id = TaskID.display_name_to_task_id(terminal_task).value
     config.asset_count_min = asset_count_min
     config.asset_count_max = asset_count_max
-    config.married_ratio = married_ratio / 100
+    config.married_ratio = married_percentage / 100
     config.domicile_count_min = domicile_count_min
     config.domicile_count_max = domicile_count_max
     config.state_jurisdictions = [state.upper() for state in state_jurisdictions]
@@ -139,7 +139,7 @@ with gr.Blocks(css=custom_css) as demo:
 
     submit_btn.click(
         fn=on_generate,
-        inputs=[start_task, terminal_task, asset_count_min, asset_count_max, married_percentage, domicile_count_min, domicile_count_max, state_jurisdictions, dataset_size, irrelevant_facts, opinions],
+        inputs=[start_task, terminal_task, asset_count_min, asset_count_max, married_percentage, domicile_count_min, domicile_count_max, state_jurisdictions, irrelevant_facts, opinions],
         outputs=[prompt_output, solution_output, case_json, success_note]
     )
 
