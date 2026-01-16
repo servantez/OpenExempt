@@ -14,7 +14,6 @@ class SuiteID(Enum):
     OBFUSCATION_ROBUSTNESS = 'or'
     BASELINE_ROBUSTNESS = 'br'
     ASSET_SCALING = 'as'
-    JURISDICTION_SCALING = 'js'
     BASIC_COMPETENCY = 'bc'
     INTERMEDIATE_COMPETENCY = 'ic'
     ADVANCED_COMPETENCY = 'ac'
@@ -37,7 +36,6 @@ class SuiteID(Enum):
             SuiteID.OBFUSCATION_ROBUSTNESS: self.create_or_config_files,
             SuiteID.BASELINE_ROBUSTNESS: self.create_br_config_files,
             SuiteID.ASSET_SCALING: self.create_as_config_files,
-            SuiteID.JURISDICTION_SCALING: self.create_js_config_files,
             SuiteID.BASIC_COMPETENCY: self.create_bc_config_files,
             SuiteID.INTERMEDIATE_COMPETENCY: self.create_ic_config_files,
             SuiteID.ADVANCED_COMPETENCY: self.create_ac_config_files
@@ -125,12 +123,13 @@ class SuiteID(Enum):
                 for task_id in list(TaskID)]
     
     def create_as_config_files(self, default_config_file: Dict[str, Any]):
-        return [self.dataset_config_file_with_update(default_config_file, {'domicile_count_min': count, 'domicile_count_max': count})
-                for count in range(1, 6)]
-    
-    def create_js_config_files(self, default_config_file: Dict[str, Any]):
-        return [self.dataset_config_file_with_update(default_config_file, {'domicile_count_min': count, 'domicile_count_max': count})
-                for count in range(1, 6)]
+        updates = []
+        for terminal_task_id in range(2, 6): # All tasks except AE (which has no assets)
+            for asset_count in range(2, 9, 2): # Asset count: 2, 4, 6, 8
+                updates.append({'terminal_task_id': terminal_task_id, 
+                                'asset_count_min': asset_count, 
+                                'asset_count_max': asset_count})
+        return [self.dataset_config_file_with_update(default_config_file, update) for update in updates]
     
     def create_bc_config_files(self, default_config_file: Dict[str, Any]):
         updates = []

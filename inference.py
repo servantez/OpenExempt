@@ -13,8 +13,6 @@ from source.utils import read_jsonl_file, write_jsonl_file
 from open_exempt import configure_logger_with_name
 from evaluator import Evaluator
 
-
-
 # Load API keys from .env file
 load_dotenv()
 
@@ -52,9 +50,7 @@ def run_dataset(dataset_directory: str, output_directory: str, model: ModelClien
         for task in dataset.get_data():
             logger.info(f'Begin inference on task: {task.uid}')
             model.start_new_conversation()
-            
             prediction = model(task.prompt())
-            
             predictions.append({'uid': task.uid, 'prediction': prediction})
             logger.info(f'Finished inference on task: {task.uid}')
         logger.info(f'Finished inference on dataset: {dataset.dataset_id}')
