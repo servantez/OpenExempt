@@ -70,3 +70,16 @@ Framework users are able to control the legal tasks constructed in the dataset b
 | *state\_jurisdictions* | Specifies the set of U.S. state jurisdictions used for task generation. For each task, one jurisdiction is sampled uniformly from this list to serve as the Debtor’s allowable exemption jurisdiction. The exemption statutes for all listed jurisdictions are included in the prompt, requiring the model to identify the correct jurisdiction and apply its exemption laws to the facts. |
 | *irrelevant\_asset\_facts*, *irrelevant\_domicile\_facts*, *asset\_opinions*, *domicile\_opinions* | Boolean parameters that control the inclusion of obfuscating information in the fact pattern. When enabled, the benchmark injects legally immaterial details or subjective statements related to assets or domicile history. These parameters are used to evaluate the model's robustness to distraction, misdirection, and sycophancy by testing its ability to disregard extraneous details while applying the correct legal reasoning. |
 | *data\_directory*, *asset\_directory*, *statute\_directory*, *template\_directory*, *output\_directory* | File path parameters that specify where the framework loads input resources and saves generated outputs. The input directories point to data dependencies required for task generation (annotated assets, exemption statutes, natural-language templates), while *output\_directory* designates where generated tasks and solutions are written.
+
+## Citations
+```
+@misc{servantez2026openexemptdiagnosticbenchmarklegal,
+      title={OpenExempt: A Diagnostic Benchmark for Legal Reasoning and a Framework for Creating Custom Benchmarks on Demand}, 
+      author={Sergio Servantez and Sarah B. Lawsky and Rajiv Jain and Daniel W. Linna Jr. and Kristian Hammond},
+      year={2026},
+      eprint={2601.13183},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2601.13183}, 
+}
+```
