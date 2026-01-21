@@ -1,7 +1,7 @@
 # OpenExempt
 OpenExempt: A Diagnostic Benchmark for Legal Reasoning and a Framework for Creating Custom Benchmarks on Demand.
 
-- [Read the paper]()
+- [Read the paper](http://arxiv.org/abs/2601.13183)
 
 - [Access the benchmark](https://huggingface.co/datasets/SergioServantez/OpenExempt)
 
