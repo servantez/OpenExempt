@@ -186,7 +186,7 @@ class CaseGenerator:
         if len(days_per_state) == 1:
             return next(iter(days_per_state))
         
-        sorted_days_per_state = dict(sorted(days_per_state.items(), key=lambda item: item[1]))
+        sorted_days_per_state = dict(sorted(days_per_state.items(), key=lambda item: item[1], reverse=True))
         sorted_iter = iter(sorted_days_per_state.items())
         first_state = next(sorted_iter)
         second_state = next(sorted_iter)
